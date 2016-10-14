@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--~
+  ~ Germinate Mobile is written and developed by Sebastian Raubach, Paul Shaw and David Marshall from the Information and Computational Sciences Group at JHI Dundee.
+  ~ For further information contact us at germinate@hutton.ac.uk or visit our webpages at http://ics.hutton.ac.uk/germinate-scan/
+  ~
+  ~ Copyright (c) 2012-2016, Information & Computational Sciences, The James Hutton Institute. All rights reserved.
+  ~ Use is subject to the accompanying licence terms.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="TypographyDashes">
+
+    <!-- the Local LogLevel for Analytics -->
+    <string name="ga_logLevel">verbose</string>
+
+    <!-- how often the dispatcher should fire -->
+    <integer name="ga_dispatchPeriod">10</integer>
+
+    <!-- Treat events as test events and don't send to google -->
+    <bool name="ga_dryRun">false</bool>
+
+    <!-- The screen names that will appear in reports -->
+    <string name="uk.ac.hutton.ics.knodel.activity.BaseActivity">Knodel Base Activity</string>
+</resources>

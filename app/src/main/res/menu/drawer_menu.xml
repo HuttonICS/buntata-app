@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--~
+  ~ Germinate Mobile is written and developed by Sebastian Raubach, Paul Shaw and David Marshall from the Information and Computational Sciences Group at JHI Dundee.
+  ~ For further information contact us at germinate@hutton.ac.uk or visit our webpages at http://ics.hutton.ac.uk/germinate-scan/
+  ~
+  ~ Copyright (c) 2012-2016, Information & Computational Sciences, The James Hutton Institute. All rights reserved.
+  ~ Use is subject to the accompanying licence terms.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:id="@+id/drawer_menu_visit_homepage"
+		android:icon="@drawable/drawer_homepage"
+		android:title="@string/menu_visit_homepage"/>
+	<item
+		android:id="@+id/drawer_menu_online_help"
+		android:icon="@drawable/drawer_help"
+		android:title="@string/menu_online_help"/>
+	<item
+		android:id="@+id/drawer_menu_data_source"
+		android:icon="@drawable/drawer_data_source"
+		android:title="@string/menu_data_source"/>
+	<item
+		android:id="@+id/drawer_menu_settings"
+		android:icon="@drawable/drawer_settings"
+		android:title="@string/menu_settings"/>
+	<item
+		android:id="@+id/drawer_menu_about"
+		android:icon="@drawable/drawer_about"
+		android:title="@string/menu_about"/>
+</menu>
