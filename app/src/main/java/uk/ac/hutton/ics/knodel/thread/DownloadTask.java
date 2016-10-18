@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2016 Information & Computational Sciences, The James Hutton Institute
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uk.ac.hutton.ics.knodel.thread;
 
 import android.content.*;
@@ -10,6 +26,11 @@ import java.net.*;
 
 import jhi.knodel.resource.*;
 
+/**
+ * The {@link DownloadTask} will download a data source zip file.
+ *
+ * @author Sebastian Raubach
+ */
 public abstract class DownloadTask extends AsyncTask<String, Integer, File>
 {
 	private Context                    context;
@@ -18,6 +39,14 @@ public abstract class DownloadTask extends AsyncTask<String, Integer, File>
 	private File                       target;
 	private WeakReference<ProgressBar> progressBar;
 
+	/**
+	 * Creates a new instance of the download task
+	 *
+	 * @param context     The current context
+	 * @param progressBar The progressbar that should be updated on download progress
+	 * @param ds          The data source
+	 * @param target      The target file (the local zip file)
+	 */
 	public DownloadTask(Context context, ProgressBar progressBar, KnodelDatasource ds, File target)
 	{
 		this.context = context;
@@ -103,26 +132,6 @@ public abstract class DownloadTask extends AsyncTask<String, Integer, File>
 		}
 
 		return target;
-
-//		try
-//		{
-//			URL website = new URL(params[0]);
-//
-//			target.getParentFile().mkdirs();
-//
-//			if (target.exists())
-//				target.delete();
-//
-//			FileUtils.copyURLToFile(website, target);
-//
-//			return target;
-//		}
-//		catch (IOException e)
-//		{
-//			e.printStackTrace();
-//			exception = e;
-//			return null;
-//		}
 	}
 
 	@Override

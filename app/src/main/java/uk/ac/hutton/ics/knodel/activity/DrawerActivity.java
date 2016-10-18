@@ -1,9 +1,17 @@
-/**
- * Germinate Mobile is written and developed by Sebastian Raubach, Paul Shaw and David Marshall from the Information and Computational Sciences Group
- * at JHI Dundee. For further information contact us at germinate@hutton.ac.uk or visit our webpages at http://ics.hutton.ac.uk/germinate-scan/
- * <p/>
- * Copyright (c) 2012-2016, Information & Computational Sciences, The James Hutton Institute. All rights reserved. Use is subject to the accompanying
- * licence terms.
+/*
+ * Copyright (c) 2016 Information & Computational Sciences, The James Hutton Institute
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package uk.ac.hutton.ics.knodel.activity;
@@ -18,11 +26,9 @@ import android.support.v7.app.*;
 import android.view.*;
 
 import uk.ac.hutton.ics.knodel.*;
-import uk.ac.hutton.ics.knodel.util.*;
 
 /**
- * {@link uk.ac.hutton.ics.knodel.activity.DrawerActivity} extends {@link uk.ac.hutton.ics.knodel.activity.BaseActivity} and adds a {@link
- * DrawerLayout} to the {@link android.app.Activity}.
+ * {@link DrawerActivity} extends {@link BaseActivity} and adds a {@link DrawerLayout} to the {@link android.app.Activity}.
  * <p/>
  * This drawer is used as the main menu of Germinate Scan. All subclasses will have this drawer. Make sure to include the correct layout in the layout
  * .xml file. Refer to activity_main.xml to see an example.
@@ -35,7 +41,7 @@ public abstract class DrawerActivity extends BaseActivity
 	protected static final int REQUEST_PREFS       = 1001;
 
 	private ActionBarDrawerToggle drawerToggle;
-	private DrawerLayout drawerLayout;
+	private DrawerLayout          drawerLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -66,7 +72,7 @@ public abstract class DrawerActivity extends BaseActivity
 			}
 		});
 
-		        /* ActionBarDrawerToggle ties together the the proper interactions
+		/* ActionBarDrawerToggle ties together the the proper interactions
 		 * between the sliding drawer and the action bar app icon */
 		drawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 				drawerLayout, /* DrawerLayout object */
@@ -77,9 +83,6 @@ public abstract class DrawerActivity extends BaseActivity
 	}
 
 
-	/**
-	 * When using the ActionBarDrawerToggle, you must call it during onPostCreate() and onConfigurationChanged()...
-	 */
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState)
 	{
@@ -109,21 +112,6 @@ public abstract class DrawerActivity extends BaseActivity
 		}
 	}
 
-//	@Override
-//	protected void onActivityResult(int requestCode, int resultCode, Intent data)
-//	{
-//		super.onActivityResult(requestCode, resultCode, data);
-//
-//		switch (requestCode)
-//		{
-//			case REQUEST_DATA_SOURCE:
-//				if (resultCode == RESULT_OK && this instanceof MainActivity)
-//					((MainActivity) this).onReset();
-//
-//				break;
-//		}
-//	}
-
 	private boolean onNavigation(MenuItem item)
 	{
 		/* Depending on the Android version, handle things differently */
@@ -132,17 +120,17 @@ public abstract class DrawerActivity extends BaseActivity
 			case R.id.drawer_menu_data_source:
 				startActivityForResult(new Intent(getApplicationContext(), DatasourceActivity.class), REQUEST_DATA_SOURCE);
 				break;
-			case R.id.drawer_menu_visit_homepage:
+//			case R.id.drawer_menu_visit_homepage:
 //				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_homepage))));
-				break;
-			case R.id.drawer_menu_online_help:
+//				break;
+//			case R.id.drawer_menu_online_help:
 //				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_online_help))));
-				break;
-			case R.id.drawer_menu_settings:
+//				break;
+//			case R.id.drawer_menu_settings:
 //				startActivityForResult(new Intent(getApplicationContext(), PreferencesActivity.class), REQUEST_PREFS);
-				break;
+//				break;
 			case R.id.drawer_menu_about:
-//				startActivity(new Intent(getApplicationContext(), AboutActivity.class));
+				startActivity(new Intent(getApplicationContext(), AboutActivity.class));
 				break;
 			default:
 		}

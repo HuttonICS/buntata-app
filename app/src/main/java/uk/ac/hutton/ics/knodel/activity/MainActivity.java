@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2016 Information & Computational Sciences, The James Hutton Institute
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uk.ac.hutton.ics.knodel.activity;
 
 import android.app.*;
@@ -18,6 +34,9 @@ import uk.ac.hutton.ics.knodel.fragment.*;
 import uk.ac.hutton.ics.knodel.util.*;
 
 /**
+ * The {@link MainActivity} is the main view of the app. It shows the categories and let's the user navigate to the leaf nodes which then show
+ * information about the item.
+ *
  * @author Sebastian Raubach
  */
 public class MainActivity extends DrawerActivity implements OnFragmentChangeListener
@@ -34,8 +53,7 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 
 	private int datasourceId = -1;
 
-	private boolean addNewFragment = true;
-	private boolean override       = false;
+	private boolean override = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -60,64 +78,80 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 
 		if (showIntro)
 		{
+			/* Show the intro */
 			startActivityForResult(new Intent(getApplicationContext(), IntroductionActivity.class), REQUEST_CODE_INTRO);
 		}
 		else
 		{
+			/* Get the selected data source */
 			int datasourceId = PreferenceUtils.getPreferenceAsInt(this, PreferenceUtils.PREFS_SELECTED_DATASOURCE_ID, -1);
 
+			/* If no valid source is selected, open the data source activity */
 			if (datasourceId == -1)
+			{
 				startActivityForResult(new Intent(getApplicationContext(), DatasourceActivity.class), REQUEST_CODE_SELECT_DATASOURCE);
+			}
 			else
 			{
+				/* Else check if this is an override call. If so, recreate the activity */
 				if (override)
 				{
 					Intent intent = getIntent();
 					finish();
 					startActivity(intent);
 				}
+				/* Else if the data source changed, update the content */
 				else if (datasourceId != this.datasourceId)
 					updateContent(null, datasourceId, -1);
 			}
 
+			/* Remember the new data source and disable override */
 			this.datasourceId = datasourceId;
 			this.override = false;
 		}
 	}
 
+	/**
+	 * Updates the main view's content
+	 * @param transitionRoot The view to use as the transition root in case we're navigating to a leaf node
+	 * @param datasourceId The current data source id
+	 * @param parentId The id of the parent node
+	 */
 	private void updateContent(View transitionRoot, int datasourceId, int parentId)
 	{
-		if (!addNewFragment)
-		{
-			addNewFragment = true;
-			return;
-		}
-
+		/* Check if this node has children */
 		boolean hasChildren = parentId == -1 || new NodeManager(this, datasourceId).hasChildren(parentId);
 
+		/* If it does */
 		if (hasChildren)
 		{
+			/* Add a new fragment */
 			Fragment fragment = new NodeFragment();
 
+			/* Pass parameters */
 			Bundle args = new Bundle();
 			args.putInt(NodeFragment.PARAM_PARENT_ID, parentId);
 			args.putInt(NodeFragment.PARAM_DATASOURCE_ID, datasourceId);
 			fragment.setArguments(args);
 
+			/* Add a slide transition */
 			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 			ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
 			ft.addToBackStack(fragment.toString());
 			ft.replace(R.id.fragment_holder, fragment, fragment.toString()).commit();
-			// TODO: animation
 		}
 		else
 		{
+			/* If it's a leaf node, open the details activity */
 			Intent intent = new Intent(getApplicationContext(), NodeDetailsActivity.class);
+
+			/* Pass parameters */
 			Bundle args = new Bundle();
 			args.putInt(NodeDetailsActivity.PARAM_NODE_ID, parentId);
 			args.putInt(NodeDetailsActivity.PARAM_DATASOURCE_ID, datasourceId);
 			intent.putExtras(args);
 
+			/* Depending on the android version, transition views or just slide */
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
 			{
 				ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,
@@ -169,12 +203,14 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 				if (resultCode != RESULT_OK)
 				{
 					startActivityForResult(new Intent(getApplicationContext(), DatasourceActivity.class), REQUEST_CODE_SELECT_DATASOURCE);
+				}
+				else
+				{
 					override = true;
 				}
 				break;
 			case REQUEST_CODE_DETAILS:
 				/* We're coming back from the details view, so don't add anything */
-				addNewFragment = false;
 				break;
 		}
 	}
@@ -195,13 +231,5 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 	public void onFragmentChange(View transitionRoot, int datasourceId, int parentId)
 	{
 		updateContent(transitionRoot, datasourceId, parentId);
-	}
-
-	@Override
-	public void onReset()
-	{
-		/* Clear all fragments from the stack */
-		override = true;
-		getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
 }

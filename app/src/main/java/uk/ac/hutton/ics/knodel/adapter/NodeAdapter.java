@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2016 Information & Computational Sciences, The James Hutton Institute
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uk.ac.hutton.ics.knodel.adapter;
 
 import android.content.*;
@@ -18,6 +34,12 @@ import uk.ac.hutton.ics.knodel.*;
 import uk.ac.hutton.ics.knodel.database.entity.*;
 import uk.ac.hutton.ics.knodel.util.*;
 
+
+/**
+ * The {@link NodeAdapter} takes care of the {@link KnodelNodeAdvanced} objects.
+ *
+ * @author Sebastian Raubach
+ */
 public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewHolder>
 {
 	private Context                  context;
@@ -25,11 +47,11 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 	private List<KnodelNodeAdvanced> dataset;
 
 	private int defaultBackgroundColor;
-	private int defaultForegroundColor;
+	private int textColorLight;
+	private int textColorDark;
 
 	static class ViewHolder extends RecyclerView.ViewHolder
 	{
-		// each data item is just a string in this case
 		View      view;
 		ImageView image;
 		TextView  title;
@@ -42,18 +64,6 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 			image = (ImageView) v.findViewById(R.id.node_view_image);
 			title = (TextView) v.findViewById(R.id.node_view_title);
 		}
-
-		void setViewHolderClickListener(final ViewHolderClickListener listener)
-		{
-			view.setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					listener.onViewHolderClicked(getAdapterPosition());
-				}
-			});
-		}
 	}
 
 	public NodeAdapter(Context context, int datasourceId, List<KnodelNodeAdvanced> dataset)
@@ -62,28 +72,17 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		this.datasourceId = datasourceId;
 		this.dataset = dataset;
 
+		/* Get some default color */
 		this.defaultBackgroundColor = ContextCompat.getColor(context, R.color.cardview_light_background);
-		this.defaultForegroundColor = ContextCompat.getColor(context, android.R.color.primary_text_light);
+		this.textColorLight = ContextCompat.getColor(context, android.R.color.primary_text_dark);
+		this.textColorDark = ContextCompat.getColor(context, android.R.color.primary_text_light);
 	}
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
 	{
 		/* Create a new view from the layout file */
-		final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.node_view, parent, false);
-
-		final ViewHolder viewHolder = new ViewHolder(v);
-
-		viewHolder.setViewHolderClickListener(new ViewHolderClickListener()
-		{
-			@Override
-			public void onViewHolderClicked(int adapterPosition)
-			{
-				onNodeClicked(viewHolder.image, dataset.get(adapterPosition));
-			}
-		});
-
-		return viewHolder;
+		return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.node_view, parent, false));
 	}
 
 	@Override
@@ -93,6 +92,17 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 
 		boolean foundImage = false;
 
+		/* Listen to click events */
+		holder.view.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				onNodeClicked(holder.image, dataset.get(holder.getAdapterPosition()));
+			}
+		});
+
+		/* Try to find an image */
 		File imagePath = null;
 		if (item.getMedia().size() > 0)
 		{
@@ -109,10 +119,32 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 			}
 		}
 
+		/* If no image is found */
 		if (!foundImage)
 		{
 			holder.image.setImageResource(R.drawable.missing_image);
+			holder.image.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+			/* Wait for the image to be loaded to get the width */
+			ViewTreeObserver viewTreeObserver = holder.image.getViewTreeObserver();
+			if (viewTreeObserver.isAlive())
+			{
+				viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+				{
+					@Override
+					public void onGlobalLayout()
+					{
+						/* Remove this listener */
+						holder.view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+						/* Get the width of the view */
+						int viewWidth = holder.image.getWidth();
+						holder.image.setMinimumHeight(viewWidth);
+					}
+				});
+			}
 		}
+		/* If an image is found */
 		else
 		{
 			final File f = imagePath;
@@ -141,9 +173,16 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 							   .resize(viewWidth, viewWidth) // Resize to fit
 							   .onlyScaleDown() // But only scale down
 							   .centerCrop() // And respect the aspect ratio
-							   .placeholder(R.drawable.missing_image) // Set a placeholder
 							   .into(holder.image, new Callback.EmptyCallback() // When done, use the palette
 							   {
+								   @Override
+								   public void onError()
+								   {
+									   /* Set the placeholder */
+									   holder.image.setImageResource(R.drawable.missing_image);
+									   holder.image.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+								   }
+
 								   @Override
 								   public void onSuccess()
 								   {
@@ -152,21 +191,13 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 									   /* Get the generated palette */
 									   Palette palette = PaletteTransformation.getPalette(bitmap);
 
-									   int background = palette.getDarkMutedColor(defaultBackgroundColor);
-									   int foreground = palette.getLightVibrantColor(defaultForegroundColor);
+									   /* Get the vibrant color and a high-contrast text color */
+									   int vibrantColor = palette.getVibrantColor(defaultBackgroundColor);
+									   int textColor = ColorUtils.isColorDark(vibrantColor) ? textColorLight : textColorDark;
 
-									   /* If it can't find a suitable color for both background and foreground, then use the defaults */
-									   if (background == defaultBackgroundColor || foreground == defaultForegroundColor)
-									   {
-										   holder.title.setBackgroundColor(defaultBackgroundColor);
-										   holder.title.setTextColor(defaultForegroundColor);
-									   }
-									   /* Otherwise use the palette values */
-									   else
-									   {
-										   holder.title.setBackgroundColor(foreground);
-										   holder.title.setTextColor(background);
-									   }
+									   holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+									   holder.title.setBackgroundColor(vibrantColor);
+									   holder.title.setTextColor(textColor);
 								   }
 							   });
 					}
@@ -183,5 +214,11 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		return dataset.size();
 	}
 
+	/**
+	 * Called when a node is clicked.
+	 *
+	 * @param transitionRoot The {@link View} showing the image. It's used to start the scene transition
+	 * @param node           The actual node that has been clicked.
+	 */
 	public abstract void onNodeClicked(View transitionRoot, KnodelNodeAdvanced node);
 }

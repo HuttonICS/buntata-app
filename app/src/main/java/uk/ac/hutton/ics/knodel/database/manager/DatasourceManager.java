@@ -1,8 +1,22 @@
+/*
+ * Copyright (c) 2016 Information & Computational Sciences, The James Hutton Institute
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uk.ac.hutton.ics.knodel.database.manager;
 
 import android.content.*;
-
-import org.apache.commons.io.*;
 
 import java.io.*;
 import java.text.*;
@@ -10,8 +24,11 @@ import java.util.*;
 
 import jhi.knodel.resource.*;
 import uk.ac.hutton.ics.knodel.database.*;
+import uk.ac.hutton.ics.knodel.util.*;
 
 /**
+ * The {@link DatasourceManager} extends {@link AbstractManager} and can be used to obtain {@link KnodelDatasource}s from the database.
+ *
  * @author Sebastian Raubach
  */
 public class DatasourceManager extends AbstractManager<KnodelDatasource>
@@ -41,6 +58,12 @@ public class DatasourceManager extends AbstractManager<KnodelDatasource>
 		return ALL_FIELDS;
 	}
 
+	/**
+	 * This method deviates from the implementation of the {@link AbstractManager}. It doesn't actually query any internal database, but rather just
+	 * checks which local Sqlite files are available. It'll then connect to them and get the {@link KnodelDatasource} from each.
+	 *
+	 * @return The {@link List} of {@link KnodelDatasource}s that are installed locally.
+	 */
 	@Override
 	public List<KnodelDatasource> getAll()
 	{
@@ -79,21 +102,28 @@ public class DatasourceManager extends AbstractManager<KnodelDatasource>
 		return result;
 	}
 
+	/**
+	 * Removes this datasource from the device
+	 *
+	 * @throws IOException Thrown if the file deletion fails
+	 */
 	public void remove() throws IOException
 	{
 		File dataFolder = new File(new File(context.getFilesDir(), "data"), Integer.toString(datasourceId));
 
 		if (dataFolder.exists() && dataFolder.isDirectory())
-			FileUtils.deleteDirectory(dataFolder);
+		{
+			FileUtils.deleteDirectoryRecursively(dataFolder);
+		}
 	}
 
-	public boolean isDownloaded(KnodelDatasource ds)
-	{
-		File dataFolder = new File(new File(context.getFilesDir(), "data"), Integer.toString(ds.getId()));
-
-		return dataFolder.exists() && dataFolder.listFiles() != null;
-	}
-
+	/**
+	 * Checks if the given {@link KnodelDatasource} given as the first argument is newer than the one given as the second argument.
+	 *
+	 * @param ds  The {@link KnodelDatasource} to check
+	 * @param old The {@link KnodelDatasource} to use as a reference
+	 * @return <code>true</code> if the given {@link KnodelDatasource} given as the first argument is newer than the one given as the second argument
+	 */
 	public static boolean isNewer(KnodelDatasource ds, KnodelDatasource old)
 	{
 		Date newDsCreated = ds.getCreatedOn();
@@ -101,18 +131,22 @@ public class DatasourceManager extends AbstractManager<KnodelDatasource>
 		Date newDsUpdated = ds.getUpdatedOn();
 		Date oldDsUpdated = old.getUpdatedOn();
 
+		/* If both don't have an updated date, check the creation date */
 		if (oldDsUpdated == null && newDsUpdated == null)
 		{
 			return compare(newDsCreated, oldDsCreated);
 		}
+		/* If the old data source doesn't have a updated date, but the new one does, then the new one is newer */
 		else if (oldDsUpdated == null)
 		{
 			return true;
 		}
+		/* If the new data source doesn't have a updated date, but the old one does, then the old one is newer */
 		else if (newDsUpdated == null)
 		{
 			return false;
 		}
+		/* If both have an updated date, then just compare them */
 		else
 		{
 			return newDsUpdated.getTime() > oldDsUpdated.getTime();

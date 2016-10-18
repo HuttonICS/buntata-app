@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016 Information & Computational Sciences, The James Hutton Institute
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 				xmlns:app="http://schemas.android.com/apk/res-auto"
 				android:layout_width="match_parent"
@@ -66,13 +82,6 @@
 				android:layout_height="wrap_content"
 				android:textColor="@android:color/secondary_text_dark"/>
 
-			<ProgressBar
-				android:id="@+id/datasource_download_progress"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
-				android:indeterminate="true"
-				android:visibility="invisible"/>
 		</LinearLayout>
 
 		<ImageView
@@ -87,4 +96,13 @@
 			android:layout_centerVertical="true"/>
 
 	</RelativeLayout>
+
+	<ProgressBar
+		android:id="@+id/datasource_download_progress"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+		android:indeterminate="true"
+		android:layout_alignParentBottom="true"
+		android:visibility="invisible"/>
 </RelativeLayout>

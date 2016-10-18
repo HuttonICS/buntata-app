@@ -1,12 +1,23 @@
-/**
- * Germinate Mobile is written and developed by Sebastian Raubach, Paul Shaw and David Marshall from the Information and Computational Sciences Group
- * at JHI Dundee. For further information contact us at germinate@hutton.ac.uk or visit our webpages at http://ics.hutton.ac.uk/germinate-scan/
- * <p/>
- * Copyright (c) 2012-2016, Information & Computational Sciences, The James Hutton Institute. All rights reserved. Use is subject to the accompanying
- * licence terms.
+/*
+ * Copyright (c) 2016 Information & Computational Sciences, The James Hutton Institute
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package uk.ac.hutton.ics.knodel.util;
+
+import android.os.*;
+import android.text.*;
 
 /**
  * {@link uk.ac.hutton.ics.knodel.util.StringUtils} contains methods to manipulate/check {@link String}s.
@@ -15,6 +26,18 @@ package uk.ac.hutton.ics.knodel.util;
  */
 public class StringUtils
 {
+	public static Spanned fromHtml(String html)
+	{
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+		{
+			return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
+		}
+		else
+		{
+			return Html.fromHtml(html);
+		}
+	}
+
 	/**
 	 * Checks if the given {@link String} is either <code>null</code> or empty after calling {@link String#trim()}.
 	 *
