@@ -17,14 +17,12 @@
 package uk.ac.hutton.ics.knodel.database.manager;
 
 import android.content.*;
-import android.database.*;
 
 import java.text.*;
 import java.util.*;
 
 import jhi.knodel.resource.*;
 import uk.ac.hutton.ics.knodel.database.*;
-import uk.ac.hutton.ics.knodel.database.entity.*;
 
 /**
  * The {@link MediaTypeManager} extends {@link AbstractManager} and can be used to obtain {@link KnodelMediaType}s from the database.
@@ -60,7 +58,7 @@ public class MediaTypeManager extends AbstractManager<KnodelMediaType>
 
 	private static class Parser extends DatabaseObjectParser<KnodelMediaType>
 	{
-		public static final class Inst
+		static final class Inst
 		{
 			/**
 			 * {@link InstanceHolder} is loaded on the first execution of {@link Inst#get()} or the first access to {@link InstanceHolder#INSTANCE},

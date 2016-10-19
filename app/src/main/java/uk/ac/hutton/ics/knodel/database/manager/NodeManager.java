@@ -35,6 +35,21 @@ public class NodeManager extends AbstractManager<KnodelNodeAdvanced>
 {
 	private static final String[] ALL_FIELDS = {KnodelNode.FIELD_ID, KnodelNode.FIELD_NAME, KnodelNode.FIELD_DESCRIPTION, KnodelNode.FIELD_DATASOURCE_ID, KnodelNode.FIELD_CREATED_ON, KnodelNode.FIELD_UPDATED_ON};
 
+	private static Map<String, Set<Integer>> CACHE_FILTER_POSITIVE = new LinkedHashMap<String, Set<Integer>>()
+	{
+		@Override
+		protected boolean removeEldestEntry(Entry eldest)
+		{
+			/* Only cache 10 entries */
+			return size() > 10;
+		}
+	};
+
+	public static void clearCaches()
+	{
+		CACHE_FILTER_POSITIVE.clear();
+	}
+
 	public NodeManager(Context context, int datasourceId)
 	{
 		super(context, datasourceId);
@@ -152,9 +167,117 @@ public class NodeManager extends AbstractManager<KnodelNodeAdvanced>
 		return result;
 	}
 
+	private String getPlaceholder(int nrOfPlaceholders)
+	{
+		if (nrOfPlaceholders < 1)
+			return "";
+
+		StringBuilder builder = new StringBuilder();
+		builder.append("?");
+
+		for (int i = 1; i < nrOfPlaceholders; i++)
+			builder.append(",?");
+
+		return builder.toString();
+	}
+
+	private void fillSearchCache(String query)
+	{
+		String placeholder = "%" + query + "%";
+
+		try
+		{
+			open();
+
+			/* Keep track of the positive matches */
+			Set<Integer> positiveIds = new HashSet<>();
+			/* Keep track of the new ids (as in not known before) from each query */
+			Set<Integer> newIds = new HashSet<>();
+
+			/* First, check all leaf nodes */
+			Cursor cursor = database.rawQuery("SELECT id FROM nodes WHERE NOT EXISTS (SELECT 1 FROM relationships WHERE relationships.parent = nodes.id) AND (nodes.name LIKE ? OR EXISTS (SELECT 1 FROM attributevalues WHERE attributevalues.node_id = nodes.id AND attributevalues.value LIKE ?))", new String[]{placeholder, placeholder});
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast())
+			{
+				positiveIds.add(cursor.getInt(0));
+
+				cursor.moveToNext();
+			}
+
+			cursor.close();
+
+			newIds.addAll(positiveIds);
+
+			boolean goOn = true;
+			while (goOn)
+			{
+				/* Don't continue unless new ids are discovered */
+				goOn = false;
+
+				/* Now check all the parents of the nodes from the previous step */
+				String formatted = String.format("SELECT id FROM nodes WHERE nodes.id IN (SELECT parent FROM relationships WHERE child IN (%s)) OR ( nodes.name LIKE ? OR EXISTS ( SELECT 1 FROM attributevalues WHERE attributevalues.node_id = nodes.id AND attributevalues.value LIKE ?))", getPlaceholder(newIds.size()));
+				String[] parameters = new String[2 + newIds.size()];
+				int i = 0;
+				for (Integer id : newIds)
+					parameters[i++] = Integer.toString(id);
+				parameters[i++] = parameters[i++] = placeholder;
+
+				cursor = database.rawQuery(formatted, parameters);
+				cursor.moveToFirst();
+
+				/* Remember to clear this before we start */
+				newIds.clear();
+
+				while (!cursor.isAfterLast())
+				{
+					int id = cursor.getInt(0);
+					boolean added = positiveIds.add(id);
+
+					/* If it's a new id, we remember it */
+					if (added)
+						newIds.add(id);
+
+					/* Should we continue with another loop? */
+					goOn |= added;
+
+					cursor.moveToNext();
+				}
+
+				cursor.close();
+			}
+
+			/* Now that we're finished, we've got all the ids that fulfill the query. Cache them. */
+			CACHE_FILTER_POSITIVE.put(query, positiveIds);
+		}
+		finally
+		{
+			close();
+		}
+	}
+
+	/**
+	 * Check if the node itself or a child fulfills the query
+	 *
+	 * @param node  The node in question
+	 * @param query The query
+	 * @return <code>true</code> if the node itself or a child fulfills the query
+	 */
+	public boolean hasChildWithContent(KnodelNodeAdvanced node, String query)
+	{
+		/* Lower case everything */
+		query = query.toLowerCase();
+
+		/* Create the cache if it doesn't exist */
+		if (!CACHE_FILTER_POSITIVE.containsKey(query))
+			fillSearchCache(query);
+
+		/* Check the cache */
+		return CACHE_FILTER_POSITIVE.get(query).contains(node.getId());
+	}
+
 	private static class Parser extends DatabaseObjectParser<KnodelNodeAdvanced>
 	{
-		public static final class Inst
+		static final class Inst
 		{
 			/**
 			 * {@link InstanceHolder} is loaded on the first execution of {@link Inst#get()} or the first access to {@link InstanceHolder#INSTANCE},

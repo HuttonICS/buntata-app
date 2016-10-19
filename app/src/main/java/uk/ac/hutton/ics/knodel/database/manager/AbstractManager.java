@@ -35,23 +35,23 @@ import uk.ac.hutton.ics.knodel.database.*;
 public abstract class AbstractManager<T extends DatabaseObject>
 {
 	private   DatabaseInternal databaseHelper;
-	protected SQLiteDatabase   database;
-	protected Context          context;
-	protected int              datasourceId;
+	SQLiteDatabase   database;
+	Context          context;
+	int              datasourceId;
 
-	public AbstractManager(Context context, int datasourceId)
+	AbstractManager(Context context, int datasourceId)
 	{
 		this.databaseHelper = new DatabaseInternal(context, datasourceId);
 		this.context = context;
 		this.datasourceId = datasourceId;
 	}
 
-	protected void open() throws SQLException
+	void open() throws SQLException
 	{
 		database = databaseHelper.openFromFile();
 	}
 
-	protected void close()
+	void close()
 	{
 		database.close();
 		databaseHelper.close();

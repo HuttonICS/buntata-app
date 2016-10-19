@@ -42,21 +42,6 @@ public class IntroductionActivity extends IntroActivity
 
 		setButtonBackVisible(false);
 
-		setNavigationPolicy(new NavigationPolicy()
-		{
-			@Override
-			public boolean canGoForward(int position)
-			{
-				return position != getCount() - 1 || PreferenceUtils.getPreferenceAsBoolean(IntroductionActivity.this, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, false);
-			}
-
-			@Override
-			public boolean canGoBackward(int position)
-			{
-				return true;
-			}
-		});
-
 		/* Welcome slide */
 		addSlide(new SimpleSlide.Builder()
 				.title("Welcome to Knödel") // TODO: i18n
@@ -67,12 +52,59 @@ public class IntroductionActivity extends IntroActivity
 				.permission(Manifest.permission.INTERNET)
 				.build());
 
-		/* Data source selection slide */
 		addSlide(new FragmentSlide.Builder()
 				.background(R.color.colorPrimary)
 				.backgroundDark(R.color.colorPrimaryDark)
+				.fragment(new IntroNetworkFragment())
+				.build());
+
+		addSlide(new SimpleSlide.Builder()
+				.title("Placeholder") // TODO: i18n
+				.description("Something here") // TODO: i18n
+				.background(R.color.colorPrimary)
+				.backgroundDark(R.color.colorPrimaryDark)
+				.build());
+
+		/* Data source selection slide */
+		addSlide(new FragmentSlide.Builder()
+				.background(android.R.color.background_light)
+				.backgroundDark(R.color.colorPrimaryDark)
 				.fragment(new DatasourceFragment())
 				.build());
+
+		setNavigationPolicy(new NavigationPolicy()
+		{
+			@Override
+			public boolean canGoForward(int position)
+			{
+				if (position == getCount() - 1)
+				{
+					return PreferenceUtils.getPreferenceAsBoolean(IntroductionActivity.this, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, false);
+				}
+				else if(position == 1)
+				{
+					return NetworkUtils.hasNetworkConnection(IntroductionActivity.this);
+				}
+				else
+				{
+					return true;
+				}
+			}
+
+			@Override
+			public boolean canGoBackward(int position)
+			{
+				if (position == getCount() - 1)
+				{
+					return false;
+//					return PreferenceUtils.getPreferenceAsBoolean(IntroductionActivity.this, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, false);
+				}
+				else
+				{
+					return true;
+				}
+			}
+		});
 	}
 
 	@Override

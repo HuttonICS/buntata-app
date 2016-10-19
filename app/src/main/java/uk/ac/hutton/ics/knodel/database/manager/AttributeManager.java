@@ -58,7 +58,7 @@ public class AttributeManager extends AbstractManager<KnodelAttribute>
 
 	private static class Parser extends DatabaseObjectParser<KnodelAttribute>
 	{
-		public static final class Inst
+		static final class Inst
 		{
 			/**
 			 * {@link InstanceHolder} is loaded on the first execution of {@link Inst#get()} or the first access to {@link InstanceHolder#INSTANCE},

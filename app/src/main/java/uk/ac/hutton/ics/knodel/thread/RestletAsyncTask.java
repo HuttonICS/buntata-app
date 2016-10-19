@@ -22,6 +22,7 @@ import android.os.*;
 
 import org.restlet.resource.*;
 
+import uk.ac.hutton.ics.knodel.*;
 import uk.ac.hutton.ics.knodel.util.*;
 
 /**
@@ -65,13 +66,13 @@ public abstract class RestletAsyncTask<U, T> extends AsyncTask<U, Integer, T>
 		if (progressStyle == ProgressDialog.STYLE_SPINNER || progressStyle == ProgressDialog.STYLE_HORIZONTAL)
 		{
 			progressDialog = new ProgressDialog(context);
-			progressDialog.setMessage("Please wait"); // TODO: context.getString(R.string.dialog_title_restlet_please_wait)
+			progressDialog.setMessage(context.getString(R.string.dialog_restlet_please_wait));
 			progressDialog.setProgressStyle(progressStyle);
 			progressDialog.setCancelable(cancelable);
 
-			if(cancelable)
+			if (cancelable)
 			{
-				progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() // TODO: context.getString(R.string.general_cancel)
+				progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.generic_cancel), new DialogInterface.OnClickListener()
 				{
 					@Override
 					public void onClick(DialogInterface dialog, int which)

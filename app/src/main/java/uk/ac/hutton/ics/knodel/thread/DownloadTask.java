@@ -16,7 +16,6 @@
 
 package uk.ac.hutton.ics.knodel.thread;
 
-import android.content.*;
 import android.os.*;
 import android.widget.*;
 
@@ -33,7 +32,6 @@ import jhi.knodel.resource.*;
  */
 public abstract class DownloadTask extends AsyncTask<String, Integer, File>
 {
-	private Context                    context;
 	private Exception                  exception;
 	private KnodelDatasource           ds;
 	private File                       target;
@@ -42,14 +40,12 @@ public abstract class DownloadTask extends AsyncTask<String, Integer, File>
 	/**
 	 * Creates a new instance of the download task
 	 *
-	 * @param context     The current context
 	 * @param progressBar The progressbar that should be updated on download progress
 	 * @param ds          The data source
 	 * @param target      The target file (the local zip file)
 	 */
-	public DownloadTask(Context context, ProgressBar progressBar, KnodelDatasource ds, File target)
+	public DownloadTask(ProgressBar progressBar, KnodelDatasource ds, File target)
 	{
-		this.context = context;
 		this.ds = ds;
 		this.target = target;
 		progressBar.setProgress(0);

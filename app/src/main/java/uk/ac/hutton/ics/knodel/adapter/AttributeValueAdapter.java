@@ -37,8 +37,6 @@ import uk.ac.hutton.ics.knodel.util.*;
  */
 public class AttributeValueAdapter extends RecyclerView.Adapter<AttributeValueAdapter.ViewHolder>
 {
-	private Context                            context;
-	private int                                datasourceId;
 	private RecyclerView                       parent;
 	private List<KnodelAttributeValueAdvanced> dataset;
 
@@ -65,15 +63,11 @@ public class AttributeValueAdapter extends RecyclerView.Adapter<AttributeValueAd
 
 	/**
 	 * Creates a new instance of this adapter
-	 * @param context The {@link Context}
-	 * @param datasourceId The id of the current data source
 	 * @param parent The {@link RecyclerView} that'll show the items
 	 * @param dataset The {@link List} of {@link KnodelAttributeValueAdvanced} objects to show
 	 */
-	public AttributeValueAdapter(Context context, int datasourceId, RecyclerView parent, List<KnodelAttributeValueAdvanced> dataset)
+	public AttributeValueAdapter(RecyclerView parent, List<KnodelAttributeValueAdvanced> dataset)
 	{
-		this.context = context;
-		this.datasourceId = datasourceId;
 		this.parent = parent;
 		this.dataset = dataset;
 	}

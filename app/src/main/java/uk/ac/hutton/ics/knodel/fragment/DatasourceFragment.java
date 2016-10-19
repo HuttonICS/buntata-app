@@ -20,14 +20,17 @@ import android.os.*;
 import android.support.v4.app.*;
 import android.support.v7.widget.*;
 import android.view.*;
+import android.widget.*;
 
 import java.util.*;
 
 import jhi.knodel.resource.*;
 import uk.ac.hutton.ics.knodel.*;
 import uk.ac.hutton.ics.knodel.adapter.*;
+import uk.ac.hutton.ics.knodel.database.entity.*;
 import uk.ac.hutton.ics.knodel.database.manager.*;
 import uk.ac.hutton.ics.knodel.service.*;
+import uk.ac.hutton.ics.knodel.util.*;
 
 /**
  * The {@link DatasourceFragment} shows all the {@link KnodelDatasource}s that are available locally and the ones available online (if connection
@@ -37,7 +40,9 @@ import uk.ac.hutton.ics.knodel.service.*;
  */
 public class DatasourceFragment extends Fragment
 {
-	private RecyclerView recyclerView;
+	private RecyclerView      recyclerView;
+	private TextView          networkWarning;
+	private DatasourceAdapter adapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -45,15 +50,41 @@ public class DatasourceFragment extends Fragment
 		View view = inflater.inflate(R.layout.fragment_datasource, container, false);
 
 		recyclerView = (RecyclerView) view.findViewById(R.id.datasource_recycler_view);
-
 		recyclerView.setHasFixedSize(false);
-
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+		networkWarning = (TextView) view.findViewById(R.id.datasource_network_warning);
+
+		return view;
+	}
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+
+		updateStatus();
+	}
+
+	private void updateStatus()
+	{
+		if (!NetworkUtils.hasNetworkConnection(getActivity()))
+		{
+			networkWarning.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			networkWarning.setVisibility(View.GONE);
+			requestData();
+		}
+	}
+
+	private void requestData()
+	{
 		/* Get the local data sources */
 		final List<KnodelDatasource> localList = new DatasourceManager(getActivity(), -1).getAll();
 		/* Keep track of their status (installed no update, installed update, not installed) */
-		final Map<KnodelDatasource, DatasourceAdapter.InstallState> hasUpdate = new LinkedHashMap<>();
+		final List<KnodelDatasourceAdvanced> dataset = new ArrayList<>();
 
 		/* Then try to get the online resources */
 		DatasourceService.getAll(getActivity(), new RestletCallback<KnodelDatasourceList>(getActivity())
@@ -65,9 +96,23 @@ public class DatasourceFragment extends Fragment
 
 				/* If the request fails, just show the local ones as having no updates */
 				for (KnodelDatasource ds : localList)
-					hasUpdate.put(ds, DatasourceAdapter.InstallState.INSTALLED_NO_UPDATE);
+				{
+					KnodelDatasourceAdvanced adv = KnodelDatasourceAdvanced.create(ds);
+					adv.setState(KnodelDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
+					dataset.add(adv);
+				}
 
-				recyclerView.setAdapter(new DatasourceAdapter(getActivity(), hasUpdate));
+				if (dataset.size() < 1)
+				{
+					networkWarning.setVisibility(View.VISIBLE);
+				}
+				else
+				{
+					networkWarning.setVisibility(View.GONE);
+
+					adapter = new DatasourceAdapter(getActivity(), dataset);
+					recyclerView.setAdapter(adapter);
+				}
 			}
 
 			@Override
@@ -78,6 +123,8 @@ public class DatasourceFragment extends Fragment
 				{
 					int index = localList.indexOf(ds);
 
+					KnodelDatasourceAdvanced adv = KnodelDatasourceAdvanced.create(ds);
+
 					/* Is installed */
 					if (index != -1)
 					{
@@ -86,22 +133,23 @@ public class DatasourceFragment extends Fragment
 						boolean isNewer = DatasourceManager.isNewer(ds, old);
 
 						if (isNewer)
-							hasUpdate.put(ds, DatasourceAdapter.InstallState.INSTALLED_HAS_UPDATE);
+							adv.setState(KnodelDatasourceAdvanced.InstallState.INSTALLED_HAS_UPDATE);
 						else
-							hasUpdate.put(ds, DatasourceAdapter.InstallState.INSTALLED_NO_UPDATE);
+							adv.setState(KnodelDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
 					}
 					/* Is not installed */
 					else
 					{
-						hasUpdate.put(ds, DatasourceAdapter.InstallState.NOT_INSTALLED);
+						adv.setState(KnodelDatasourceAdvanced.InstallState.NOT_INSTALLED);
 					}
+
+					dataset.add(adv);
 				}
 
 				/* Set whatever we got now to the adapter */
-				recyclerView.setAdapter(new DatasourceAdapter(getActivity(), hasUpdate));
+				adapter = new DatasourceAdapter(getActivity(), dataset);
+				recyclerView.setAdapter(adapter);
 			}
 		});
-
-		return view;
 	}
 }

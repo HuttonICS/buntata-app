@@ -35,8 +35,8 @@ import uk.ac.hutton.ics.knodel.util.*;
  */
 public class DatasourceService extends RestletService
 {
-	public static final String DATASOURCE_BASE_URL     = "datasource";
-	public static final String DATASOURCE_DOWNLOAD_URL = "/%s/download";
+	private static final String DATASOURCE_BASE_URL     = "datasource";
+	private static final String DATASOURCE_DOWNLOAD_URL = "/%s/download";
 
 	/**
 	 * Returns all the data sources from the server
@@ -77,7 +77,7 @@ public class DatasourceService extends RestletService
 		File file = FileUtils.getFileForDatasource(context, ds.getId(), ds.getId() + ".zip");
 
 		/* Start the download */
-		new DownloadTask(context, progressBar, ds, file)
+		new DownloadTask(progressBar, ds, file)
 		{
 			@Override
 			protected void processData(File file)

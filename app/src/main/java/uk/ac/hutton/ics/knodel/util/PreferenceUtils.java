@@ -32,7 +32,7 @@ public class PreferenceUtils
 	public static final String PREFS_SELECTED_DATASOURCE_ID  = "prefs.selected.datasource.id";
 	public static final String PREFS_GA_OPT_OUT              = "prefs.google.analytics.opt.out";
 
-	public static final String DEFAULT_PREF_KNODEL_SERVER_URL = "https://ics.hutton.ac.uk/knodel/v1/";
+	private static final String DEFAULT_PREF_KNODEL_SERVER_URL = "https://ics.hutton.ac.uk/knodel/v1/";
 //	public static final String DEFAULT_PREF_KNODEL_SERVER_URL = "http://wildcat.hutton.ac.uk:8080/knodel/v1/";
 
 	/**

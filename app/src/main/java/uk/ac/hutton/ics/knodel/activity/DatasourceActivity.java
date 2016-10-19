@@ -18,8 +18,8 @@ package uk.ac.hutton.ics.knodel.activity;
 
 import android.os.*;
 import android.support.design.widget.*;
-import android.support.v4.app.*;
-import android.support.v4.content.*;
+import android.support.v7.widget.*;
+import android.view.*;
 
 import uk.ac.hutton.ics.knodel.*;
 import uk.ac.hutton.ics.knodel.util.*;
@@ -36,12 +36,25 @@ public class DatasourceActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 
-		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.datasource_fragment);
-		fragment.getView().setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
-
 		/* Prompt the user to select at least one data source */
 		if (!PreferenceUtils.getPreferenceAsBoolean(this, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, false))
 			SnackbarUtils.show(findViewById(android.R.id.content), R.string.snackbar_select_datasource, Snackbar.LENGTH_LONG);
+
+		Toolbar toolbar = (Toolbar) findViewById(getToolbarId());
+		setSupportActionBar(toolbar);
+
+		/* Set the toolbar as the action bar */
+		if (getSupportActionBar() != null)
+		{
+			/* Set the title */
+			getSupportActionBar().setTitle(R.string.title_activity_datasource);
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+			{
+				getSupportActionBar().setHomeButtonEnabled(true);
+			}
+		}
 	}
 
 	@Override
@@ -65,5 +78,18 @@ public class DatasourceActivity extends BaseActivity
 			setResult(RESULT_OK);
 
 		super.onBackPressed();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				onBackPressed();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 }

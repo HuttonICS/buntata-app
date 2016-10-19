@@ -47,7 +47,8 @@ public class ApacheLicenseActivity extends BaseActivity
 			String mLine;
 			while ((mLine = reader.readLine()) != null)
 			{
-				builder.append(mLine + "\n");
+				builder.append(mLine)
+					   .append("\n");
 			}
 
 			textView.setText(builder.toString());

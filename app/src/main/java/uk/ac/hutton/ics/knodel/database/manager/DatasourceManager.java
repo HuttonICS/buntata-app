@@ -175,7 +175,7 @@ public class DatasourceManager extends AbstractManager<KnodelDatasource>
 
 	private static class Parser extends DatabaseObjectParser<KnodelDatasource>
 	{
-		public static final class Inst
+		static final class Inst
 		{
 			/**
 			 * {@link InstanceHolder} is loaded on the first execution of {@link Inst#get()} or the first access to {@link InstanceHolder#INSTANCE},

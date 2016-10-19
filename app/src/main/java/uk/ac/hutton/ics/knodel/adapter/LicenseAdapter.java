@@ -86,10 +86,10 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
 				/* If this is our app, give the option to show the license as well */
 				if (item == License.KNODEL)
 				{
-					final CharSequence[] options = new CharSequence[]{"View license", "View on GitHub"}; // TODO: i18n
+					final CharSequence[] options = new CharSequence[]{context.getString(R.string.license_view_option_view_license), context.getString(R.string.license_view_option_view_github)};
 
 					new AlertDialog.Builder(context)
-							.setTitle("Choose an option") // TODO: i18n
+							.setTitle(R.string.license_view_option_title)
 							.setItems(options, new DialogInterface.OnClickListener()
 							{
 								@Override
@@ -139,6 +139,7 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
 		MATERIAL_INTRO("material-intro", "Heinrich Reimer", "Apache License, Version 2.0", "https://github.com/HeinrichReimer/material-intro"),
 		PICASSO("Picasso", "Square", "Apache License, Version 2.0", "https://github.com/square/picasso"),
 		RESTLET("Restlet", "Restlet", "Apache License, Version 2.0", "https://github.com/restlet/restlet-framework-java"),
+		SECTIONED_RECYCLERVIEW("Sectioned RecyclerView", "Aidan Follestad", "Apache License, Version 2.0", "https://github.com/afollestad/sectioned-recyclerview"),
 		SLF4J("slf4j", "QOS.ch", "MIT license", "https://github.com/qos-ch/slf4j"),
 		TRANSITIONS_EVERYWHERE("Transitions-Everywhere", "andkulikov", "Apache License, Version 2.0", "https://github.com/andkulikov/Transitions-Everywhere"),
 		ZT_ZIP("zt-zip", "ZeroTurnaround LLC.", "Apache License, Version 2.0", "https://github.com/zeroturnaround/zt-zip");

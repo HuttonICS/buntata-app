@@ -26,14 +26,16 @@ import android.support.v7.widget.*;
 import android.view.*;
 import android.widget.*;
 
+import com.afollestad.sectionedrecyclerview.*;
 import com.squareup.picasso.*;
 
 import java.io.*;
 import java.util.*;
 
 import jhi.knodel.resource.*;
-import uk.ac.hutton.ics.knodel.*;
+import uk.ac.hutton.ics.knodel.R;
 import uk.ac.hutton.ics.knodel.activity.*;
+import uk.ac.hutton.ics.knodel.database.entity.*;
 import uk.ac.hutton.ics.knodel.database.manager.*;
 import uk.ac.hutton.ics.knodel.service.*;
 import uk.ac.hutton.ics.knodel.util.*;
@@ -43,15 +45,42 @@ import uk.ac.hutton.ics.knodel.util.*;
  *
  * @author Sebastian Raubach
  */
-public class DatasourceAdapter extends RecyclerView.Adapter<DatasourceAdapter.ViewHolder>
+public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAdapter.AbstractViewHolder>
 {
-	private Activity                                              context;
-	private Map<KnodelDatasource, DatasourceAdapter.InstallState> mapping;
-	private List<KnodelDatasource>                                dataset;
+	private static final int LOCAL  = 0;
+	private static final int REMOTE = 1;
 
-	static class ViewHolder extends RecyclerView.ViewHolder
+	private Activity                       context;
+	private List<KnodelDatasourceAdvanced> dataset;
+	private List<KnodelDatasourceAdvanced> local  = new ArrayList<>();
+	private List<KnodelDatasourceAdvanced> remote = new ArrayList<>();
+
+	static abstract class AbstractViewHolder extends RecyclerView.ViewHolder
 	{
-		View        view;
+		View view;
+
+		AbstractViewHolder(View v)
+		{
+			super(v);
+
+			view = v;
+		}
+	}
+
+	static class HeaderViewHolder extends AbstractViewHolder
+	{
+		TextView header;
+
+		public HeaderViewHolder(View v)
+		{
+			super(v);
+
+			header = (TextView) v.findViewById(R.id.datasource_header_title);
+		}
+	}
+
+	static class ItemViewHolder extends AbstractViewHolder
+	{
 		TextView    nameView;
 		TextView    descriptionView;
 		TextView    sizeView;
@@ -60,14 +89,12 @@ public class DatasourceAdapter extends RecyclerView.Adapter<DatasourceAdapter.Vi
 		ImageView   downloadStatus;
 
 		/* Remember the state */
-		InstallState state         = null;
-		boolean      isDownloading = false;
+		boolean isDownloading = false;
 
-		ViewHolder(View v)
+		ItemViewHolder(View v)
 		{
 			super(v);
 
-			view = v;
 			nameView = (TextView) v.findViewById(R.id.datasource_name_view);
 			descriptionView = (TextView) v.findViewById(R.id.datasource_description_view);
 			sizeView = (TextView) v.findViewById(R.id.datasource_size_view);
@@ -77,25 +104,45 @@ public class DatasourceAdapter extends RecyclerView.Adapter<DatasourceAdapter.Vi
 		}
 	}
 
-	public DatasourceAdapter(Activity context, Map<KnodelDatasource, DatasourceAdapter.InstallState> mapping)
+	public DatasourceAdapter(Activity context, List<KnodelDatasourceAdvanced> dataset)
 	{
 		this.context = context;
-		this.mapping = mapping;
-		this.dataset = new ArrayList<>(mapping.keySet());
+		this.dataset = dataset;
+
+//		shouldShowHeadersForEmptySections(true);
+
+		onDatasetChanged();
+	}
+
+	private void onDatasetChanged()
+	{
+		local.clear();
+		remote.clear();
+
+		for (KnodelDatasourceAdvanced ds : dataset)
+		{
+			if (ds.getState() == KnodelDatasourceAdvanced.InstallState.NOT_INSTALLED)
+				remote.add(ds);
+			else
+				local.add(ds);
+		}
 	}
 
 	@Override
-	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+	public DatasourceAdapter.AbstractViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
 	{
 		/* Create a new view from the layout file */
-		final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.datasource_view, parent, false);
-
-		final ViewHolder viewHolder = new ViewHolder(v);
-
-		return viewHolder;
+		switch (viewType)
+		{
+			case VIEW_TYPE_HEADER:
+				return new HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.helper_datasource_header, parent, false));
+			case VIEW_TYPE_ITEM:
+			default:
+				return new ItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.datasource_view, parent, false));
+		}
 	}
 
-	private void animate(final ViewHolder viewHolder)
+	private void animate(final ItemViewHolder itemViewHolder)
 	{
 		final int color = ContextCompat.getColor(context, R.color.colorAccent);
 
@@ -107,10 +154,10 @@ public class DatasourceAdapter extends RecyclerView.Adapter<DatasourceAdapter.Vi
 			{
 				float mul = (Float) animation.getAnimatedValue();
 				int alphaOrange = adjustAlpha(color, mul);
-				viewHolder.downloadStatus.setColorFilter(alphaOrange, PorterDuff.Mode.SRC_ATOP);
+				itemViewHolder.downloadStatus.setColorFilter(alphaOrange, PorterDuff.Mode.SRC_ATOP);
 				if (mul == 0.0)
 				{
-					viewHolder.downloadStatus.setColorFilter(null);
+					itemViewHolder.downloadStatus.setColorFilter(null);
 				}
 			}
 		});
@@ -129,20 +176,77 @@ public class DatasourceAdapter extends RecyclerView.Adapter<DatasourceAdapter.Vi
 	}
 
 	@Override
-	public void onBindViewHolder(final ViewHolder holder, int position)
+	public int getSectionCount()
 	{
-		KnodelDatasource item = dataset.get(position);
+		return 2;
+	}
+
+	@Override
+	public int getItemCount(int section)
+	{
+		switch (section)
+		{
+			case LOCAL:
+				return local.size();
+			case REMOTE:
+			default:
+				return remote.size();
+		}
+	}
+
+	@Override
+	public void onBindHeaderViewHolder(AbstractViewHolder h, int section)
+	{
+		HeaderViewHolder holder = (HeaderViewHolder) h;
+		switch (section)
+		{
+			case LOCAL:
+				holder.header.setText(context.getString(R.string.datasource_list_header_local));
+				break;
+			case REMOTE:
+				holder.header.setText(context.getString(R.string.datasource_list_header_remote));
+				break;
+		}
+	}
+
+	private KnodelDatasourceAdvanced get(int section, int relativePosition)
+	{
+		switch (section)
+		{
+			case LOCAL:
+				return local.get(relativePosition);
+			case REMOTE:
+			default:
+				return remote.get(relativePosition);
+		}
+	}
+
+	@Override
+	public void onBindViewHolder(final AbstractViewHolder h, final int section, final int relativePosition, int absolutePosition)
+	{
+		KnodelDatasource item;
+
+		switch (section)
+		{
+			case LOCAL:
+				item = local.get(relativePosition);
+				break;
+			case REMOTE:
+			default:
+				item = remote.get(relativePosition);
+		}
+
+		final ItemViewHolder holder = (ItemViewHolder) h;
+
 		holder.nameView.setText(item.getName());
 		holder.descriptionView.setText(item.getDescription());
 		holder.sizeView.setText(context.getString(R.string.datasource_size, (item.getSize() / 1024 / 1024)));
 
-		if (holder.state == null)
-		{
-			holder.state = mapping.get(item);
-		}
+		final KnodelDatasourceAdvanced ds = get(section, relativePosition);
+
 		/* Set the state icon */
 		int resource;
-		switch (holder.state)
+		switch (ds.getState())
 		{
 			case INSTALLED_NO_UPDATE:
 				resource = R.drawable.action_ok;
@@ -186,10 +290,8 @@ public class DatasourceAdapter extends RecyclerView.Adapter<DatasourceAdapter.Vi
 			@Override
 			public boolean onLongClick(View v)
 			{
-				final KnodelDatasource ds = dataset.get(holder.getAdapterPosition());
-
 				/* If it's not installed or if it's currently downloading, do nothing */
-				if ((holder.state == InstallState.NOT_INSTALLED) || holder.isDownloading)
+				if ((ds.getState() == KnodelDatasourceAdvanced.InstallState.NOT_INSTALLED) || holder.isDownloading)
 					return true;
 
 				/* Show the option do delete the data source */
@@ -204,7 +306,7 @@ public class DatasourceAdapter extends RecyclerView.Adapter<DatasourceAdapter.Vi
 							PreferenceUtils.removePreference(context, PreferenceUtils.PREFS_SELECTED_DATASOURCE_ID);
 
 						/* Remember that this isn't downloaded anymore */
-						holder.state = InstallState.NOT_INSTALLED;
+						ds.setState(KnodelDatasourceAdvanced.InstallState.NOT_INSTALLED);
 
 						try
 						{
@@ -216,6 +318,12 @@ public class DatasourceAdapter extends RecyclerView.Adapter<DatasourceAdapter.Vi
 							e.printStackTrace();
 						}
 
+						int installedDatasources = new DatasourceManager(context, -1).getAll().size();
+
+						if(installedDatasources < 1)
+							PreferenceUtils.removePreference(context, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE);
+
+						onDatasetChanged();
 						notifyDataSetChanged();
 					}
 				}, null);
@@ -229,15 +337,13 @@ public class DatasourceAdapter extends RecyclerView.Adapter<DatasourceAdapter.Vi
 			@Override
 			public void onClick(View v)
 			{
-				final KnodelDatasource ds = dataset.get(holder.getAdapterPosition());
-
 				if (holder.isDownloading)
 				{
 					SnackbarUtils.show(v, R.string.snackbar_currently_downloading, ContextCompat.getColor(context, android.R.color.primary_text_dark), ContextCompat.getColor(context, R.color.colorPrimaryDark), Snackbar.LENGTH_LONG);
 					return;
 				}
 
-				switch (holder.state)
+				switch (ds.getState())
 				{
 					case INSTALLED_NO_UPDATE:
 						if (context instanceof DatasourceActivity)
@@ -278,7 +384,7 @@ public class DatasourceAdapter extends RecyclerView.Adapter<DatasourceAdapter.Vi
 							public void onSuccess(File result)
 							{
 								holder.progressBar.setVisibility(View.INVISIBLE);
-								holder.state = InstallState.INSTALLED_NO_UPDATE;
+								ds.setState(KnodelDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
 								holder.isDownloading = false;
 
 								PreferenceUtils.setPreferenceAsInt(context, PreferenceUtils.PREFS_SELECTED_DATASOURCE_ID, ds.getId());
@@ -286,6 +392,7 @@ public class DatasourceAdapter extends RecyclerView.Adapter<DatasourceAdapter.Vi
 
 								PreferenceUtils.setPreferenceAsBoolean(context, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, true);
 
+								onDatasetChanged();
 								notifyDataSetChanged();
 							}
 						});
@@ -293,24 +400,5 @@ public class DatasourceAdapter extends RecyclerView.Adapter<DatasourceAdapter.Vi
 				}
 			}
 		});
-	}
-
-	@Override
-	public int getItemCount()
-	{
-		return dataset.size();
-	}
-
-	/**
-	 * {@link InstallState} represents the different states a {@link KnodelDatasource} can have locally.
-	 */
-	public enum InstallState
-	{
-		/** The data source isn't installed at all */
-		NOT_INSTALLED,
-		/** The data source is installed, but there's an update */
-		INSTALLED_HAS_UPDATE,
-		/** The data source is installed and there is no update */
-		INSTALLED_NO_UPDATE
 	}
 }

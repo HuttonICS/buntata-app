@@ -32,6 +32,7 @@ import java.util.*;
 
 import uk.ac.hutton.ics.knodel.*;
 import uk.ac.hutton.ics.knodel.database.entity.*;
+import uk.ac.hutton.ics.knodel.database.manager.*;
 import uk.ac.hutton.ics.knodel.util.*;
 
 
@@ -40,11 +41,13 @@ import uk.ac.hutton.ics.knodel.util.*;
  *
  * @author Sebastian Raubach
  */
-public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewHolder>
+public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewHolder> implements Filterable
 {
 	private Context                  context;
 	private int                      datasourceId;
 	private List<KnodelNodeAdvanced> dataset;
+	private UserFilter               userFilter;
+	private NodeManager              nodeManager;
 
 	private int defaultBackgroundColor;
 	private int textColorLight;
@@ -71,6 +74,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		this.context = context;
 		this.datasourceId = datasourceId;
 		this.dataset = dataset;
+		this.nodeManager = new NodeManager(context, datasourceId);
 
 		/* Get some default color */
 		this.defaultBackgroundColor = ContextCompat.getColor(context, R.color.cardview_light_background);
@@ -126,23 +130,17 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 			holder.image.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 
 			/* Wait for the image to be loaded to get the width */
-			ViewTreeObserver viewTreeObserver = holder.image.getViewTreeObserver();
-			if (viewTreeObserver.isAlive())
+			holder.view.postDelayed(new Runnable()
 			{
-				viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+				@Override
+				public void run()
 				{
-					@Override
-					public void onGlobalLayout()
-					{
-						/* Remove this listener */
-						holder.view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-						/* Get the width of the view */
-						int viewWidth = holder.image.getWidth();
-						holder.image.setMinimumHeight(viewWidth);
-					}
-				});
-			}
+					/* Get the width of the view */
+					int viewWidth = holder.image.getWidth();
+					holder.image.setMinimumHeight(viewWidth);
+					holder.view.forceLayout();
+				}
+			}, 1);
 		}
 		/* If an image is found */
 		else
@@ -150,59 +148,52 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 			final File f = imagePath;
 
 			/* Wait for the image to be loaded to get the width */
-			ViewTreeObserver viewTreeObserver = holder.image.getViewTreeObserver();
-			if (viewTreeObserver.isAlive())
+			holder.view.postDelayed(new Runnable()
 			{
-				viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+				@Override
+				public void run()
 				{
-					@Override
-					public void onGlobalLayout()
-					{
-						/* Remove this listener */
-						holder.view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+					/* Get the width of the view */
+					int viewWidth = holder.image.getWidth();
+					holder.image.setMinimumHeight(viewWidth);
 
-						/* Get the width of the view */
-						int viewWidth = holder.image.getWidth();
-						holder.image.setMinimumHeight(viewWidth);
-
-						/* Load the image */
-						final PaletteTransformation paletteTransformation = PaletteTransformation.instance();
-						Picasso.with(context)
-							   .load(f) // Load from file
-							   .transform(paletteTransformation) // Generate the palette based on the image
-							   .resize(viewWidth, viewWidth) // Resize to fit
-							   .onlyScaleDown() // But only scale down
-							   .centerCrop() // And respect the aspect ratio
-							   .into(holder.image, new Callback.EmptyCallback() // When done, use the palette
+					/* Load the image */
+					final PaletteTransformation paletteTransformation = PaletteTransformation.instance();
+					Picasso.with(context)
+						   .load(f) // Load from file
+						   .transform(paletteTransformation) // Generate the palette based on the image
+						   .resize(viewWidth, viewWidth) // Resize to fit
+						   .onlyScaleDown() // But only scale down
+						   .centerCrop() // And respect the aspect ratio
+						   .into(holder.image, new Callback.EmptyCallback() // When done, use the palette
+						   {
+							   @Override
+							   public void onError()
 							   {
-								   @Override
-								   public void onError()
-								   {
-									   /* Set the placeholder */
-									   holder.image.setImageResource(R.drawable.missing_image);
-									   holder.image.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-								   }
+								   /* Set the placeholder */
+								   holder.image.setImageResource(R.drawable.missing_image);
+								   holder.image.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+							   }
 
-								   @Override
-								   public void onSuccess()
-								   {
-									   /* Get back the bitmap */
-									   Bitmap bitmap = ((BitmapDrawable) holder.image.getDrawable()).getBitmap(); // Ew!
-									   /* Get the generated palette */
-									   Palette palette = PaletteTransformation.getPalette(bitmap);
+							   @Override
+							   public void onSuccess()
+							   {
+								   /* Get back the bitmap */
+								   Bitmap bitmap = ((BitmapDrawable) holder.image.getDrawable()).getBitmap(); // Ew!
+								   /* Get the generated palette */
+								   Palette palette = PaletteTransformation.getPalette(bitmap);
 
-									   /* Get the vibrant color and a high-contrast text color */
-									   int vibrantColor = palette.getVibrantColor(defaultBackgroundColor);
-									   int textColor = ColorUtils.isColorDark(vibrantColor) ? textColorLight : textColorDark;
+								   /* Get the vibrant color and a high-contrast text color */
+								   int vibrantColor = palette.getVibrantColor(defaultBackgroundColor);
+								   int textColor = ColorUtils.isColorDark(vibrantColor) ? textColorLight : textColorDark;
 
-									   holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-									   holder.title.setBackgroundColor(vibrantColor);
-									   holder.title.setTextColor(textColor);
-								   }
-							   });
-					}
-				});
-			}
+								   holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+								   holder.title.setBackgroundColor(vibrantColor);
+								   holder.title.setTextColor(textColor);
+							   }
+						   });
+				}
+			}, 1);
 		}
 
 		holder.title.setText(item.getName());
@@ -221,4 +212,69 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 	 * @param node           The actual node that has been clicked.
 	 */
 	public abstract void onNodeClicked(View transitionRoot, KnodelNodeAdvanced node);
+
+	@Override
+	public Filter getFilter()
+	{
+		if (userFilter == null)
+			userFilter = new UserFilter(this, dataset);
+
+		return userFilter;
+	}
+
+	private class UserFilter extends Filter
+	{
+		private final NodeAdapter adapter;
+
+		private final List<KnodelNodeAdvanced> originalList;
+
+		private final List<KnodelNodeAdvanced> filteredList;
+
+		private UserFilter(NodeAdapter adapter, List<KnodelNodeAdvanced> originalList)
+		{
+			super();
+			this.adapter = adapter;
+			this.originalList = new LinkedList<>(originalList);
+			this.filteredList = new ArrayList<>();
+		}
+
+		@Override
+		protected FilterResults performFiltering(CharSequence constraint)
+		{
+			filteredList.clear();
+			final FilterResults results = new FilterResults();
+
+			final String filterPattern = constraint.toString();
+
+			if (constraint.length() == 0)
+			{
+				filteredList.addAll(originalList);
+			}
+			else
+			{
+				for (final KnodelNodeAdvanced item : originalList)
+				{
+					if (nodeManager.hasChildWithContent(item, filterPattern))
+					{
+						filteredList.add(item);
+					}
+				}
+			}
+			results.values = filteredList;
+			results.count = filteredList.size();
+			return results;
+		}
+
+		@Override
+		@SuppressWarnings("unchecked")
+		protected void publishResults(CharSequence constraint, FilterResults results)
+		{
+			/* Clear everything */
+			adapter.dataset.clear();
+
+			/* Add the new data. The two separate notify events are necessary to force a full re-layout of all items */
+			adapter.dataset.addAll((ArrayList<KnodelNodeAdvanced>) results.values);
+			adapter.notifyDataSetChanged();
+		}
+	}
 }

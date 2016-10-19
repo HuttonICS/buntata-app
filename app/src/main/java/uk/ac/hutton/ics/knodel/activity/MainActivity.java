@@ -20,8 +20,8 @@ import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.*;
 import android.util.*;
 import android.view.*;
 
@@ -41,9 +41,9 @@ import uk.ac.hutton.ics.knodel.util.*;
  */
 public class MainActivity extends DrawerActivity implements OnFragmentChangeListener
 {
-	public static final int REQUEST_CODE_INTRO             = 1;
-	public static final int REQUEST_CODE_SELECT_DATASOURCE = 2;
-	public static final int REQUEST_CODE_DETAILS           = 3;
+	private static final int REQUEST_CODE_INTRO             = 1;
+	private static final int REQUEST_CODE_SELECT_DATASOURCE = 2;
+	private static final int REQUEST_CODE_DETAILS           = 3;
 
 	static
 	{
@@ -54,6 +54,7 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 	private int datasourceId = -1;
 
 	private boolean override = false;
+	private String  query    = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -62,6 +63,8 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 
 		/* Make sure the default preferences are set */
 		PreferenceUtils.setDefaults(this);
+
+		NodeManager.clearCaches();
 	}
 
 	@Override
@@ -113,9 +116,10 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 
 	/**
 	 * Updates the main view's content
+	 *
 	 * @param transitionRoot The view to use as the transition root in case we're navigating to a leaf node
-	 * @param datasourceId The current data source id
-	 * @param parentId The id of the parent node
+	 * @param datasourceId   The current data source id
+	 * @param parentId       The id of the parent node
 	 */
 	private void updateContent(View transitionRoot, int datasourceId, int parentId)
 	{
@@ -213,6 +217,73 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 				/* We're coming back from the details view, so don't add anything */
 				break;
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		/* Inflate the menu */
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.main_menu, menu);
+
+		/* Find the search menu item */
+		final MenuItem searchItem = menu.findItem(R.id.action_search);
+
+		/* Get the search manager */
+		SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
+
+		/* Get the actual search view */
+		final SearchView searchView = (SearchView) searchItem.getActionView();
+		searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
+		searchView.setQueryHint(getString(R.string.search_query_hint));
+		/* Listen to submit events */
+		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+		{
+			@Override
+			public boolean onQueryTextSubmit(String query)
+			{
+				searchView.clearFocus();
+
+				MainActivity.this.query = query;
+				filter(query);
+
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String s)
+			{
+				return false;
+			}
+		});
+		searchView.setOnCloseListener(new SearchView.OnCloseListener()
+		{
+			@Override
+			public boolean onClose()
+			{
+				MainActivity.this.query = null;
+				filter("");
+
+				return false;
+			}
+		});
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	public String getFilter()
+	{
+		return query;
+	}
+
+	private void filter(String query)
+	{
+		/* Get the current fragment with this horrible construct */
+		String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+		NodeFragment fragment = (NodeFragment) getSupportFragmentManager().findFragmentByTag(tag);
+
+		/* Then filter it */
+		fragment.filter(query);
 	}
 
 	@Override

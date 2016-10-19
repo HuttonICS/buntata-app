@@ -39,6 +39,7 @@
 				android:layout_height="wrap_content"
 				android:textStyle="bold"
 				android:layout_gravity="bottom"
+				android:singleLine="true"
 				android:ellipsize="marquee"
 				android:lines="1"
 				android:maxLines="1"
@@ -51,6 +52,7 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="end|bottom"
 				android:gravity="end"
+				android:singleLine="true"
 				android:ellipsize="start"
 				android:lines="1"
 				android:maxLines="1"/>

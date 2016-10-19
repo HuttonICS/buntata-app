@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ Copyright (c) 2016 Information & Computational Sciences, The James Hutton Institute
   ~
@@ -16,21 +15,12 @@
   ~ limitations under the License.
   -->
 
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:layout_gravity="center"
-	android:orientation="vertical">
-
-	<!-- THIS HAS TO GO INTO ANY LAYOUT OF ANY ACTIVITY THAT HAS A TOOLBAR! -->
-	<include layout="@layout/helper_toolbar"/>
-	<!-- END -->
-
-	<fragment
-		android:name="uk.ac.hutton.ics.knodel.fragment.DatasourceFragment"
-		android:id="@+id/datasource_fragment"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"/>
-
-</LinearLayout>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	  xmlns:app="http://schemas.android.com/apk/res-auto">
+	<item
+		android:id="@+id/action_search"
+		android:icon="@drawable/action_menu_search"
+		app:showAsAction="always"
+		app:actionViewClass="android.support.v7.widget.SearchView"
+		android:title="@string/menu_action_search"/>
+</menu>

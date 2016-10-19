@@ -19,6 +19,7 @@ package uk.ac.hutton.ics.knodel.activity;
 import android.content.*;
 import android.content.res.*;
 import android.os.*;
+import android.support.annotation.*;
 import android.support.design.widget.*;
 import android.support.v4.view.*;
 import android.support.v4.widget.*;
@@ -66,7 +67,7 @@ public abstract class DrawerActivity extends BaseActivity
 		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
 		{
 			@Override
-			public boolean onNavigationItemSelected(MenuItem menuItem)
+			public boolean onNavigationItemSelected(@NonNull MenuItem menuItem)
 			{
 				return onNavigation(menuItem);
 			}

@@ -21,4 +21,6 @@
 	android:layout_height="wrap_content"
 	android:background="#444"
 	android:padding="16dp"
+	android:src="@drawable/ic_logo"
+	android:elevation="@dimen/cardview_default_elevation"
 	android:scaleType="centerInside"/>

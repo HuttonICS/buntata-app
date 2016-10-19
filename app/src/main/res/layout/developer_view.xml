@@ -36,7 +36,6 @@
 			android:layout_height="wrap_content"
 			android:textStyle="bold"
 			android:gravity="center_horizontal"
-			android:text="TEST"
 			android:textSize="18sp"/>
 
 		<View

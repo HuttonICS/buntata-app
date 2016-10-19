@@ -48,11 +48,6 @@ public class NodeDetailsActivity extends BaseActivity
 	public static final String PARAM_DATASOURCE_ID = "datasourceId";
 	public static final String PARAM_NODE_ID       = "nodeId";
 
-	private MediaManager mediaManager;
-
-	private int datasourceId;
-	private int nodeId;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -60,11 +55,11 @@ public class NodeDetailsActivity extends BaseActivity
 
 		/* Get parameters */
 		Bundle args = getIntent().getExtras();
-		datasourceId = args.getInt(PARAM_DATASOURCE_ID, -1);
-		nodeId = args.getInt(PARAM_NODE_ID, -1);
+		int datasourceId = args.getInt(PARAM_DATASOURCE_ID, -1);
+		int nodeId = args.getInt(PARAM_NODE_ID, -1);
 
 		/* Initialize the media manager */
-		mediaManager = new MediaManager(this, datasourceId);
+		MediaManager mediaManager = new MediaManager(this, datasourceId);
 
 		/* Get the views */
 		ViewPager pager = (ViewPager) findViewById(R.id.node_details_image_pager);
@@ -117,7 +112,7 @@ public class NodeDetailsActivity extends BaseActivity
 
 		/* Set them to the recycler view */
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
-		recyclerView.setAdapter(new AttributeValueAdapter(this, datasourceId, recyclerView, attributeValues));
+		recyclerView.setAdapter(new AttributeValueAdapter(recyclerView, attributeValues));
 
 		/* Set the separator width */
 		int valueInPixels = (int) getResources().getDimension(R.dimen.activity_vertical_margin) / 2;

@@ -40,12 +40,9 @@ public class NodeFragment extends Fragment
 	public static final String PARAM_DATASOURCE_ID = "datasourceId";
 	public static final String PARAM_PARENT_ID     = "parentId";
 
-	private RecyclerView recyclerView;
-
 	private int datasourceId;
-	private int parentId;
 
-	private NodeManager nodeManager;
+	private NodeAdapter adapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -53,9 +50,9 @@ public class NodeFragment extends Fragment
 		/* Get parameters */
 		Bundle args = getArguments();
 		datasourceId = args.getInt(PARAM_DATASOURCE_ID, -1);
-		parentId = args.getInt(PARAM_PARENT_ID, -1);
+		int parentId = args.getInt(PARAM_PARENT_ID, -1);
 
-		nodeManager = new NodeManager(getActivity(), datasourceId);
+		NodeManager nodeManager = new NodeManager(getActivity(), datasourceId);
 
 		/* Get the parent node */
 		KnodelNodeAdvanced parent = nodeManager.getById(parentId);
@@ -63,7 +60,7 @@ public class NodeFragment extends Fragment
 		/* Inflate the layout */
 		View view = inflater.inflate(R.layout.fragment_node, container, false);
 
-		recyclerView = (RecyclerView) view.findViewById(R.id.node_recycler_view);
+		RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.node_recycler_view);
 		recyclerView.setHasFixedSize(true);
 
 		int columns = getResources().getInteger(R.integer.node_recyclerview_columns);
@@ -71,19 +68,18 @@ public class NodeFragment extends Fragment
 		recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columns));
 		recyclerView.addItemDecoration(new GridSpacingItemDecoration(columns, valueInPixels, valueInPixels, valueInPixels));
 
-		List<KnodelNodeAdvanced> nodes;
-
 		String title = getString(R.string.app_name);
 
 		/* If we don't have a parent, get all roots */
+		List<KnodelNodeAdvanced> originalList;
 		if (parent == null)
 		{
-			nodes = nodeManager.getAllRoots();
+			originalList = nodeManager.getAllRoots();
 		}
 		/* Else get all the children of the parent */
 		else
 		{
-			nodes = nodeManager.getForParent(parentId);
+			originalList = nodeManager.getForParent(parentId);
 
 			title = parent.getName();
 		}
@@ -96,15 +92,35 @@ public class NodeFragment extends Fragment
 		}
 
 		/* Set the data to the adapter */
-		recyclerView.setAdapter(new NodeAdapter(getActivity(), datasourceId, nodes)
+		adapter = new NodeAdapter(getActivity(), datasourceId, originalList)
 		{
 			@Override
 			public void onNodeClicked(View animationRoot, KnodelNodeAdvanced node)
 			{
 				((MainActivity) getActivity()).onFragmentChange(animationRoot, datasourceId, node.getId());
 			}
-		});
+		};
+		recyclerView.setAdapter(adapter);
 
 		return view;
+	}
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+
+		String filter = ((MainActivity) getActivity()).getFilter();
+
+		if(filter == null)
+			filter = "";
+
+
+		filter(filter);
+	}
+
+	public void filter(String query)
+	{
+		adapter.getFilter().filter(query);
 	}
 }

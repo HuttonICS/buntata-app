@@ -33,7 +33,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_gravity="center"
-			android:keepScreenOn="true"
+			android:focusableInTouchMode="true"
 			android:orientation="vertical">
 
 			<!-- THIS HAS TO GO INTO ANY LAYOUT OF ANY ACTIVITY THAT HAS A TOOLBAR! -->

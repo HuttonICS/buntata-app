@@ -99,7 +99,7 @@ public class MediaManager extends AbstractManager<KnodelMediaAdvanced>
 
 	private static class Parser extends DatabaseObjectParser<KnodelMediaAdvanced>
 	{
-		public static final class Inst
+		static final class Inst
 		{
 			/**
 			 * {@link InstanceHolder} is loaded on the first execution of {@link Inst#get()} or the first access to {@link InstanceHolder#INSTANCE},

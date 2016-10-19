@@ -30,16 +30,16 @@ import uk.ac.hutton.ics.knodel.service.*;
  */
 public abstract class RestletAsyncCallbackTask<U, T> extends RestletAsyncTask<U, T>
 {
-	protected RestletCallback<T> callback;
+	private RestletCallback<T> callback;
 
-	public RestletAsyncCallbackTask(Context context, int progressStyle, boolean cancelable, RestletCallback<T> callback)
+	protected RestletAsyncCallbackTask(Context context, int progressStyle, boolean cancelable, RestletCallback<T> callback)
 	{
 		super(context, progressStyle, cancelable);
 
 		this.callback = callback;
 	}
 
-	public RestletAsyncCallbackTask(Context context, int progressStyle, RestletCallback<T> callback)
+	protected RestletAsyncCallbackTask(Context context, int progressStyle, RestletCallback<T> callback)
 	{
 		super(context, progressStyle);
 

@@ -33,13 +33,11 @@ import uk.ac.hutton.ics.knodel.util.*;
  *
  * @author Sebastian Raubach
  */
-public class RestletService
+class RestletService
 {
 	private static ClientResource clientResource;
-	private static Client         client;
-	private static Decoder        decoder;
 
-	public static void updateResources()
+	private static void updateResources()
 	{
 		if (clientResource == null)
 		{
@@ -49,10 +47,10 @@ public class RestletService
 			protocols.add(Protocol.HTTPS);
 
 			/* Set up the client using the protocols */
-			client = new Client(protocols);
+			Client client = new Client(protocols);
 
 			/* Handle de-compression */
-			decoder = new Decoder(client.getContext(), false, true);
+			Decoder decoder = new Decoder(client.getContext(), false, true);
 			decoder.setNext(client);
 
 			/* Set up the client resource with an empty URL */
@@ -89,7 +87,7 @@ public class RestletService
 	 *
 	 * @return The base URL of the BRAPI instance. Will <b>ALEAYS</b> end with a tailing slash
 	 */
-	public static String getBaseUrl(Context context)
+	static String getBaseUrl(Context context)
 	{
 		String url = PreferenceUtils.getPreference(context, PreferenceUtils.PREFS_KNODEL_SERVER_URL);
 		if (StringUtils.isEmpty(url) || !url.endsWith("/"))
