@@ -19,14 +19,9 @@ package uk.ac.hutton.ics.knodel.activity;
 
 import android.os.*;
 import android.support.design.widget.*;
-import android.support.v4.app.*;
 import android.support.v4.view.*;
 import android.support.v7.widget.*;
-import android.support.v7.widget.Toolbar;
 import android.view.*;
-import android.widget.*;
-
-import com.squareup.picasso.*;
 
 import java.util.*;
 
@@ -36,7 +31,6 @@ import uk.ac.hutton.ics.knodel.R;
 import uk.ac.hutton.ics.knodel.adapter.*;
 import uk.ac.hutton.ics.knodel.database.entity.*;
 import uk.ac.hutton.ics.knodel.database.manager.*;
-import uk.ac.hutton.ics.knodel.util.*;
 
 /**
  * The {@link NodeDetailsActivity} shows detailed information about the node. This contains images, attributes and videos.
@@ -47,6 +41,7 @@ public class NodeDetailsActivity extends BaseActivity
 {
 	public static final String PARAM_DATASOURCE_ID = "datasourceId";
 	public static final String PARAM_NODE_ID       = "nodeId";
+	private ViewPager pager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -62,7 +57,7 @@ public class NodeDetailsActivity extends BaseActivity
 		MediaManager mediaManager = new MediaManager(this, datasourceId);
 
 		/* Get the views */
-		ViewPager pager = (ViewPager) findViewById(R.id.node_details_image_pager);
+		pager = (ViewPager) findViewById(R.id.node_details_image_pager);
 		CircleIndicator indicator = (CircleIndicator) findViewById(R.id.node_details_image_indicator);
 		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.node_details_attributes);
 		AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.node_details_app_bar);
@@ -86,12 +81,13 @@ public class NodeDetailsActivity extends BaseActivity
 		}
 
 		/* Get all the media */
-		List<KnodelMediaAdvanced> media = mediaManager.getForNode("Image", nodeId);
+		List<KnodelMediaAdvanced> media = mediaManager.getForNode(null, nodeId);
+		Map<String, List<KnodelMediaAdvanced>> splitByType = mediaManager.splitByType(media);
 
-		if (media.size() > 0)
+		if (splitByType.get(KnodelMediaType.TYPE_IMAGE).size() > 0)
 		{
 			/* Set to the pager */
-			final ImagePagerAdapter adapter = new ImagePagerAdapter(getSupportFragmentManager(), datasourceId, media);
+			final ImagePagerAdapter adapter = new ImagePagerAdapter(getSupportFragmentManager(), datasourceId, splitByType.get(KnodelMediaType.TYPE_IMAGE));
 			pager.setAdapter(adapter);
 			indicator.setViewPager(pager);
 		}
@@ -112,7 +108,7 @@ public class NodeDetailsActivity extends BaseActivity
 
 		/* Set them to the recycler view */
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
-		recyclerView.setAdapter(new AttributeValueAdapter(recyclerView, attributeValues));
+		recyclerView.setAdapter(new AttributeValueVideoAdapter(this, recyclerView, datasourceId, attributeValues, splitByType.get(KnodelMediaType.TYPE_VIDEO)));
 
 		/* Set the separator width */
 		int valueInPixels = (int) getResources().getDimension(R.dimen.activity_vertical_margin) / 2;
@@ -149,114 +145,15 @@ public class NodeDetailsActivity extends BaseActivity
 		}
 	}
 
-	/**
-	 * The {@link ImagePagerAdapter} handles the image media fragments.
-	 */
-	private class ImagePagerAdapter extends FragmentStatePagerAdapter
+	@Override
+	public void onBackPressed()
 	{
-		private final List<KnodelMediaAdvanced> dataset;
-		private final int                       datasourceId;
-
-
-		ImagePagerAdapter(FragmentManager fm, int datasourceId, List<KnodelMediaAdvanced> dataset)
+		if (pager.getVisibility() == View.VISIBLE)
 		{
-			super(fm);
-			this.datasourceId = datasourceId;
-			this.dataset = dataset;
+			if (pager.getCurrentItem() < 2)
+				pager.setCurrentItem(0, true);
 		}
 
-		@Override
-		public int getCount()
-		{
-			return dataset.size();
-		}
-
-		@Override
-		public Fragment getItem(final int position)
-		{
-			return ImageFragment.newInstance(datasourceId, dataset.get(position).getId());
-		}
-	}
-
-	/**
-	 * The {@link ImageFragment} displays the information about an image medium.
-	 */
-	public static class ImageFragment extends Fragment
-	{
-		private static final String PARAM_DATASOURCE_ID = "datasourceId";
-		private static final String PARAM_MEDIUM_ID     = "mediumId";
-
-		private MediaManager mediaManager;
-
-		private int       datasourceId;
-		private int       mediumId;
-		private ImageView imageView;
-		private TextView  copyright;
-
-		static ImageFragment newInstance(int datasourceId, int mediumId)
-		{
-			final ImageFragment f = new ImageFragment();
-
-			/* Pass parameters */
-			Bundle args = new Bundle();
-			args.putInt(PARAM_DATASOURCE_ID, datasourceId);
-			args.putInt(PARAM_MEDIUM_ID, mediumId);
-			f.setArguments(args);
-
-			return f;
-		}
-
-		public ImageFragment()
-		{
-		}
-
-		@Override
-		public void onCreate(Bundle savedInstanceState)
-		{
-			super.onCreate(savedInstanceState);
-
-			/* Get parameters */
-			datasourceId = getArguments() != null ? getArguments().getInt(PARAM_DATASOURCE_ID) : -1;
-			mediumId = getArguments() != null ? getArguments().getInt(PARAM_MEDIUM_ID) : -1;
-			mediaManager = new MediaManager(getActivity(), datasourceId);
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-		{
-			View v = inflater.inflate(R.layout.fragment_node_image, container, false);
-			imageView = (ImageView) v.findViewById(R.id.node_image_view);
-			copyright = (TextView) v.findViewById(R.id.node_image_copyright);
-
-			return v;
-		}
-
-		@Override
-		public void onActivityCreated(Bundle savedInstanceState)
-		{
-			super.onActivityCreated(savedInstanceState);
-
-			/* Get the medium object */
-			KnodelMediaAdvanced medium = mediaManager.getById(mediumId);
-
-			/* Show copyright information if available */
-			if (medium.getCopyright() != null)
-			{
-				copyright.setText(medium.getCopyright());
-				copyright.setVisibility(View.VISIBLE);
-				copyright.setAlpha(0.5f);
-			}
-			else
-			{
-				copyright.setVisibility(View.GONE);
-			}
-
-			/* Load the image */
-			Picasso.with(getActivity())
-				   .load(FileUtils.getFileForDatasource(getActivity(), datasourceId, medium.getInternalLink()))
-				   .fit()
-				   .centerCrop()
-				   .into(imageView);
-		}
+		super.onBackPressed();
 	}
 }

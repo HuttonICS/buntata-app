@@ -22,10 +22,13 @@ import android.support.v7.widget.*;
 import android.view.*;
 import android.widget.*;
 
+import com.heinrichreimersoftware.materialintro.app.*;
+
 import java.util.*;
 
 import jhi.knodel.resource.*;
 import uk.ac.hutton.ics.knodel.*;
+import uk.ac.hutton.ics.knodel.activity.*;
 import uk.ac.hutton.ics.knodel.adapter.*;
 import uk.ac.hutton.ics.knodel.database.entity.*;
 import uk.ac.hutton.ics.knodel.database.manager.*;
@@ -53,6 +56,9 @@ public class DatasourceFragment extends Fragment
 		recyclerView.setHasFixedSize(false);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+		int valueInPixels = (int) getResources().getDimension(R.dimen.activity_vertical_margin) / 2;
+		recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, valueInPixels, valueInPixels, valueInPixels));
+
 		networkWarning = (TextView) view.findViewById(R.id.datasource_network_warning);
 
 		return view;
@@ -63,7 +69,19 @@ public class DatasourceFragment extends Fragment
 	{
 		super.onResume();
 
-		updateStatus();
+		/* If  this is part of the DatasourceActivity, then load the content here */
+		if (getActivity() instanceof DatasourceActivity)
+			updateStatus();
+	}
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser)
+	{
+		super.setUserVisibleHint(isVisibleToUser);
+
+		/* If this is part of the IntroActivity, then only load the content once this is visible. Otherwise it'll load this fragment already on the previous page. */
+		if (isVisibleToUser && getActivity() instanceof IntroActivity)
+			updateStatus();
 	}
 
 	private void updateStatus()

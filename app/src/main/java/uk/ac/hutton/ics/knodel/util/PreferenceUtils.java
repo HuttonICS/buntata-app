@@ -29,6 +29,7 @@ public class PreferenceUtils
 {
 	public static final String PREFS_KNODEL_SERVER_URL       = "prefs.general.restlet.api.url";
 	public static final String PREFS_AT_LEAST_ONE_DATASOURCE = "prefs.at.least.one.datasource";
+	public static final String PREFS_EULA_ACCEPTED           = "prefs.eula.accepted";
 	public static final String PREFS_SELECTED_DATASOURCE_ID  = "prefs.selected.datasource.id";
 	public static final String PREFS_GA_OPT_OUT              = "prefs.google.analytics.opt.out";
 

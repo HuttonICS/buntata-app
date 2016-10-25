@@ -33,7 +33,7 @@ import uk.ac.hutton.ics.knodel.util.*;
  */
 public class DatasourceManager extends AbstractManager<KnodelDatasource>
 {
-	private static final String[] ALL_FIELDS = {KnodelDatasource.FIELD_ID, KnodelDatasource.FIELD_NAME, KnodelDatasource.FIELD_DESCRIPTION, KnodelDatasource.FIELD_VERSION_NUMBER, KnodelDatasource.FIELD_DATA_PROVIDER, KnodelDatasource.FIELD_CONTACT, KnodelDatasource.FIELD_ICON, KnodelDatasource.FiELD_SIZE, KnodelDatasource.FIELD_CREATED_ON, KnodelDatasource.FIELD_UPDATED_ON};
+	private static final String[] ALL_FIELDS = {KnodelDatasource.FIELD_ID, KnodelDatasource.FIELD_NAME, KnodelDatasource.FIELD_DESCRIPTION, KnodelDatasource.FIELD_VERSION_NUMBER, KnodelDatasource.FIELD_DATA_PROVIDER, KnodelDatasource.FIELD_CONTACT, KnodelDatasource.FIELD_ICON, KnodelDatasource.FIELD_SIZE_TOTAL, KnodelDatasource.FIELD_SIZE_NO_VIDEO, KnodelDatasource.FIELD_CREATED_ON, KnodelDatasource.FIELD_UPDATED_ON};
 
 	public DatasourceManager(Context context, int datasourceId)
 	{
@@ -126,6 +126,13 @@ public class DatasourceManager extends AbstractManager<KnodelDatasource>
 	 */
 	public static boolean isNewer(KnodelDatasource ds, KnodelDatasource old)
 	{
+		int newVersion = ds.getVersionNumber();
+		int oldVersion = ds.getVersionNumber();
+
+		/* Compare the version numbers first */
+		if (newVersion > oldVersion)
+			return true;
+
 		Date newDsCreated = ds.getCreatedOn();
 		Date oldDsCreated = old.getCreatedOn();
 		Date newDsUpdated = ds.getUpdatedOn();
@@ -207,7 +214,8 @@ public class DatasourceManager extends AbstractManager<KnodelDatasource>
 					.setDataProvider(cursor.getString(KnodelDatasource.FIELD_DATA_PROVIDER))
 					.setContact(cursor.getString(KnodelDatasource.FIELD_CONTACT))
 					.setIcon(cursor.getString(KnodelDatasource.FIELD_ICON))
-					.setSize(cursor.getInt(KnodelDatasource.FiELD_SIZE));
+					.setSizeTotal(cursor.getInt(KnodelDatasource.FIELD_SIZE_TOTAL))
+					.setSizeNoVideo(cursor.getInt(KnodelDatasource.FIELD_SIZE_NO_VIDEO));
 		}
 	}
 }

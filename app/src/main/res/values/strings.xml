@@ -39,8 +39,9 @@
 	<string name="generic_yes">Yes</string>
 	<string name="generic_no">No</string>
 	<string name="generic_cancel">Cancel</string>
+	<string name="generic_accept">Accept</string>
 
-	<string name="datasource_size">Media size: ~%1$d MB</string>
+	<string name="datasource_size">Media size: ~%1$d MB (~%2$d MB)</string>
 
 	<string name="snackbar_already_downloaded">Data source already downloaded.</string>
 	<string name="snackbar_currently_downloading">Data source download in progress.</string>
@@ -52,11 +53,17 @@
 
 	<string name="dialog_restlet_please_wait">Please wait</string>
 
+	<string name="dialog_download_title">Download</string>
+	<string name="dialog_download_message">Include videos?</string>
+
 	<string name="transition_node_view" translatable="false">transition_node_view</string>
 	<string name="transition_node_details_view" translatable="false">transition_node_details_view</string>
+	<string name="transition_video_view" translatable="false">transition_video_view</string>
+	<string name="transition_video_details_view" translatable="false">transition_video_details_view</string>
 
-	<string name="about_tab_information">Information</string>
+	<string name="about_tab_information">About</string>
 	<string name="about_tab_developers">Developers</string>
+	<string name="about_tab_acknowledgements">Acknowledgements</string>
 	<string name="about_tab_license">License</string>
 
 	<string name="about_information_text">Something about the app here. This is just a placeholder to see what it\'ll look like.</string>
@@ -86,4 +93,9 @@
 
 	<string name="network_intro_button_settings">Settings</string>
 	<string name="network_intro_button_refresh">Refresh</string>
+
+	<string name="eula_intro_select">Please select a EULA type</string>
+
+	<string name="label_eula_commercial">EULA for commercial users</string>
+	<string name="label_eula_consumer">EULA for consumers</string>
 </resources>

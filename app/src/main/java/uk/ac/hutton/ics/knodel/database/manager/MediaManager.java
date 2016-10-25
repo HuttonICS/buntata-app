@@ -68,7 +68,7 @@ public class MediaManager extends AbstractManager<KnodelMediaAdvanced>
 
 			Cursor cursor;
 
-			if(type != null)
+			if (type != null)
 				cursor = database.rawQuery("SELECT * FROM media WHERE EXISTS (SELECT 1 FROM nodemedia WHERE nodemedia.media_id = media.id AND nodemedia.node_id = ?) AND EXISTS (SELECT 1 FROM mediatypes WHERE mediatypes.id = media.mediatype_id AND mediatypes.name = ?)", new String[]{Integer.toString(nodeId), type});
 			else
 				cursor = database.rawQuery("SELECT * FROM media WHERE EXISTS (SELECT 1 FROM nodemedia WHERE nodemedia.media_id = media.id AND nodemedia.node_id = ?)", new String[]{Integer.toString(nodeId)});
@@ -92,6 +92,23 @@ public class MediaManager extends AbstractManager<KnodelMediaAdvanced>
 		finally
 		{
 			close();
+		}
+
+		return result;
+	}
+
+	public Map<String, List<KnodelMediaAdvanced>> splitByType(List<KnodelMediaAdvanced> media)
+	{
+		Map<String, List<KnodelMediaAdvanced>> result = new HashMap<>();
+
+		result.put(KnodelMediaType.TYPE_IMAGE, new ArrayList<KnodelMediaAdvanced>());
+		result.put(KnodelMediaType.TYPE_VIDEO, new ArrayList<KnodelMediaAdvanced>());
+
+		for (KnodelMediaAdvanced medium : media)
+		{
+			String type = medium.getMediaType().getName();
+
+			result.get(type).add(medium);
 		}
 
 		return result;

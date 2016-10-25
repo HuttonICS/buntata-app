@@ -36,7 +36,7 @@ import uk.ac.hutton.ics.knodel.util.*;
 public class DatasourceService extends RestletService
 {
 	private static final String DATASOURCE_BASE_URL     = "datasource";
-	private static final String DATASOURCE_DOWNLOAD_URL = "/%s/download";
+	private static final String DATASOURCE_DOWNLOAD_URL = "/%s/download?includevideos=%s";
 
 	/**
 	 * Returns all the data sources from the server
@@ -64,20 +64,21 @@ public class DatasourceService extends RestletService
 	/**
 	 * Download the zipped dataset from the server
 	 *
-	 * @param context     The current context
-	 * @param progressBar The progress bar to update with the download status
-	 * @param ds          The current data source
-	 * @param callback    The {@link RestletCallback} to call when the query returns
+	 * @param context       The current context
+	 * @param includeVideos Should videos be downloaded as well?
+	 * @param progressBar   The progress bar to update with the download status
+	 * @param ds            The current data source
+	 * @param callback      The {@link RestletCallback} to call when the query returns
 	 */
-	public static void download(final Context context, ProgressBar progressBar, final KnodelDatasource ds, final RestletCallback<File> callback)
+	public static void download(final Context context, boolean includeVideos, ProgressBar progressBar, final KnodelDatasource ds, final RestletCallback<File> callback)
 	{
-		String url = getBaseUrl(context) + String.format(DATASOURCE_BASE_URL + DATASOURCE_DOWNLOAD_URL, ds.getId());
+		String url = getBaseUrl(context) + String.format(DATASOURCE_BASE_URL + DATASOURCE_DOWNLOAD_URL, ds.getId(), Boolean.toString(includeVideos));
 
 		/* The target file */
 		File file = FileUtils.getFileForDatasource(context, ds.getId(), ds.getId() + ".zip");
 
 		/* Start the download */
-		new DownloadTask(progressBar, ds, file)
+		new DownloadTask(progressBar, includeVideos, ds, file)
 		{
 			@Override
 			protected void processData(File file)

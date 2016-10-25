@@ -40,6 +40,10 @@ public class IntroductionActivity extends IntroActivity
 	{
 		super.onCreate(savedInstanceState);
 
+		/* Set some preferences that are used for the navigation here initially to false */
+		PreferenceUtils.setPreferenceAsBoolean(this, PreferenceUtils.PREFS_EULA_ACCEPTED, false);
+		PreferenceUtils.setPreferenceAsBoolean(this, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, false);
+
 		setButtonBackVisible(false);
 
 		/* Welcome slide */
@@ -50,6 +54,12 @@ public class IntroductionActivity extends IntroActivity
 				.background(R.color.colorPrimary)
 				.backgroundDark(R.color.colorPrimaryDark)
 				.permission(Manifest.permission.INTERNET)
+				.build());
+
+		addSlide(new FragmentSlide.Builder()
+				.background(R.color.colorPrimary)
+				.backgroundDark(R.color.colorPrimaryDark)
+				.fragment(new EulaFragment())
 				.build());
 
 		addSlide(new FragmentSlide.Builder()
@@ -67,7 +77,7 @@ public class IntroductionActivity extends IntroActivity
 
 		/* Data source selection slide */
 		addSlide(new FragmentSlide.Builder()
-				.background(android.R.color.background_light)
+				.background(R.color.colorPrimary)
 				.backgroundDark(R.color.colorPrimaryDark)
 				.fragment(new DatasourceFragment())
 				.build());
@@ -81,7 +91,11 @@ public class IntroductionActivity extends IntroActivity
 				{
 					return PreferenceUtils.getPreferenceAsBoolean(IntroductionActivity.this, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, false);
 				}
-				else if(position == 1)
+				else if (position == 1)
+				{
+					return PreferenceUtils.getPreferenceAsBoolean(IntroductionActivity.this, PreferenceUtils.PREFS_EULA_ACCEPTED, false);
+				}
+				else if (position == 2)
 				{
 					return NetworkUtils.hasNetworkConnection(IntroductionActivity.this);
 				}
@@ -106,6 +120,7 @@ public class IntroductionActivity extends IntroActivity
 			}
 		});
 	}
+
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)

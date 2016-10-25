@@ -70,12 +70,14 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 	static class HeaderViewHolder extends AbstractViewHolder
 	{
 		TextView header;
+		TextView count;
 
-		public HeaderViewHolder(View v)
+		HeaderViewHolder(View v)
 		{
 			super(v);
 
 			header = (TextView) v.findViewById(R.id.datasource_header_title);
+			count = (TextView) v.findViewById(R.id.datasource_header_count);
 		}
 	}
 
@@ -202,9 +204,17 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		{
 			case LOCAL:
 				holder.header.setText(context.getString(R.string.datasource_list_header_local));
+				if (local != null)
+					holder.count.setText(Integer.toString(local.size()));
+				else
+					holder.count.setText(Integer.toString(0));
 				break;
 			case REMOTE:
 				holder.header.setText(context.getString(R.string.datasource_list_header_remote));
+				if (remote != null)
+					holder.count.setText(Integer.toString(remote.size()));
+				else
+					holder.count.setText(Integer.toString(0));
 				break;
 		}
 	}
@@ -240,7 +250,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 
 		holder.nameView.setText(item.getName());
 		holder.descriptionView.setText(item.getDescription());
-		holder.sizeView.setText(context.getString(R.string.datasource_size, (item.getSize() / 1024 / 1024)));
+		holder.sizeView.setText(context.getString(R.string.datasource_size, (item.getSizeNoVideo() / 1024 / 1024), (item.getSizeTotal() / 1024 / 1024)));
 
 		final KnodelDatasourceAdvanced ds = get(section, relativePosition);
 
@@ -320,7 +330,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 
 						int installedDatasources = new DatasourceManager(context, -1).getAll().size();
 
-						if(installedDatasources < 1)
+						if (installedDatasources < 1)
 							PreferenceUtils.removePreference(context, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE);
 
 						onDatasetChanged();
@@ -365,39 +375,59 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 
 					case INSTALLED_HAS_UPDATE:
 					case NOT_INSTALLED:
-						holder.progressBar.setVisibility(View.VISIBLE);
-						holder.isDownloading = true;
 
-						/* Start the download */
-						DatasourceService.download(context, holder.progressBar, ds, new RestletCallback<File>(context)
+						DialogUtils.showDialog(context, R.string.dialog_download_title, R.string.dialog_download_message, R.string.generic_yes, R.string.generic_no, new DialogInterface.OnClickListener()
 						{
 							@Override
-							public void onFailure(Exception caught)
+							public void onClick(DialogInterface dialog, int which)
 							{
-								super.onFailure(caught);
-
-								holder.progressBar.setVisibility(View.INVISIBLE);
-								holder.isDownloading = false;
+								initDownload(true, holder, ds);
 							}
-
+						}, new DialogInterface.OnClickListener()
+						{
 							@Override
-							public void onSuccess(File result)
+							public void onClick(DialogInterface dialog, int which)
 							{
-								holder.progressBar.setVisibility(View.INVISIBLE);
-								ds.setState(KnodelDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
-								holder.isDownloading = false;
-
-								PreferenceUtils.setPreferenceAsInt(context, PreferenceUtils.PREFS_SELECTED_DATASOURCE_ID, ds.getId());
-								SnackbarUtils.show(holder.view, R.string.snackbar_download_successful, ContextCompat.getColor(context, android.R.color.primary_text_dark), ContextCompat.getColor(context, R.color.colorPrimaryDark), Snackbar.LENGTH_LONG);
-
-								PreferenceUtils.setPreferenceAsBoolean(context, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, true);
-
-								onDatasetChanged();
-								notifyDataSetChanged();
+								initDownload(false, holder, ds);
 							}
 						});
 						break;
 				}
+			}
+		});
+	}
+
+	private void initDownload(boolean includeVideos, final ItemViewHolder holder, final KnodelDatasourceAdvanced ds)
+	{
+		holder.progressBar.setVisibility(View.VISIBLE);
+		holder.isDownloading = true;
+
+		/* Start the download */
+		DatasourceService.download(context, includeVideos, holder.progressBar, ds, new RestletCallback<File>(context)
+		{
+			@Override
+			public void onFailure(Exception caught)
+			{
+				super.onFailure(caught);
+
+				holder.progressBar.setVisibility(View.GONE);
+				holder.isDownloading = false;
+			}
+
+			@Override
+			public void onSuccess(File result)
+			{
+				holder.progressBar.setVisibility(View.GONE);
+				ds.setState(KnodelDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
+				holder.isDownloading = false;
+
+				PreferenceUtils.setPreferenceAsInt(context, PreferenceUtils.PREFS_SELECTED_DATASOURCE_ID, ds.getId());
+				SnackbarUtils.show(holder.view, R.string.snackbar_download_successful, ContextCompat.getColor(context, android.R.color.primary_text_dark), ContextCompat.getColor(context, R.color.colorPrimaryDark), Snackbar.LENGTH_LONG);
+
+				PreferenceUtils.setPreferenceAsBoolean(context, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, true);
+
+				onDatasetChanged();
+				notifyDataSetChanged();
 			}
 		});
 	}

@@ -16,6 +16,7 @@
 
 package uk.ac.hutton.ics.knodel.fragment;
 
+import android.content.res.*;
 import android.os.*;
 import android.support.v4.app.*;
 import android.support.v7.app.*;
@@ -42,7 +43,10 @@ public class NodeFragment extends Fragment
 
 	private int datasourceId;
 
-	private NodeAdapter adapter;
+	private NodeAdapter               adapter;
+	private List<KnodelNodeAdvanced>  originalList;
+	private RecyclerView              recyclerView;
+	private GridSpacingItemDecoration decoration;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -60,18 +64,14 @@ public class NodeFragment extends Fragment
 		/* Inflate the layout */
 		View view = inflater.inflate(R.layout.fragment_node, container, false);
 
-		RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.node_recycler_view);
+		recyclerView = (RecyclerView) view.findViewById(R.id.node_recycler_view);
 		recyclerView.setHasFixedSize(true);
 
-		int columns = getResources().getInteger(R.integer.node_recyclerview_columns);
-		int valueInPixels = (int) getResources().getDimension(R.dimen.activity_vertical_margin) / 2;
-		recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columns));
-		recyclerView.addItemDecoration(new GridSpacingItemDecoration(columns, valueInPixels, valueInPixels, valueInPixels));
+		updateItemDecorator();
 
 		String title = getString(R.string.app_name);
 
 		/* If we don't have a parent, get all roots */
-		List<KnodelNodeAdvanced> originalList;
 		if (parent == null)
 		{
 			originalList = nodeManager.getAllRoots();
@@ -103,6 +103,28 @@ public class NodeFragment extends Fragment
 		recyclerView.setAdapter(adapter);
 
 		return view;
+	}
+
+	private void updateItemDecorator()
+	{
+		int columns = getResources().getInteger(R.integer.node_recyclerview_columns);
+		int valueInPixels = (int) getResources().getDimension(R.dimen.activity_vertical_margin) / 2;
+		recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columns));
+
+		if (decoration != null)
+			recyclerView.removeItemDecoration(decoration);
+
+		decoration = new GridSpacingItemDecoration(columns, valueInPixels, valueInPixels, valueInPixels);
+		recyclerView.addItemDecoration(decoration);
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		super.onConfigurationChanged(newConfig);
+
+		updateItemDecorator();
+		adapter.notifyDataSetChanged();
 	}
 
 	@Override

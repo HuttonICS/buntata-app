@@ -36,6 +36,7 @@ public abstract class DownloadTask extends AsyncTask<String, Integer, File>
 	private KnodelDatasource           ds;
 	private File                       target;
 	private WeakReference<ProgressBar> progressBar;
+	private boolean                    includeVideos;
 
 	/**
 	 * Creates a new instance of the download task
@@ -44,10 +45,11 @@ public abstract class DownloadTask extends AsyncTask<String, Integer, File>
 	 * @param ds          The data source
 	 * @param target      The target file (the local zip file)
 	 */
-	public DownloadTask(ProgressBar progressBar, KnodelDatasource ds, File target)
+	public DownloadTask(ProgressBar progressBar, boolean includeVideos, KnodelDatasource ds, File target)
 	{
 		this.ds = ds;
 		this.target = target;
+		this.includeVideos = includeVideos;
 		progressBar.setProgress(0);
 		this.progressBar = new WeakReference<>(progressBar);
 	}
@@ -80,7 +82,12 @@ public abstract class DownloadTask extends AsyncTask<String, Integer, File>
 
 			// this will be useful to display download percentage
 			// might be -1: server did not report the length
-			int fileLength = (int) ds.getSize();
+			long fileLength;
+
+			if (includeVideos)
+				fileLength = ds.getSizeTotal();
+			else
+				fileLength = ds.getSizeNoVideo();
 
 			// download the file
 			input = connection.getInputStream();

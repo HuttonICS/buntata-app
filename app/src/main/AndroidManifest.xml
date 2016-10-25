@@ -26,7 +26,8 @@
 		android:label="@string/app_name"
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
-		<activity android:name=".activity.MainActivity">
+		<activity android:name=".activity.MainActivity"
+				  android:configChanges="orientation|screenSize">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 
@@ -40,6 +41,7 @@
 		<activity android:name=".activity.NodeDetailsActivity"/>
 		<activity android:name=".activity.AboutActivity"/>
 		<activity android:name=".activity.ApacheLicenseActivity"/>
+		<activity android:name=".activity.VideoActivity"/>
 	</application>
 
 </manifest>

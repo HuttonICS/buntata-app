@@ -31,7 +31,7 @@ import com.google.android.gms.analytics.*;
 import java.util.*;
 import java.util.concurrent.*;
 
-import uk.ac.hutton.ics.knodel.R;
+import uk.ac.hutton.ics.knodel.*;
 import uk.ac.hutton.ics.knodel.util.*;
 
 /**
@@ -50,6 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity
 	 * The Google Analytics property id
 	 */
 	private static String PROPERTY_ID = null;
+	protected Toolbar toolbar;
 
 	public enum TrackerName
 	{
@@ -107,7 +108,7 @@ public abstract class BaseActivity extends AppCompatActivity
 		}
 		if (toolbarId != null)
 		{
-			Toolbar toolbar = (Toolbar) findViewById(toolbarId);
+			toolbar = (Toolbar) findViewById(toolbarId);
 			setSupportActionBar(toolbar);
 		}
 	}

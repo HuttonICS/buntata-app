@@ -92,7 +92,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 	@Override
 	public void onBindViewHolder(final ViewHolder holder, int position)
 	{
-		KnodelNodeAdvanced item = dataset.get(position);
+		final KnodelNodeAdvanced item = dataset.get(position);
 
 		boolean foundImage = false;
 
@@ -126,7 +126,10 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		/* If no image is found */
 		if (!foundImage)
 		{
-			holder.image.setImageResource(R.drawable.missing_image);
+			Picasso.with(context)
+				   .load(R.drawable.missing_image)
+				   .into(holder.image);
+//			holder.image.setImageResource(R.drawable.missing_image);
 			holder.image.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 
 			/* Wait for the image to be loaded to get the width */
@@ -269,12 +272,32 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		@SuppressWarnings("unchecked")
 		protected void publishResults(CharSequence constraint, FilterResults results)
 		{
-			/* Clear everything */
-			adapter.dataset.clear();
+			/* Get the new items that match the search query */
+			List<KnodelNodeAdvanced> newDataset = (ArrayList<KnodelNodeAdvanced>) results.values;
 
-			/* Add the new data. The two separate notify events are necessary to force a full re-layout of all items */
-			adapter.dataset.addAll((ArrayList<KnodelNodeAdvanced>) results.values);
-			adapter.notifyDataSetChanged();
+			/* If the new data is smaller (items have been removed), then tell the adapter */
+			if (dataset.size() > newDataset.size())
+			{
+				/* Remove each item that is no longer in the dataset with the default transition */
+				for (int i = dataset.size() - 1; i >= 0; i--)
+				{
+					if (!newDataset.contains(dataset.get(i)))
+						adapter.notifyItemRemoved(i);
+				}
+			}
+			/* Else, the new data is larger (items have been added) */
+			else
+			{
+				/* Insert each item that's new to the dataset with the default transition */
+				for (int i = 0; i < newDataset.size(); i++)
+				{
+					if (!adapter.dataset.contains(newDataset.get(i)))
+						adapter.notifyItemInserted(i);
+				}
+			}
+
+			/* Remember the new dataset */
+			adapter.dataset = new ArrayList<>(newDataset);
 		}
 	}
 }

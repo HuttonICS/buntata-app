@@ -19,7 +19,6 @@ package uk.ac.hutton.ics.knodel.database.entity;
 import java.util.*;
 
 import jhi.knodel.resource.*;
-import uk.ac.hutton.ics.knodel.adapter.*;
 
 /**
  * @author Sebastian Raubach
@@ -64,7 +63,8 @@ public class KnodelDatasourceAdvanced extends KnodelDatasource
 		result.setContact(ds.getContact());
 		result.setDataProvider(ds.getDataProvider());
 		result.setVersionNumber(ds.getVersionNumber());
-		result.setSize(ds.getSize());
+		result.setSizeTotal(ds.getSizeTotal());
+		result.setSizeNoVideo(ds.getSizeNoVideo());
 		result.setIcon(ds.getIcon());
 		result.setCreatedOn(ds.getCreatedOn());
 		result.setUpdatedOn(ds.getUpdatedOn());

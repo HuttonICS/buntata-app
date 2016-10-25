@@ -193,7 +193,7 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 			case REQUEST_CODE_INTRO:
 				if (resultCode == RESULT_OK)
 				{
-					PreferenceUtils.setPreferenceAsBoolean(this, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, true);
+//					PreferenceUtils.setPreferenceAsBoolean(this, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, true);
 				}
 				else
 				{

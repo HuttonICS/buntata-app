@@ -41,8 +41,8 @@ public abstract class DrawerActivity extends BaseActivity
 	protected static final int REQUEST_DATA_SOURCE = 1000;
 	protected static final int REQUEST_PREFS       = 1001;
 
-	private ActionBarDrawerToggle drawerToggle;
-	private DrawerLayout          drawerLayout;
+	protected ActionBarDrawerToggle drawerToggle;
+	private   DrawerLayout          drawerLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

@@ -127,7 +127,7 @@ public class AboutActivity extends BaseActivity
 		{
 			super(fm);
 
-			this.titles = new String[]{context.getString(R.string.about_tab_information), context.getString(R.string.about_tab_developers), context.getString(R.string.about_tab_license)};
+			this.titles = new String[]{context.getString(R.string.about_tab_information), context.getString(R.string.about_tab_developers), context.getString(R.string.about_tab_acknowledgements), context.getString(R.string.about_tab_license)};
 		}
 
 		@Override
@@ -139,7 +139,7 @@ public class AboutActivity extends BaseActivity
 		@Override
 		public int getCount()
 		{
-			return 3;
+			return 4;
 		}
 
 		@Override
@@ -152,6 +152,8 @@ public class AboutActivity extends BaseActivity
 				case 1:
 					return new AboutDeveloperFragment();
 				case 2:
+					return new AboutAcknowledgementsFragment();
+				case 3:
 					return new AboutLicenseFragment();
 			}
 

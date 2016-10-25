@@ -140,9 +140,7 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
 		PICASSO("Picasso", "Square", "Apache License, Version 2.0", "https://github.com/square/picasso"),
 		RESTLET("Restlet", "Restlet", "Apache License, Version 2.0", "https://github.com/restlet/restlet-framework-java"),
 		SECTIONED_RECYCLERVIEW("Sectioned RecyclerView", "Aidan Follestad", "Apache License, Version 2.0", "https://github.com/afollestad/sectioned-recyclerview"),
-		SLF4J("slf4j", "QOS.ch", "MIT license", "https://github.com/qos-ch/slf4j"),
-		TRANSITIONS_EVERYWHERE("Transitions-Everywhere", "andkulikov", "Apache License, Version 2.0", "https://github.com/andkulikov/Transitions-Everywhere"),
-		ZT_ZIP("zt-zip", "ZeroTurnaround LLC.", "Apache License, Version 2.0", "https://github.com/zeroturnaround/zt-zip");
+		TRANSITIONS_EVERYWHERE("Transitions-Everywhere", "andkulikov", "Apache License, Version 2.0", "https://github.com/andkulikov/Transitions-Everywhere");
 
 		String name;
 		String author;

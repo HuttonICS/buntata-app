@@ -70,7 +70,7 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration
 		/* Else, there's an item to the left, add spacing */
 		else
 		{
-			outRect.left = column * spacing / spanCount;
+			outRect.left = spacing / 2;
 		}
 		/* If this is the last column, add the right margin */
 		if (column == spanCount - 1)
@@ -80,7 +80,7 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration
 		/* Else, there's an item to the right, add spacing*/
 		else
 		{
-			outRect.right = spacing - (column + 1) * spacing / spanCount;
+			outRect.right = spacing / 2;
 		}
 		/* If this is the first row, add the top margin */
 		if (position < spanCount)
