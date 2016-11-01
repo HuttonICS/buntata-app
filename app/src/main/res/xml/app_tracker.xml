@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2016 Information & Computational Sciences, The James Hutton Institute
+  ~ Copyright 2016 Information & Computational Sciences, The James Hutton Institute
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -33,5 +33,5 @@
     <!-- How long a session exists before giving up -->
     <integer name="ga_sessionTimeout">-1</integer>
 
-    <screenName name="uk.ac.hutton.ics.knodel.activity.BaseActivity">Knodel Base Activity</screenName >
+    <screenName name="uk.ac.hutton.ics.buntata.activity.BaseActivity">Buntàta Base Activity</screenName>
 </resources>

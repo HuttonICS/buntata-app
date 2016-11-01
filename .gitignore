@@ -7,3 +7,6 @@
 /build
 /captures
 .externalNativeBuild
+
+*/release.properties
+/app/buntata.jks

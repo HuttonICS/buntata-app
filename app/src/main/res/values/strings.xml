@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016 Information & Computational Sciences, The James Hutton Institute
+  ~ Copyright 2016 Information & Computational Sciences, The James Hutton Institute
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
   -->
 
 <resources>
-	<string name="app_name" translatable="false">Knödel</string>
+	<string name="app_name" translatable="false">Buntàta</string>
 	<string name="title_activity_about">About</string>
 	<string name="title_activity_datasource">Data sources</string>
 
@@ -28,6 +28,7 @@
 	<string name="menu_about">About</string>
 
 	<string name="menu_action_search">Search</string>
+	<string name="menu_action_zoom">Zoom</string>
 
 	<string name="drawer_open">Open navigation drawer</string>
 	<string name="drawer_close">Close navigation drawer</string>
@@ -68,9 +69,9 @@
 
 	<string name="about_information_text">Something about the app here. This is just a placeholder to see what it\'ll look like.</string>
 
-	<string name="google_play_url" translatable="false">https://play.google.com/store/apps/details?id=uk.ac.hutton.ics.knodel</string>
+	<string name="google_play_url" translatable="false">https://play.google.com/store/apps/details?id=uk.ac.hutton.ics.buntata</string>
 
-	<string name="contact_email_subject" translatable="false">Knödel</string>
+	<string name="contact_email_subject" translatable="false">Buntàta</string>
 	<string name="contact_email_address" translatable="false">sebastian.raubach@hutton.ac.uk</string>
 	<string name="contact_email_dialog_title">Send email</string>
 
@@ -98,4 +99,13 @@
 
 	<string name="label_eula_commercial">EULA for commercial users</string>
 	<string name="label_eula_consumer">EULA for consumers</string>
+
+	<string name="acknowledgements_jhi_text">This app has been developed at the James Hutton Institute</string>
+	<string name="acknowledgements_st_andrews_text">In collaboration with the University of St. Andrews</string>
+	<string name="acknowledgements_bbsrc_text">With funding by the Biotechnology and Biological Sciences Research Council</string>
+	<string name="acknowledgements_jhi_url">http://www.hutton.ac.uk</string>
+	<string name="acknowledgements_st_andrews_url">https://www.st-andrews.ac.uk/</string>
+	<string name="acknowledgements_bbsrc_url">http://www.bbsrc.ac.uk/</string>
+
+	<string name="node_instructions">Select the item that you want to investigate.</string>
 </resources>

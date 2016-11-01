@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-  ~ Copyright (c) 2016 Information & Computational Sciences, The James Hutton Institute
+  ~ Copyright 2016 Information & Computational Sciences, The James Hutton Institute
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:layout_gravity="center"
+	android:fitsSystemWindows="true"
 	android:orientation="vertical">
 
 	<!-- THIS HAS TO GO INTO ANY LAYOUT OF ANY ACTIVITY THAT HAS A TOOLBAR! -->
@@ -28,8 +29,9 @@
 	<!-- END -->
 
 	<fragment
-		android:name="uk.ac.hutton.ics.knodel.fragment.DatasourceFragment"
+		android:name="uk.ac.hutton.ics.buntata.fragment.DatasourceFragment"
 		android:id="@+id/datasource_fragment"
+		android:fitsSystemWindows="true"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"/>
 
