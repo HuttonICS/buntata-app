@@ -26,7 +26,7 @@ import android.view.*;
 import java.util.*;
 
 import butterknife.*;
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 import me.relex.circleindicator.*;
 import uk.ac.hutton.ics.buntata.R;
 import uk.ac.hutton.ics.buntata.adapter.*;
@@ -71,7 +71,7 @@ public class NodeDetailsActivity extends BaseActivity
 		setSupportActionBar(toolbar);
 
 		/* Get the node */
-		KnodelNode node = new NodeManager(this, datasourceId).getById(nodeId);
+		BuntataNode node = new NodeManager(this, datasourceId).getById(nodeId);
 
 		/* Set the toolbar as the action bar */
 		if (getSupportActionBar() != null)
@@ -87,13 +87,13 @@ public class NodeDetailsActivity extends BaseActivity
 		}
 
 		/* Get all the media */
-		List<KnodelMediaAdvanced> media = mediaManager.getForNode(null, nodeId);
-		Map<String, List<KnodelMediaAdvanced>> splitByType = mediaManager.splitByType(media);
+		List<BuntataMediaAdvanced> media = mediaManager.getForNode(null, nodeId);
+		Map<String, List<BuntataMediaAdvanced>> splitByType = mediaManager.splitByType(media);
 
-		if (splitByType.get(KnodelMediaType.TYPE_IMAGE).size() > 0)
+		if (splitByType.get(BuntataMediaType.TYPE_IMAGE).size() > 0)
 		{
 			/* Set to the pager */
-			final ImagePagerAdapter adapter = new ImagePagerAdapter(getSupportFragmentManager(), datasourceId, splitByType.get(KnodelMediaType.TYPE_IMAGE));
+			final ImagePagerAdapter adapter = new ImagePagerAdapter(getSupportFragmentManager(), datasourceId, splitByType.get(BuntataMediaType.TYPE_IMAGE));
 			pager.setAdapter(adapter);
 			circleIndicator.setViewPager(pager);
 		}
@@ -110,11 +110,11 @@ public class NodeDetailsActivity extends BaseActivity
 		}
 
 		/* Get all the attributes */
-		List<KnodelAttributeValueAdvanced> attributeValues = new AttributeValueManager(this, datasourceId).getForNode(nodeId);
+		List<BuntataAttributeValueAdvanced> attributeValues = new AttributeValueManager(this, datasourceId).getForNode(nodeId);
 
 		/* Set them to the recycler view */
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
-		recyclerView.setAdapter(new AttributeValueVideoAdapter(this, recyclerView, datasourceId, attributeValues, splitByType.get(KnodelMediaType.TYPE_VIDEO)));
+		recyclerView.setAdapter(new AttributeValueVideoAdapter(this, recyclerView, datasourceId, attributeValues, splitByType.get(BuntataMediaType.TYPE_VIDEO)));
 
 		/* Set the separator width */
 		int valueInPixels = (int) getResources().getDimension(R.dimen.activity_vertical_margin) / 2;

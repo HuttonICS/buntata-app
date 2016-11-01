@@ -34,7 +34,7 @@ public class DeveloperAdapter extends RecyclerView.Adapter<DeveloperAdapter.View
 
 	static class ViewHolder extends RecyclerView.ViewHolder
 	{
-		View     view;
+		View view;
 		@BindView(R.id.developer_view_name)
 		TextView name;
 		@BindView(R.id.developer_view_title)

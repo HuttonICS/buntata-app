@@ -33,7 +33,8 @@ import java.io.*;
 import java.util.*;
 
 import butterknife.*;
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
+import uk.ac.hutton.ics.buntata.*;
 import uk.ac.hutton.ics.buntata.R;
 import uk.ac.hutton.ics.buntata.activity.*;
 import uk.ac.hutton.ics.buntata.database.entity.*;
@@ -42,7 +43,7 @@ import uk.ac.hutton.ics.buntata.service.*;
 import uk.ac.hutton.ics.buntata.util.*;
 
 /**
- * The {@link DatasourceAdapter} handles the {@link KnodelDatasource}s.
+ * The {@link DatasourceAdapter} handles the {@link BuntataDatasource}s.
  *
  * @author Sebastian Raubach
  */
@@ -51,19 +52,19 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 	private static final int LOCAL  = 0;
 	private static final int REMOTE = 1;
 
-	private Comparator<KnodelDatasourceAdvanced> comparator = new Comparator<KnodelDatasourceAdvanced>()
+	private Comparator<BuntataDatasourceAdvanced> comparator = new Comparator<BuntataDatasourceAdvanced>()
 	{
 		@Override
-		public int compare(KnodelDatasourceAdvanced o1, KnodelDatasourceAdvanced o2)
+		public int compare(BuntataDatasourceAdvanced o1, BuntataDatasourceAdvanced o2)
 		{
 			return o1.getName().compareTo(o2.getName());
 		}
 	};
 
-	private Activity                       context;
-	private List<KnodelDatasourceAdvanced> dataset;
-	private List<KnodelDatasourceAdvanced> local  = new ArrayList<>();
-	private List<KnodelDatasourceAdvanced> remote = new ArrayList<>();
+	private Activity                        context;
+	private List<BuntataDatasourceAdvanced> dataset;
+	private List<BuntataDatasourceAdvanced> local  = new ArrayList<>();
+	private List<BuntataDatasourceAdvanced> remote = new ArrayList<>();
 
 	static abstract class AbstractViewHolder extends RecyclerView.ViewHolder
 	{
@@ -118,7 +119,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		}
 	}
 
-	public DatasourceAdapter(Activity context, List<KnodelDatasourceAdvanced> dataset)
+	public DatasourceAdapter(Activity context, List<BuntataDatasourceAdvanced> dataset)
 	{
 		this.context = context;
 		this.dataset = dataset;
@@ -135,9 +136,9 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 			local.clear();
 			remote.clear();
 
-			for (KnodelDatasourceAdvanced ds : dataset)
+			for (BuntataDatasourceAdvanced ds : dataset)
 			{
-				if (ds.getState() == KnodelDatasourceAdvanced.InstallState.NOT_INSTALLED)
+				if (ds.getState() == BuntataDatasourceAdvanced.InstallState.NOT_INSTALLED)
 					remote.add(ds);
 				else
 					local.add(ds);
@@ -152,7 +153,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 			if (section == REMOTE && remote.size() != 0)
 				offset++;
 
-			KnodelDatasourceAdvanced item;
+			BuntataDatasourceAdvanced item;
 			switch (section)
 			{
 				case LOCAL:
@@ -272,7 +273,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		}
 	}
 
-	private KnodelDatasourceAdvanced get(int section, int relativePosition)
+	private BuntataDatasourceAdvanced get(int section, int relativePosition)
 	{
 		switch (section)
 		{
@@ -287,7 +288,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 	@Override
 	public void onBindViewHolder(final AbstractViewHolder h, final int section, final int relativePosition, int absolutePosition)
 	{
-		KnodelDatasource item;
+		BuntataDatasource item;
 
 		switch (section)
 		{
@@ -305,7 +306,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		holder.descriptionView.setText(item.getDescription());
 		holder.sizeView.setText(context.getString(R.string.datasource_size, (item.getSizeNoVideo() / 1024 / 1024), (item.getSizeTotal() / 1024 / 1024)));
 
-		final KnodelDatasourceAdvanced ds = get(section, relativePosition);
+		final BuntataDatasourceAdvanced ds = get(section, relativePosition);
 
 		/* Set the state icon */
 		int resource;
@@ -354,7 +355,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 			public boolean onLongClick(View v)
 			{
 				/* If it's not installed or if it's currently downloading, do nothing */
-				if ((ds.getState() == KnodelDatasourceAdvanced.InstallState.NOT_INSTALLED) || holder.isDownloading)
+				if ((ds.getState() == BuntataDatasourceAdvanced.InstallState.NOT_INSTALLED) || holder.isDownloading)
 					return true;
 
 				/* Show the option do delete the data source */
@@ -369,7 +370,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 							PreferenceUtils.removePreference(context, PreferenceUtils.PREFS_SELECTED_DATASOURCE_ID);
 
 						/* Remember that this isn't downloaded anymore */
-						ds.setState(KnodelDatasourceAdvanced.InstallState.NOT_INSTALLED);
+						ds.setState(BuntataDatasourceAdvanced.InstallState.NOT_INSTALLED);
 
 						try
 						{
@@ -450,7 +451,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		});
 	}
 
-	private void initDownload(boolean includeVideos, final ItemViewHolder holder, final KnodelDatasourceAdvanced ds, final int section, final int relativePosition)
+	private void initDownload(boolean includeVideos, final ItemViewHolder holder, final BuntataDatasourceAdvanced ds, final int section, final int relativePosition)
 	{
 		holder.progressBar.setVisibility(View.VISIBLE);
 		holder.isDownloading = true;
@@ -471,7 +472,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 			public void onSuccess(File result)
 			{
 				holder.progressBar.setVisibility(View.GONE);
-				ds.setState(KnodelDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
+				ds.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
 				holder.isDownloading = false;
 
 				PreferenceUtils.setPreferenceAsInt(context, PreferenceUtils.PREFS_SELECTED_DATASOURCE_ID, ds.getId());

@@ -21,8 +21,9 @@ import android.content.*;
 import android.widget.*;
 
 import java.io.*;
+import java.util.*;
 
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 import retrofit2.*;
 import uk.ac.hutton.ics.buntata.*;
 import uk.ac.hutton.ics.buntata.thread.*;
@@ -95,17 +96,17 @@ public class DatasourceService
 	 * @param context  The current context
 	 * @param callback The {@link RemoteCallback} to call when the query returns
 	 */
-	public static void getAll(final Context context, boolean cancelable, final RemoteCallback<KnodelDatasourceList> callback)
+	public static void getAll(final Context context, boolean cancelable, final RemoteCallback<List<BuntataDatasource>> callback)
 	{
-		final Call<KnodelDatasourceList> result = PROVIDER.getAll();
+		final Call<List<BuntataDatasource>> result = PROVIDER.getAll();
 
 		final ProgressDialog dialog = prepareProgressBar(context, result, cancelable);
 		dialog.show();
 
-		result.enqueue(new Callback<KnodelDatasourceList>()
+		result.enqueue(new Callback<List<BuntataDatasource>>()
 		{
 			@Override
-			public void onResponse(Response<KnodelDatasourceList> response)
+			public void onResponse(Response<List<BuntataDatasource>> response)
 			{
 				dialog.dismiss();
 				callback.onSuccess(response.body());
@@ -129,7 +130,7 @@ public class DatasourceService
 	 * @param ds            The current data source
 	 * @param callback      The {@link RemoteCallback} to call when the query returns
 	 */
-	public static void download(final Context context, boolean includeVideos, ProgressBar progressBar, final KnodelDatasource ds, final RemoteCallback<File> callback)
+	public static void download(final Context context, boolean includeVideos, ProgressBar progressBar, final BuntataDatasource ds, final RemoteCallback<File> callback)
 	{
 		String url = getBaseUrl(context) + String.format(DATASOURCE_BASE_URL + DATASOURCE_DOWNLOAD_URL, ds.getId(), Boolean.toString(includeVideos));
 

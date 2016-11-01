@@ -22,18 +22,18 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 import uk.ac.hutton.ics.buntata.database.*;
 import uk.ac.hutton.ics.buntata.util.*;
 
 /**
- * The {@link DatasourceManager} extends {@link AbstractManager} and can be used to obtain {@link KnodelDatasource}s from the database.
+ * The {@link DatasourceManager} extends {@link AbstractManager} and can be used to obtain {@link BuntataDatasource}s from the database.
  *
  * @author Sebastian Raubach
  */
-public class DatasourceManager extends AbstractManager<KnodelDatasource>
+public class DatasourceManager extends AbstractManager<BuntataDatasource>
 {
-	private static final String[] ALL_FIELDS = {KnodelDatasource.FIELD_ID, KnodelDatasource.FIELD_NAME, KnodelDatasource.FIELD_DESCRIPTION, KnodelDatasource.FIELD_VERSION_NUMBER, KnodelDatasource.FIELD_DATA_PROVIDER, KnodelDatasource.FIELD_CONTACT, KnodelDatasource.FIELD_ICON, KnodelDatasource.FIELD_SIZE_TOTAL, KnodelDatasource.FIELD_SIZE_NO_VIDEO, KnodelDatasource.FIELD_CREATED_ON, KnodelDatasource.FIELD_UPDATED_ON};
+	private static final String[] ALL_FIELDS = {BuntataDatasource.FIELD_ID, BuntataDatasource.FIELD_NAME, BuntataDatasource.FIELD_DESCRIPTION, BuntataDatasource.FIELD_VERSION_NUMBER, BuntataDatasource.FIELD_DATA_PROVIDER, BuntataDatasource.FIELD_CONTACT, BuntataDatasource.FIELD_ICON, BuntataDatasource.FIELD_SIZE_TOTAL, BuntataDatasource.FIELD_SIZE_NO_VIDEO, BuntataDatasource.FIELD_CREATED_ON, BuntataDatasource.FIELD_UPDATED_ON};
 
 	public DatasourceManager(Context context, int datasourceId)
 	{
@@ -41,7 +41,7 @@ public class DatasourceManager extends AbstractManager<KnodelDatasource>
 	}
 
 	@Override
-	protected DatabaseObjectParser<KnodelDatasource> getDefaultParser()
+	protected DatabaseObjectParser<BuntataDatasource> getDefaultParser()
 	{
 		return Parser.Inst.get();
 	}
@@ -49,7 +49,7 @@ public class DatasourceManager extends AbstractManager<KnodelDatasource>
 	@Override
 	protected String getTableName()
 	{
-		return KnodelDatasource.TABLE_NAME;
+		return BuntataDatasource.TABLE_NAME;
 	}
 
 	@Override
@@ -60,14 +60,14 @@ public class DatasourceManager extends AbstractManager<KnodelDatasource>
 
 	/**
 	 * This method deviates from the implementation of the {@link AbstractManager}. It doesn't actually query any internal database, but rather just
-	 * checks which local Sqlite files are available. It'll then connect to them and get the {@link KnodelDatasource} from each.
+	 * checks which local Sqlite files are available. It'll then connect to them and get the {@link BuntataDatasource} from each.
 	 *
-	 * @return The {@link List} of {@link KnodelDatasource}s that are installed locally.
+	 * @return The {@link List} of {@link BuntataDatasource}s that are installed locally.
 	 */
 	@Override
-	public List<KnodelDatasource> getAll()
+	public List<BuntataDatasource> getAll()
 	{
-		List<KnodelDatasource> result = new ArrayList<>();
+		List<BuntataDatasource> result = new ArrayList<>();
 		File dataFolder = new File(context.getFilesDir(), "data");
 
 		File[] folders = dataFolder.listFiles(new FileFilter()
@@ -88,7 +88,7 @@ public class DatasourceManager extends AbstractManager<KnodelDatasource>
 					int id = Integer.parseInt(folder.getName());
 
 					DatasourceManager m = new DatasourceManager(context, id);
-					KnodelDatasource ds = m.getById(id);
+					BuntataDatasource ds = m.getById(id);
 
 					if (ds != null)
 						result.add(ds);
@@ -118,13 +118,13 @@ public class DatasourceManager extends AbstractManager<KnodelDatasource>
 	}
 
 	/**
-	 * Checks if the given {@link KnodelDatasource} given as the first argument is newer than the one given as the second argument.
+	 * Checks if the given {@link BuntataDatasource} given as the first argument is newer than the one given as the second argument.
 	 *
-	 * @param ds  The {@link KnodelDatasource} to check
-	 * @param old The {@link KnodelDatasource} to use as a reference
-	 * @return <code>true</code> if the given {@link KnodelDatasource} given as the first argument is newer than the one given as the second argument
+	 * @param ds  The {@link BuntataDatasource} to check
+	 * @param old The {@link BuntataDatasource} to use as a reference
+	 * @return <code>true</code> if the given {@link BuntataDatasource} given as the first argument is newer than the one given as the second argument
 	 */
-	public static boolean isNewer(KnodelDatasource ds, KnodelDatasource old)
+	public static boolean isNewer(BuntataDatasource ds, BuntataDatasource old)
 	{
 		int newVersion = ds.getVersionNumber();
 		int oldVersion = ds.getVersionNumber();
@@ -180,7 +180,7 @@ public class DatasourceManager extends AbstractManager<KnodelDatasource>
 		}
 	}
 
-	private static class Parser extends DatabaseObjectParser<KnodelDatasource>
+	private static class Parser extends DatabaseObjectParser<BuntataDatasource>
 	{
 		static final class Inst
 		{
@@ -205,17 +205,17 @@ public class DatasourceManager extends AbstractManager<KnodelDatasource>
 		}
 
 		@Override
-		public KnodelDatasource parse(Context context, int datasourceId, DatabaseInternal.AdvancedCursor cursor) throws ParseException
+		public BuntataDatasource parse(Context context, int datasourceId, DatabaseInternal.AdvancedCursor cursor) throws ParseException
 		{
-			return new KnodelDatasource(cursor.getInt(KnodelDatasource.FIELD_ID), new Date(cursor.getLong(KnodelDatasource.FIELD_CREATED_ON)), new Date(cursor.getLong(KnodelDatasource.FIELD_UPDATED_ON)))
-					.setName(cursor.getString(KnodelDatasource.FIELD_NAME))
-					.setDescription(cursor.getString(KnodelDatasource.FIELD_DESCRIPTION))
-					.setVersionNumber(cursor.getInt(KnodelDatasource.FIELD_VERSION_NUMBER))
-					.setDataProvider(cursor.getString(KnodelDatasource.FIELD_DATA_PROVIDER))
-					.setContact(cursor.getString(KnodelDatasource.FIELD_CONTACT))
-					.setIcon(cursor.getString(KnodelDatasource.FIELD_ICON))
-					.setSizeTotal(cursor.getInt(KnodelDatasource.FIELD_SIZE_TOTAL))
-					.setSizeNoVideo(cursor.getInt(KnodelDatasource.FIELD_SIZE_NO_VIDEO));
+			return new BuntataDatasource(cursor.getInt(BuntataDatasource.FIELD_ID), new Date(cursor.getLong(BuntataDatasource.FIELD_CREATED_ON)), new Date(cursor.getLong(BuntataDatasource.FIELD_UPDATED_ON)))
+					.setName(cursor.getString(BuntataDatasource.FIELD_NAME))
+					.setDescription(cursor.getString(BuntataDatasource.FIELD_DESCRIPTION))
+					.setVersionNumber(cursor.getInt(BuntataDatasource.FIELD_VERSION_NUMBER))
+					.setDataProvider(cursor.getString(BuntataDatasource.FIELD_DATA_PROVIDER))
+					.setContact(cursor.getString(BuntataDatasource.FIELD_CONTACT))
+					.setIcon(cursor.getString(BuntataDatasource.FIELD_ICON))
+					.setSizeTotal(cursor.getInt(BuntataDatasource.FIELD_SIZE_TOTAL))
+					.setSizeNoVideo(cursor.getInt(BuntataDatasource.FIELD_SIZE_NO_VIDEO));
 		}
 	}
 }

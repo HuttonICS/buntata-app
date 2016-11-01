@@ -60,7 +60,7 @@ public class VideoActivity extends BaseActivity implements MediaController.Media
 
 		/* Get parameters */
 		Bundle args = getIntent().getExtras();
-		KnodelMediaAdvanced media = (KnodelMediaAdvanced) args.getSerializable(PARAM_MEDIA);
+		BuntataMediaAdvanced media = (BuntataMediaAdvanced) args.getSerializable(PARAM_MEDIA);
 		int datasourceId = args.getInt(PARAM_DATASOURCE_ID, -1);
 
 		/* Prompt the user to select at least one data source */

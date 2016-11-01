@@ -38,7 +38,7 @@ import uk.ac.hutton.ics.buntata.util.*;
 
 
 /**
- * The {@link NodeAdapter} takes care of the {@link KnodelNodeAdvanced} objects.
+ * The {@link NodeAdapter} takes care of the {@link BuntataNodeAdvanced} objects.
  *
  * @author Sebastian Raubach
  */
@@ -46,12 +46,12 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 {
 	private static final boolean USE_DIRTY_HACK_TO_FIX_SHARED_ELEMENT_TRANSITION = true;
 
-	private Context                  context;
-	private RecyclerView             parent;
-	private int                      datasourceId;
-	private List<KnodelNodeAdvanced> dataset;
-	private UserFilter               userFilter;
-	private NodeManager              nodeManager;
+	private Context                   context;
+	private RecyclerView              parent;
+	private int                       datasourceId;
+	private List<BuntataNodeAdvanced> dataset;
+	private UserFilter                userFilter;
+	private NodeManager               nodeManager;
 
 	private int defaultBackgroundColor;
 	private int textColorLight;
@@ -72,7 +72,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 
 	static class ViewHolder extends RecyclerView.ViewHolder
 	{
-		View      view;
+		View view;
 		@BindView(R.id.node_view_image)
 		ImageView image;
 		@BindView(R.id.node_view_title)
@@ -87,7 +87,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		}
 	}
 
-	public NodeAdapter(Context context, RecyclerView parent, int datasourceId, List<KnodelNodeAdvanced> dataset)
+	public NodeAdapter(Context context, RecyclerView parent, int datasourceId, List<BuntataNodeAdvanced> dataset)
 	{
 		this.context = context;
 		this.parent = parent;
@@ -101,7 +101,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		this.textColorDark = ContextCompat.getColor(context, android.R.color.primary_text_light);
 	}
 
-	public KnodelNodeAdvanced getAtPosition(int position)
+	public BuntataNodeAdvanced getAtPosition(int position)
 	{
 		return dataset.get(position);
 	}
@@ -116,7 +116,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 	@Override
 	public void onBindViewHolder(final ViewHolder holder, int position)
 	{
-		final KnodelNodeAdvanced item = dataset.get(position);
+		final BuntataNodeAdvanced item = dataset.get(position);
 
 		boolean foundImage = false;
 
@@ -162,7 +162,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		File imagePath = null;
 		if (item.getMedia().size() > 0)
 		{
-			for (KnodelMediaAdvanced m : item.getMedia())
+			for (BuntataMediaAdvanced m : item.getMedia())
 			{
 				if (m.getMediaType() != null && "Image".equals(m.getMediaType().getName()) && m.getInternalLink() != null)
 				{
@@ -244,7 +244,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 	 * @param transitionRoot The {@link View} showing the image. It's used to start the scene transition
 	 * @param node           The actual node that has been clicked.
 	 */
-	public abstract void onNodeClicked(View transitionRoot, View title, KnodelNodeAdvanced node);
+	public abstract void onNodeClicked(View transitionRoot, View title, BuntataNodeAdvanced node);
 
 	@Override
 	public Filter getFilter()
@@ -259,11 +259,11 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 	{
 		private final NodeAdapter adapter;
 
-		private final List<KnodelNodeAdvanced> originalList;
+		private final List<BuntataNodeAdvanced> originalList;
 
-		private final List<KnodelNodeAdvanced> filteredList;
+		private final List<BuntataNodeAdvanced> filteredList;
 
-		private UserFilter(NodeAdapter adapter, List<KnodelNodeAdvanced> originalList)
+		private UserFilter(NodeAdapter adapter, List<BuntataNodeAdvanced> originalList)
 		{
 			super();
 			this.adapter = adapter;
@@ -285,7 +285,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 			}
 			else
 			{
-				for (final KnodelNodeAdvanced item : originalList)
+				for (final BuntataNodeAdvanced item : originalList)
 				{
 					if (nodeManager.hasChildWithContent(item, filterPattern))
 					{
@@ -303,7 +303,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		protected void publishResults(CharSequence constraint, FilterResults results)
 		{
 			/* Get the new items that match the search query */
-			List<KnodelNodeAdvanced> newDataset = (ArrayList<KnodelNodeAdvanced>) results.values;
+			List<BuntataNodeAdvanced> newDataset = (ArrayList<BuntataNodeAdvanced>) results.values;
 
 			/* If the new data is smaller (items have been removed), then tell the adapter */
 			if (dataset.size() > newDataset.size())

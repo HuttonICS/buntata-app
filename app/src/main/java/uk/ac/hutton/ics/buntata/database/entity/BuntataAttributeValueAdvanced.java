@@ -18,39 +18,39 @@ package uk.ac.hutton.ics.buntata.database.entity;
 
 import java.util.*;
 
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 
 /**
- * {@link KnodelAttributeValueAdvanced} is an advanced version of a {@link KnodelAttributeValue}. In addition to foreign keys it holds a reference to
- * the actual {@link KnodelAttribute} it's associated with.
+ * {@link BuntataAttributeValueAdvanced} is an advanced version of a {@link BuntataAttributeValue}. In addition to foreign keys it holds a reference
+ * to the actual {@link BuntataAttribute} it's associated with.
  *
  * @author Sebastian Raubach
  */
-public class KnodelAttributeValueAdvanced extends KnodelAttributeValue
+public class BuntataAttributeValueAdvanced extends BuntataAttributeValue
 {
-	private KnodelAttribute attribute;
+	private BuntataAttribute attribute;
 
-	public KnodelAttributeValueAdvanced()
+	public BuntataAttributeValueAdvanced()
 	{
 	}
 
-	public KnodelAttributeValueAdvanced(int id, Date createdOn, Date updatedOn)
+	public BuntataAttributeValueAdvanced(int id, Date createdOn, Date updatedOn)
 	{
 		super(id, createdOn, updatedOn);
 	}
 
-	public KnodelAttributeValueAdvanced(int id, Date createdOn, Date updatedOn, Integer nodeId, Integer attributeId, String value, KnodelAttribute attribute)
+	public BuntataAttributeValueAdvanced(int id, Date createdOn, Date updatedOn, Integer nodeId, Integer attributeId, String value, BuntataAttribute attribute)
 	{
 		super(id, createdOn, updatedOn, nodeId, attributeId, value);
 		this.attribute = attribute;
 	}
 
-	public KnodelAttribute getAttribute()
+	public BuntataAttribute getAttribute()
 	{
 		return attribute;
 	}
 
-	public KnodelAttributeValueAdvanced setAttribute(KnodelAttribute attribute)
+	public BuntataAttributeValueAdvanced setAttribute(BuntataAttribute attribute)
 	{
 		this.attribute = attribute;
 		return this;
@@ -59,7 +59,7 @@ public class KnodelAttributeValueAdvanced extends KnodelAttributeValue
 	@Override
 	public String toString()
 	{
-		return "KnodelAttributeValueAdvanced{" +
+		return "BuntataAttributeValueAdvanced{" +
 				"attribute=" + attribute +
 				"} " + super.toString();
 	}

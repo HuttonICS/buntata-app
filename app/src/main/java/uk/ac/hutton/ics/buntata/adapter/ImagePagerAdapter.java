@@ -28,11 +28,11 @@ import uk.ac.hutton.ics.buntata.fragment.*;
  */
 public class ImagePagerAdapter extends FragmentStatePagerAdapter
 {
-	private final List<KnodelMediaAdvanced> dataset;
-	private final int                       datasourceId;
+	private final List<BuntataMediaAdvanced> dataset;
+	private final int                        datasourceId;
 
 
-	public ImagePagerAdapter(FragmentManager fm, int datasourceId, List<KnodelMediaAdvanced> dataset)
+	public ImagePagerAdapter(FragmentManager fm, int datasourceId, List<BuntataMediaAdvanced> dataset)
 	{
 		super(fm);
 		this.datasourceId = datasourceId;

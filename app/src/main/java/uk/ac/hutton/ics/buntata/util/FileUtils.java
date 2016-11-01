@@ -29,7 +29,7 @@ public class FileUtils
 {
 	public static void deleteDirectoryRecursively(File folder)
 	{
-		if(!folder.exists() || !folder.isDirectory())
+		if (!folder.exists() || !folder.isDirectory())
 			return;
 
 		File[] files = folder.listFiles();

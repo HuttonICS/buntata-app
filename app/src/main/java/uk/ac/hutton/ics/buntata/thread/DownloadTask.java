@@ -23,7 +23,7 @@ import java.io.*;
 import java.lang.ref.*;
 import java.net.*;
 
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 
 /**
  * The {@link DownloadTask} will download a data source zip file.
@@ -33,7 +33,7 @@ import jhi.knodel.resource.*;
 public abstract class DownloadTask extends AsyncTask<String, Integer, File>
 {
 	private Exception                  exception;
-	private KnodelDatasource           ds;
+	private BuntataDatasource          ds;
 	private File                       target;
 	private WeakReference<ProgressBar> progressBar;
 	private boolean                    includeVideos;
@@ -45,7 +45,7 @@ public abstract class DownloadTask extends AsyncTask<String, Integer, File>
 	 * @param ds          The data source
 	 * @param target      The target file (the local zip file)
 	 */
-	public DownloadTask(ProgressBar progressBar, boolean includeVideos, KnodelDatasource ds, File target)
+	public DownloadTask(ProgressBar progressBar, boolean includeVideos, BuntataDatasource ds, File target)
 	{
 		this.ds = ds;
 		this.target = target;

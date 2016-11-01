@@ -20,8 +20,8 @@ import android.content.*;
 import android.widget.*;
 
 /**
- * {@link uk.ac.hutton.ics.buntata.util.ToastUtils} contains utility functions for showing {@link Toast}s. Calling one of
- * these functions will cancel the currently shown {@link Toast} (if any) and show the new one.
+ * {@link uk.ac.hutton.ics.buntata.util.ToastUtils} contains utility functions for showing {@link Toast}s. Calling one of these functions will cancel
+ * the currently shown {@link Toast} (if any) and show the new one.
  *
  * @author Sebastian Raubach
  */

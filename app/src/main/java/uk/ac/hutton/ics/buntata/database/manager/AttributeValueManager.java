@@ -22,18 +22,19 @@ import android.database.*;
 import java.text.*;
 import java.util.*;
 
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 import uk.ac.hutton.ics.buntata.database.*;
 import uk.ac.hutton.ics.buntata.database.entity.*;
 
 /**
- * The {@link AttributeValueManager} extends {@link AbstractManager} and can be used to obtain {@link KnodelAttributeValueAdvanced}s from the database.
+ * The {@link AttributeValueManager} extends {@link AbstractManager} and can be used to obtain {@link BuntataAttributeValueAdvanced}s from the
+ * database.
  *
  * @author Sebastian Raubach
  */
-public class AttributeValueManager extends AbstractManager<KnodelAttributeValueAdvanced>
+public class AttributeValueManager extends AbstractManager<BuntataAttributeValueAdvanced>
 {
-	private static final String[] ALL_FIELDS = {KnodelAttributeValue.FIELD_ID, KnodelAttributeValue.FIELD_ATTRIBUTE_ID, KnodelAttributeValue.FIELD_NODE_ID, KnodelAttributeValue.FIELD_VALUE, KnodelAttributeValue.FIELD_CREATED_ON, KnodelAttributeValue.FIELD_UPDATED_ON};
+	private static final String[] ALL_FIELDS = {BuntataAttributeValue.FIELD_ID, BuntataAttributeValue.FIELD_ATTRIBUTE_ID, BuntataAttributeValue.FIELD_NODE_ID, BuntataAttributeValue.FIELD_VALUE, BuntataAttributeValue.FIELD_CREATED_ON, BuntataAttributeValue.FIELD_UPDATED_ON};
 
 	public AttributeValueManager(Context context, int datasourceId)
 	{
@@ -41,7 +42,7 @@ public class AttributeValueManager extends AbstractManager<KnodelAttributeValueA
 	}
 
 	@Override
-	protected DatabaseObjectParser<KnodelAttributeValueAdvanced> getDefaultParser()
+	protected DatabaseObjectParser<BuntataAttributeValueAdvanced> getDefaultParser()
 	{
 		return Parser.Inst.get();
 	}
@@ -49,7 +50,7 @@ public class AttributeValueManager extends AbstractManager<KnodelAttributeValueA
 	@Override
 	protected String getTableName()
 	{
-		return KnodelAttributeValue.TABLE_NAME;
+		return BuntataAttributeValue.TABLE_NAME;
 	}
 
 	@Override
@@ -58,9 +59,9 @@ public class AttributeValueManager extends AbstractManager<KnodelAttributeValueA
 		return ALL_FIELDS;
 	}
 
-	public List<KnodelAttributeValueAdvanced> getForNode(int nodeId)
+	public List<BuntataAttributeValueAdvanced> getForNode(int nodeId)
 	{
-		List<KnodelAttributeValueAdvanced> result = new ArrayList<>();
+		List<BuntataAttributeValueAdvanced> result = new ArrayList<>();
 
 		try
 		{
@@ -92,7 +93,7 @@ public class AttributeValueManager extends AbstractManager<KnodelAttributeValueA
 		return result;
 	}
 
-	private static class Parser extends DatabaseObjectParser<KnodelAttributeValueAdvanced>
+	private static class Parser extends DatabaseObjectParser<BuntataAttributeValueAdvanced>
 	{
 		static final class Inst
 		{
@@ -117,13 +118,13 @@ public class AttributeValueManager extends AbstractManager<KnodelAttributeValueA
 		}
 
 		@Override
-		public KnodelAttributeValueAdvanced parse(Context context, int datasourceId, DatabaseInternal.AdvancedCursor cursor) throws ParseException
+		public BuntataAttributeValueAdvanced parse(Context context, int datasourceId, DatabaseInternal.AdvancedCursor cursor) throws ParseException
 		{
-			KnodelAttributeValueAdvanced result = new KnodelAttributeValueAdvanced(cursor.getInt(KnodelAttributeValue.FIELD_ID), new Date(cursor.getLong(KnodelAttributeValue.FIELD_CREATED_ON)), new Date(cursor.getLong(KnodelAttributeValue.FIELD_UPDATED_ON)));
+			BuntataAttributeValueAdvanced result = new BuntataAttributeValueAdvanced(cursor.getInt(BuntataAttributeValue.FIELD_ID), new Date(cursor.getLong(BuntataAttributeValue.FIELD_CREATED_ON)), new Date(cursor.getLong(BuntataAttributeValue.FIELD_UPDATED_ON)));
 
-			result.setAttributeId(cursor.getInt(KnodelAttributeValue.FIELD_ATTRIBUTE_ID))
-				  .setNodeId(cursor.getInt(KnodelAttributeValue.FIELD_NODE_ID))
-				  .setValue(cursor.getString(KnodelAttributeValue.FIELD_VALUE));
+			result.setAttributeId(cursor.getInt(BuntataAttributeValue.FIELD_ATTRIBUTE_ID))
+				  .setNodeId(cursor.getInt(BuntataAttributeValue.FIELD_NODE_ID))
+				  .setValue(cursor.getString(BuntataAttributeValue.FIELD_VALUE));
 
 
 			result.setAttribute(new AttributeManager(context, datasourceId).getById(result.getAttributeId()));

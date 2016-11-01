@@ -21,17 +21,17 @@ import android.content.*;
 import java.text.*;
 import java.util.*;
 
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 import uk.ac.hutton.ics.buntata.database.*;
 
 /**
- * The {@link MediaTypeManager} extends {@link AbstractManager} and can be used to obtain {@link KnodelMediaType}s from the database.
+ * The {@link MediaTypeManager} extends {@link AbstractManager} and can be used to obtain {@link BuntataMediaType}s from the database.
  *
  * @author Sebastian Raubach
  */
-public class MediaTypeManager extends AbstractManager<KnodelMediaType>
+public class MediaTypeManager extends AbstractManager<BuntataMediaType>
 {
-	private static final String[] ALL_FIELDS = {KnodelMediaType.FIELD_ID, KnodelMediaType.FIELD_NAME, KnodelMediaType.FIELD_CREATED_ON, KnodelMediaType.FIELD_UPDATED_ON};
+	private static final String[] ALL_FIELDS = {BuntataMediaType.FIELD_ID, BuntataMediaType.FIELD_NAME, BuntataMediaType.FIELD_CREATED_ON, BuntataMediaType.FIELD_UPDATED_ON};
 
 	public MediaTypeManager(Context context, int datasourceId)
 	{
@@ -39,7 +39,7 @@ public class MediaTypeManager extends AbstractManager<KnodelMediaType>
 	}
 
 	@Override
-	protected DatabaseObjectParser<KnodelMediaType> getDefaultParser()
+	protected DatabaseObjectParser<BuntataMediaType> getDefaultParser()
 	{
 		return Parser.Inst.get();
 	}
@@ -47,7 +47,7 @@ public class MediaTypeManager extends AbstractManager<KnodelMediaType>
 	@Override
 	protected String getTableName()
 	{
-		return KnodelMediaType.TABLE_NAME;
+		return BuntataMediaType.TABLE_NAME;
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class MediaTypeManager extends AbstractManager<KnodelMediaType>
 		return ALL_FIELDS;
 	}
 
-	private static class Parser extends DatabaseObjectParser<KnodelMediaType>
+	private static class Parser extends DatabaseObjectParser<BuntataMediaType>
 	{
 		static final class Inst
 		{
@@ -81,10 +81,10 @@ public class MediaTypeManager extends AbstractManager<KnodelMediaType>
 		}
 
 		@Override
-		public KnodelMediaType parse(Context context, int datasourceId, DatabaseInternal.AdvancedCursor cursor) throws ParseException
+		public BuntataMediaType parse(Context context, int datasourceId, DatabaseInternal.AdvancedCursor cursor) throws ParseException
 		{
-			return new KnodelMediaType(cursor.getInt(KnodelMediaType.FIELD_ID), new Date(cursor.getLong(KnodelMediaType.FIELD_CREATED_ON)), new Date(cursor.getLong(KnodelMediaType.FIELD_UPDATED_ON)))
-					.setName(cursor.getString(KnodelMediaType.FIELD_NAME));
+			return new BuntataMediaType(cursor.getInt(BuntataMediaType.FIELD_ID), new Date(cursor.getLong(BuntataMediaType.FIELD_CREATED_ON)), new Date(cursor.getLong(BuntataMediaType.FIELD_UPDATED_ON)))
+					.setName(cursor.getString(BuntataMediaType.FIELD_NAME));
 		}
 	}
 }

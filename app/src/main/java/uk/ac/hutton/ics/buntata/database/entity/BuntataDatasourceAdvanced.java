@@ -18,26 +18,26 @@ package uk.ac.hutton.ics.buntata.database.entity;
 
 import java.util.*;
 
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 
 /**
  * @author Sebastian Raubach
  */
 
-public class KnodelDatasourceAdvanced extends KnodelDatasource
+public class BuntataDatasourceAdvanced extends BuntataDatasource
 {
 	private InstallState state;
 
-	public KnodelDatasourceAdvanced()
+	public BuntataDatasourceAdvanced()
 	{
 	}
 
-	public KnodelDatasourceAdvanced(int id, Date createdOn, Date updatedOn)
+	public BuntataDatasourceAdvanced(int id, Date createdOn, Date updatedOn)
 	{
 		super(id, createdOn, updatedOn);
 	}
 
-	public KnodelDatasourceAdvanced(int id, Date createdOn, Date updatedOn, String name, String description, int versionNumber, String dataProvider, String contact, String icon, long size, InstallState state)
+	public BuntataDatasourceAdvanced(int id, Date createdOn, Date updatedOn, String name, String description, int versionNumber, String dataProvider, String contact, String icon, long size, InstallState state)
 	{
 		super(id, createdOn, updatedOn, name, description, versionNumber, dataProvider, contact, icon, size);
 		this.state = state;
@@ -48,15 +48,15 @@ public class KnodelDatasourceAdvanced extends KnodelDatasource
 		return state;
 	}
 
-	public KnodelDatasourceAdvanced setState(InstallState state)
+	public BuntataDatasourceAdvanced setState(InstallState state)
 	{
 		this.state = state;
 		return this;
 	}
 
-	public static KnodelDatasourceAdvanced create(KnodelDatasource ds)
+	public static BuntataDatasourceAdvanced create(BuntataDatasource ds)
 	{
-		KnodelDatasourceAdvanced result = new KnodelDatasourceAdvanced();
+		BuntataDatasourceAdvanced result = new BuntataDatasourceAdvanced();
 		result.setId(ds.getId());
 		result.setName(ds.getName());
 		result.setDescription(ds.getDescription());
@@ -79,7 +79,7 @@ public class KnodelDatasourceAdvanced extends KnodelDatasource
 	}
 
 	/**
-	 * {@link InstallState} represents the different states a {@link KnodelDatasourceAdvanced} can have locally.
+	 * {@link InstallState} represents the different states a {@link BuntataDatasourceAdvanced} can have locally.
 	 */
 	public enum InstallState
 	{

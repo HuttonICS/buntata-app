@@ -35,30 +35,31 @@ import java.io.*;
 import java.util.*;
 
 import butterknife.*;
+import uk.ac.hutton.ics.buntata.*;
 import uk.ac.hutton.ics.buntata.R;
 import uk.ac.hutton.ics.buntata.activity.*;
 import uk.ac.hutton.ics.buntata.database.entity.*;
 import uk.ac.hutton.ics.buntata.util.*;
 
 /**
- * The {@link AttributeValueVideoAdapter} takes care of the {@link KnodelAttributeValueAdvanced} and {@link KnodelMediaAdvanced} objects.
+ * The {@link AttributeValueVideoAdapter} takes care of the {@link BuntataAttributeValueAdvanced} and {@link BuntataMediaAdvanced} objects.
  *
  * @author Sebastian Raubach
  */
 public class AttributeValueVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
-	private Activity                           context;
-	private RecyclerView                       parent;
-	private List<KnodelAttributeValueAdvanced> attributes;
-	private List<KnodelMediaAdvanced>          videos;
-	private int                                datasourceId;
+	private Activity                            context;
+	private RecyclerView                        parent;
+	private List<BuntataAttributeValueAdvanced> attributes;
+	private List<BuntataMediaAdvanced>          videos;
+	private int                                 datasourceId;
 
 	private int     expandedPosition = -1;
 	private boolean firstStart       = true;
 
 	static class AttributeViewHolder extends RecyclerView.ViewHolder
 	{
-		View      view;
+		View view;
 		@BindView(R.id.attribute_view_title)
 		TextView  title;
 		@BindView(R.id.attribute_view_content)
@@ -77,7 +78,7 @@ public class AttributeValueVideoAdapter extends RecyclerView.Adapter<RecyclerVie
 
 	static class VideoViewHolder extends RecyclerView.ViewHolder
 	{
-		View      view;
+		View view;
 		@BindView(R.id.video_view_title)
 		TextView  title;
 		@BindView(R.id.video_view_link)
@@ -98,9 +99,9 @@ public class AttributeValueVideoAdapter extends RecyclerView.Adapter<RecyclerVie
 	 * Creates a new instance of this adapter
 	 *
 	 * @param parent     The {@link RecyclerView} that'll show the items
-	 * @param attributes The {@link List} of {@link KnodelAttributeValueAdvanced} objects to show
+	 * @param attributes The {@link List} of {@link BuntataAttributeValueAdvanced} objects to show
 	 */
-	public AttributeValueVideoAdapter(Activity context, RecyclerView parent, int datasourceId, List<KnodelAttributeValueAdvanced> attributes, List<KnodelMediaAdvanced> videos)
+	public AttributeValueVideoAdapter(Activity context, RecyclerView parent, int datasourceId, List<BuntataAttributeValueAdvanced> attributes, List<BuntataMediaAdvanced> videos)
 	{
 		this.context = context;
 		this.parent = parent;
@@ -145,7 +146,7 @@ public class AttributeValueVideoAdapter extends RecyclerView.Adapter<RecyclerVie
 
 	private void onBindVideoViewHolder(final VideoViewHolder holder, int position)
 	{
-		final KnodelMediaAdvanced item = videos.get(position - attributes.size());
+		final BuntataMediaAdvanced item = videos.get(position - attributes.size());
 
 		/* Set the title */
 		holder.title.setText(item.getName());
@@ -238,7 +239,7 @@ public class AttributeValueVideoAdapter extends RecyclerView.Adapter<RecyclerVie
 
 	private void onBindAttributeViewHolder(final AttributeViewHolder holder, int position)
 	{
-		KnodelAttributeValueAdvanced item = attributes.get(position);
+		BuntataAttributeValueAdvanced item = attributes.get(position);
 
 		final boolean isExpanded;
 

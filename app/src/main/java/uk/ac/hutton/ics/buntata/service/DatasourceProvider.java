@@ -16,7 +16,9 @@
 
 package uk.ac.hutton.ics.buntata.service;
 
-import jhi.knodel.resource.*;
+import java.util.*;
+
+import jhi.buntata.resource.*;
 import retrofit2.*;
 import retrofit2.http.*;
 
@@ -27,5 +29,5 @@ import retrofit2.http.*;
 public interface DatasourceProvider
 {
 	@GET("datasource")
-	Call<KnodelDatasourceList> getAll();
+	Call<List<BuntataDatasource>> getAll();
 }

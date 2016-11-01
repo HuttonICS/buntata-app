@@ -20,7 +20,7 @@ import android.content.*;
 
 import java.text.*;
 
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 
 /**
  * The {@link DatabaseObjectParser} is an interface that defines how a {@link DatabaseObject} should be parsed

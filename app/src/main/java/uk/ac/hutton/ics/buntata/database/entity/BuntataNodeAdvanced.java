@@ -18,45 +18,45 @@ package uk.ac.hutton.ics.buntata.database.entity;
 
 import java.util.*;
 
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 
 /**
- * {@link KnodelNodeAdvanced} is an advanced version of a {@link KnodelNode}. In addition to foreign keys it holds a list of references to actual
- * {@link KnodelMediaAdvanced} objects that are associated with it.
+ * {@link BuntataNodeAdvanced} is an advanced version of a {@link BuntataNode}. In addition to foreign keys it holds a list of references to actual
+ * {@link BuntataMediaAdvanced} objects that are associated with it.
  *
  * @author Sebastian Raubach
  */
-public class KnodelNodeAdvanced extends KnodelNode
+public class BuntataNodeAdvanced extends BuntataNode
 {
-	private List<KnodelMediaAdvanced> media = new ArrayList<>();
+	private List<BuntataMediaAdvanced> media = new ArrayList<>();
 
-	public KnodelNodeAdvanced()
+	public BuntataNodeAdvanced()
 	{
 	}
 
-	public KnodelNodeAdvanced(int id, Date createdOn, Date updatedOn)
+	public BuntataNodeAdvanced(int id, Date createdOn, Date updatedOn)
 	{
 		super(id, createdOn, updatedOn);
 	}
 
-	public KnodelNodeAdvanced(int id, Date createdOn, Date updatedOn, Integer datasourceId, String name, String description, List<KnodelMediaAdvanced> media)
+	public BuntataNodeAdvanced(int id, Date createdOn, Date updatedOn, Integer datasourceId, String name, String description, List<BuntataMediaAdvanced> media)
 	{
 		super(id, createdOn, updatedOn, datasourceId, name, description);
 		this.media = media;
 	}
 
-	public List<KnodelMediaAdvanced> getMedia()
+	public List<BuntataMediaAdvanced> getMedia()
 	{
 		return media;
 	}
 
-	public KnodelNodeAdvanced setMedia(List<KnodelMediaAdvanced> media)
+	public BuntataNodeAdvanced setMedia(List<BuntataMediaAdvanced> media)
 	{
 		this.media = media;
 		return this;
 	}
 
-	public KnodelNodeAdvanced addMedia(KnodelMediaAdvanced medium)
+	public BuntataNodeAdvanced addMedia(BuntataMediaAdvanced medium)
 	{
 		this.media.add(medium);
 		return this;
@@ -65,7 +65,7 @@ public class KnodelNodeAdvanced extends KnodelNode
 	@Override
 	public String toString()
 	{
-		return "KnodelNodeAdvanced{" +
+		return "BuntataNodeAdvanced{" +
 				"media=" + media +
 				"} " + super.toString();
 	}

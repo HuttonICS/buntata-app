@@ -23,7 +23,7 @@ import android.database.sqlite.*;
 import java.text.*;
 import java.util.*;
 
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 import uk.ac.hutton.ics.buntata.database.*;
 
 /**
@@ -34,10 +34,10 @@ import uk.ac.hutton.ics.buntata.database.*;
  */
 public abstract class AbstractManager<T extends DatabaseObject>
 {
-	private   DatabaseInternal databaseHelper;
-	SQLiteDatabase   database;
-	Context          context;
-	int              datasourceId;
+	private DatabaseInternal databaseHelper;
+	SQLiteDatabase database;
+	Context        context;
+	int            datasourceId;
 
 	AbstractManager(Context context, int datasourceId)
 	{

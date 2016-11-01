@@ -22,18 +22,18 @@ import android.database.*;
 import java.text.*;
 import java.util.*;
 
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 import uk.ac.hutton.ics.buntata.database.*;
 import uk.ac.hutton.ics.buntata.database.entity.*;
 
 /**
- * The {@link MediaManager} extends {@link AbstractManager} and can be used to obtain {@link KnodelMediaAdvanced}s from the database.
+ * The {@link MediaManager} extends {@link AbstractManager} and can be used to obtain {@link BuntataMediaAdvanced}s from the database.
  *
  * @author Sebastian Raubach
  */
-public class MediaManager extends AbstractManager<KnodelMediaAdvanced>
+public class MediaManager extends AbstractManager<BuntataMediaAdvanced>
 {
-	private static final String[] ALL_FIELDS = {KnodelMedia.FIELD_ID, KnodelMedia.FIELD_NAME, KnodelMedia.FIELD_DESCRIPTION, KnodelMedia.FIELD_MEDIATYPE_ID, KnodelMedia.FIELD_INTERNAL_LINK, KnodelMedia.FIELD_EXTERNAL_LINK, KnodelMedia.FIELD_EXTERNAL_LINK_DESCRIPTION, KnodelMedia.FIELD_CREATED_ON, KnodelMedia.FIELD_UPDATED_ON, KnodelMedia.FIELD_COPYRIGHT};
+	private static final String[] ALL_FIELDS = {BuntataMedia.FIELD_ID, BuntataMedia.FIELD_NAME, BuntataMedia.FIELD_DESCRIPTION, BuntataMedia.FIELD_MEDIATYPE_ID, BuntataMedia.FIELD_INTERNAL_LINK, BuntataMedia.FIELD_EXTERNAL_LINK, BuntataMedia.FIELD_EXTERNAL_LINK_DESCRIPTION, BuntataMedia.FIELD_CREATED_ON, BuntataMedia.FIELD_UPDATED_ON, BuntataMedia.FIELD_COPYRIGHT};
 
 	public MediaManager(Context context, int datasourceId)
 	{
@@ -41,7 +41,7 @@ public class MediaManager extends AbstractManager<KnodelMediaAdvanced>
 	}
 
 	@Override
-	protected DatabaseObjectParser<KnodelMediaAdvanced> getDefaultParser()
+	protected DatabaseObjectParser<BuntataMediaAdvanced> getDefaultParser()
 	{
 		return Parser.Inst.get();
 	}
@@ -49,7 +49,7 @@ public class MediaManager extends AbstractManager<KnodelMediaAdvanced>
 	@Override
 	protected String getTableName()
 	{
-		return KnodelMedia.TABLE_NAME;
+		return BuntataMedia.TABLE_NAME;
 	}
 
 	@Override
@@ -58,9 +58,9 @@ public class MediaManager extends AbstractManager<KnodelMediaAdvanced>
 		return ALL_FIELDS;
 	}
 
-	public List<KnodelMediaAdvanced> getForNode(String type, int nodeId)
+	public List<BuntataMediaAdvanced> getForNode(String type, int nodeId)
 	{
-		List<KnodelMediaAdvanced> result = new ArrayList<>();
+		List<BuntataMediaAdvanced> result = new ArrayList<>();
 
 		try
 		{
@@ -97,14 +97,14 @@ public class MediaManager extends AbstractManager<KnodelMediaAdvanced>
 		return result;
 	}
 
-	public Map<String, List<KnodelMediaAdvanced>> splitByType(List<KnodelMediaAdvanced> media)
+	public Map<String, List<BuntataMediaAdvanced>> splitByType(List<BuntataMediaAdvanced> media)
 	{
-		Map<String, List<KnodelMediaAdvanced>> result = new HashMap<>();
+		Map<String, List<BuntataMediaAdvanced>> result = new HashMap<>();
 
-		result.put(KnodelMediaType.TYPE_IMAGE, new ArrayList<KnodelMediaAdvanced>());
-		result.put(KnodelMediaType.TYPE_VIDEO, new ArrayList<KnodelMediaAdvanced>());
+		result.put(BuntataMediaType.TYPE_IMAGE, new ArrayList<BuntataMediaAdvanced>());
+		result.put(BuntataMediaType.TYPE_VIDEO, new ArrayList<BuntataMediaAdvanced>());
 
-		for (KnodelMediaAdvanced medium : media)
+		for (BuntataMediaAdvanced medium : media)
 		{
 			String type = medium.getMediaType().getName();
 
@@ -114,7 +114,7 @@ public class MediaManager extends AbstractManager<KnodelMediaAdvanced>
 		return result;
 	}
 
-	private static class Parser extends DatabaseObjectParser<KnodelMediaAdvanced>
+	private static class Parser extends DatabaseObjectParser<BuntataMediaAdvanced>
 	{
 		static final class Inst
 		{
@@ -139,17 +139,17 @@ public class MediaManager extends AbstractManager<KnodelMediaAdvanced>
 		}
 
 		@Override
-		public KnodelMediaAdvanced parse(Context context, int datasourceId, DatabaseInternal.AdvancedCursor cursor) throws ParseException
+		public BuntataMediaAdvanced parse(Context context, int datasourceId, DatabaseInternal.AdvancedCursor cursor) throws ParseException
 		{
-			KnodelMediaAdvanced result = new KnodelMediaAdvanced(cursor.getInt(KnodelMedia.FIELD_ID), new Date(cursor.getLong(KnodelMedia.FIELD_CREATED_ON)), new Date(cursor.getLong(KnodelMedia.FIELD_UPDATED_ON)));
+			BuntataMediaAdvanced result = new BuntataMediaAdvanced(cursor.getInt(BuntataMedia.FIELD_ID), new Date(cursor.getLong(BuntataMedia.FIELD_CREATED_ON)), new Date(cursor.getLong(BuntataMedia.FIELD_UPDATED_ON)));
 
-			result.setName(cursor.getString(KnodelMedia.FIELD_NAME))
-				  .setDescription(cursor.getString(KnodelMedia.FIELD_DESCRIPTION))
-				  .setMediaTypeId(cursor.getInt(KnodelMedia.FIELD_MEDIATYPE_ID))
-				  .setInternalLink(cursor.getString(KnodelMedia.FIELD_INTERNAL_LINK))
-				  .setExternalLink(cursor.getString(KnodelMedia.FIELD_EXTERNAL_LINK))
-				  .setExternalLinkDescription(cursor.getString(KnodelMedia.FIELD_EXTERNAL_LINK_DESCRIPTION))
-				  .setCopyright(cursor.getString(KnodelMedia.FIELD_COPYRIGHT));
+			result.setName(cursor.getString(BuntataMedia.FIELD_NAME))
+				  .setDescription(cursor.getString(BuntataMedia.FIELD_DESCRIPTION))
+				  .setMediaTypeId(cursor.getInt(BuntataMedia.FIELD_MEDIATYPE_ID))
+				  .setInternalLink(cursor.getString(BuntataMedia.FIELD_INTERNAL_LINK))
+				  .setExternalLink(cursor.getString(BuntataMedia.FIELD_EXTERNAL_LINK))
+				  .setExternalLinkDescription(cursor.getString(BuntataMedia.FIELD_EXTERNAL_LINK_DESCRIPTION))
+				  .setCopyright(cursor.getString(BuntataMedia.FIELD_COPYRIGHT));
 
 			result.setMediaType(new MediaTypeManager(context, datasourceId).getById(result.getMediaTypeId()));
 

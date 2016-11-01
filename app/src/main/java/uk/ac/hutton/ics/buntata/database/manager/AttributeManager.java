@@ -21,17 +21,17 @@ import android.content.*;
 import java.text.*;
 import java.util.*;
 
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 import uk.ac.hutton.ics.buntata.database.*;
 
 /**
- * The {@link AttributeManager} extends {@link AbstractManager} and can be used to obtain {@link KnodelAttribute}s from the database.
+ * The {@link AttributeManager} extends {@link AbstractManager} and can be used to obtain {@link BuntataAttribute}s from the database.
  *
  * @author Sebastian Raubach
  */
-public class AttributeManager extends AbstractManager<KnodelAttribute>
+public class AttributeManager extends AbstractManager<BuntataAttribute>
 {
-	private static final String[] ALL_FIELDS = {KnodelAttribute.FIELD_ID, KnodelAttribute.FIELD_NAME, KnodelAttribute.FIELD_CREATED_ON, KnodelAttribute.FIELD_UPDATED_ON};
+	private static final String[] ALL_FIELDS = {BuntataAttribute.FIELD_ID, BuntataAttribute.FIELD_NAME, BuntataAttribute.FIELD_CREATED_ON, BuntataAttribute.FIELD_UPDATED_ON};
 
 	public AttributeManager(Context context, int datasourceId)
 	{
@@ -39,7 +39,7 @@ public class AttributeManager extends AbstractManager<KnodelAttribute>
 	}
 
 	@Override
-	protected DatabaseObjectParser<KnodelAttribute> getDefaultParser()
+	protected DatabaseObjectParser<BuntataAttribute> getDefaultParser()
 	{
 		return Parser.Inst.get();
 	}
@@ -47,7 +47,7 @@ public class AttributeManager extends AbstractManager<KnodelAttribute>
 	@Override
 	protected String getTableName()
 	{
-		return KnodelAttribute.TABLE_NAME;
+		return BuntataAttribute.TABLE_NAME;
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class AttributeManager extends AbstractManager<KnodelAttribute>
 		return ALL_FIELDS;
 	}
 
-	private static class Parser extends DatabaseObjectParser<KnodelAttribute>
+	private static class Parser extends DatabaseObjectParser<BuntataAttribute>
 	{
 		static final class Inst
 		{
@@ -81,10 +81,10 @@ public class AttributeManager extends AbstractManager<KnodelAttribute>
 		}
 
 		@Override
-		public KnodelAttribute parse(Context context, int datasourceId, DatabaseInternal.AdvancedCursor cursor) throws ParseException
+		public BuntataAttribute parse(Context context, int datasourceId, DatabaseInternal.AdvancedCursor cursor) throws ParseException
 		{
-			return new KnodelAttribute(cursor.getInt(KnodelAttribute.FIELD_ID), new Date(cursor.getLong(KnodelAttribute.FIELD_CREATED_ON)), new Date(cursor.getLong(KnodelAttribute.FIELD_UPDATED_ON)))
-					.setName(cursor.getString(KnodelAttribute.FIELD_NAME));
+			return new BuntataAttribute(cursor.getInt(BuntataAttribute.FIELD_ID), new Date(cursor.getLong(BuntataAttribute.FIELD_CREATED_ON)), new Date(cursor.getLong(BuntataAttribute.FIELD_UPDATED_ON)))
+					.setName(cursor.getString(BuntataAttribute.FIELD_NAME));
 		}
 	}
 }

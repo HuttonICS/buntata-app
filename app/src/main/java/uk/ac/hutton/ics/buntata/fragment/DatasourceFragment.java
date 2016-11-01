@@ -27,7 +27,7 @@ import com.heinrichreimersoftware.materialintro.app.*;
 import java.util.*;
 
 import butterknife.*;
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 import uk.ac.hutton.ics.buntata.*;
 import uk.ac.hutton.ics.buntata.activity.*;
 import uk.ac.hutton.ics.buntata.adapter.*;
@@ -37,7 +37,7 @@ import uk.ac.hutton.ics.buntata.service.*;
 import uk.ac.hutton.ics.buntata.util.*;
 
 /**
- * The {@link DatasourceFragment} shows all the {@link KnodelDatasource}s that are available locally and the ones available online (if connection
+ * The {@link DatasourceFragment} shows all the {@link BuntataDatasource}s that are available locally and the ones available online (if connection
  * available).
  *
  * @author Sebastian Raubach
@@ -112,14 +112,14 @@ public class DatasourceFragment extends Fragment
 	private void requestData()
 	{
 		/* Get the local data sources */
-		final List<KnodelDatasource> localList = new DatasourceManager(getActivity(), -1).getAll();
+		final List<BuntataDatasource> localList = new DatasourceManager(getActivity(), -1).getAll();
 		/* Keep track of their status (installed no update, installed update, not installed) */
-		final List<KnodelDatasourceAdvanced> dataset = new ArrayList<>();
+		final List<BuntataDatasourceAdvanced> dataset = new ArrayList<>();
 
 		boolean cancelable = getActivity() instanceof DatasourceActivity;
 
 		/* Then try to get the online resources */
-		DatasourceService.getAll(getActivity(), cancelable, new RemoteCallback<KnodelDatasourceList>(getActivity())
+		DatasourceService.getAll(getActivity(), cancelable, new RemoteCallback<List<BuntataDatasource>>(getActivity())
 		{
 			@Override
 			public void onFailure(Throwable caught)
@@ -127,10 +127,10 @@ public class DatasourceFragment extends Fragment
 				caught.printStackTrace();
 
 				/* If the request fails, just show the local ones as having no updates */
-				for (KnodelDatasource ds : localList)
+				for (BuntataDatasource ds : localList)
 				{
-					KnodelDatasourceAdvanced adv = KnodelDatasourceAdvanced.create(ds);
-					adv.setState(KnodelDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
+					BuntataDatasourceAdvanced adv = BuntataDatasourceAdvanced.create(ds);
+					adv.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
 					dataset.add(adv);
 				}
 
@@ -148,31 +148,31 @@ public class DatasourceFragment extends Fragment
 			}
 
 			@Override
-			public void onSuccess(KnodelDatasourceList result)
+			public void onSuccess(List<BuntataDatasource> result)
 			{
 				/* If the request succeeds, try to figure out if it's already installed locally and then check if there's an update */
-				for (KnodelDatasource ds : result.getList())
+				for (BuntataDatasource ds : result)
 				{
 					int index = localList.indexOf(ds);
 
-					KnodelDatasourceAdvanced adv = KnodelDatasourceAdvanced.create(ds);
+					BuntataDatasourceAdvanced adv = BuntataDatasourceAdvanced.create(ds);
 
 					/* Is installed */
 					if (index != -1)
 					{
-						KnodelDatasource old = localList.get(index);
+						BuntataDatasource old = localList.get(index);
 
 						boolean isNewer = DatasourceManager.isNewer(ds, old);
 
 						if (isNewer)
-							adv.setState(KnodelDatasourceAdvanced.InstallState.INSTALLED_HAS_UPDATE);
+							adv.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_HAS_UPDATE);
 						else
-							adv.setState(KnodelDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
+							adv.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
 					}
 					/* Is not installed */
 					else
 					{
-						adv.setState(KnodelDatasourceAdvanced.InstallState.NOT_INSTALLED);
+						adv.setState(BuntataDatasourceAdvanced.InstallState.NOT_INSTALLED);
 					}
 
 					dataset.add(adv);

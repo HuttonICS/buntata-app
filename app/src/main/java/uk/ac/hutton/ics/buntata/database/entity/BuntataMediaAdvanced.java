@@ -18,39 +18,39 @@ package uk.ac.hutton.ics.buntata.database.entity;
 
 import java.util.*;
 
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 
 /**
- * {@link KnodelMediaAdvanced} is an advanced version of a {@link KnodelMedia}. In addition to foreign keys it holds a reference to the actual {@link
- * KnodelMediaType} it's associated with.
+ * {@link BuntataMediaAdvanced} is an advanced version of a {@link BuntataMedia}. In addition to foreign keys it holds a reference to the actual
+ * {@link BuntataMediaType} it's associated with.
  *
  * @author Sebastian Raubach
  */
-public class KnodelMediaAdvanced extends KnodelMedia
+public class BuntataMediaAdvanced extends BuntataMedia
 {
-	private KnodelMediaType mediaType;
+	private BuntataMediaType mediaType;
 
-	public KnodelMediaAdvanced()
+	public BuntataMediaAdvanced()
 	{
 	}
 
-	public KnodelMediaAdvanced(int id, Date createdOn, Date updatedOn)
+	public BuntataMediaAdvanced(int id, Date createdOn, Date updatedOn)
 	{
 		super(id, createdOn, updatedOn);
 	}
 
-	public KnodelMediaAdvanced(int id, Date createdOn, Date updatedOn, Integer mediaTypeId, String name, String description, String internalLink, String externalLink, String externalLinkDescription, String copyright, KnodelMediaType mediaType)
+	public BuntataMediaAdvanced(int id, Date createdOn, Date updatedOn, Integer mediaTypeId, String name, String description, String internalLink, String externalLink, String externalLinkDescription, String copyright, BuntataMediaType mediaType)
 	{
 		super(id, createdOn, updatedOn, mediaTypeId, name, description, internalLink, externalLink, externalLinkDescription, copyright);
 		this.mediaType = mediaType;
 	}
 
-	public KnodelMediaType getMediaType()
+	public BuntataMediaType getMediaType()
 	{
 		return mediaType;
 	}
 
-	public KnodelMediaAdvanced setMediaType(KnodelMediaType mediaType)
+	public BuntataMediaAdvanced setMediaType(BuntataMediaType mediaType)
 	{
 		this.mediaType = mediaType;
 		return this;
@@ -59,7 +59,7 @@ public class KnodelMediaAdvanced extends KnodelMedia
 	@Override
 	public String toString()
 	{
-		return "KnodelMediaAdvanced{" +
+		return "BuntataMediaAdvanced{" +
 				"mediaType=" + mediaType +
 				"} " + super.toString();
 	}

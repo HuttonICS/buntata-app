@@ -22,18 +22,18 @@ import android.database.*;
 import java.text.*;
 import java.util.*;
 
-import jhi.knodel.resource.*;
+import jhi.buntata.resource.*;
 import uk.ac.hutton.ics.buntata.database.*;
 import uk.ac.hutton.ics.buntata.database.entity.*;
 
 /**
- * The {@link NodeManager} extends {@link AbstractManager} and can be used to obtain {@link KnodelNodeAdvanced}s from the database.
+ * The {@link NodeManager} extends {@link AbstractManager} and can be used to obtain {@link BuntataNodeAdvanced}s from the database.
  *
  * @author Sebastian Raubach
  */
-public class NodeManager extends AbstractManager<KnodelNodeAdvanced>
+public class NodeManager extends AbstractManager<BuntataNodeAdvanced>
 {
-	private static final String[] ALL_FIELDS = {KnodelNode.FIELD_ID, KnodelNode.FIELD_NAME, KnodelNode.FIELD_DESCRIPTION, KnodelNode.FIELD_DATASOURCE_ID, KnodelNode.FIELD_CREATED_ON, KnodelNode.FIELD_UPDATED_ON};
+	private static final String[] ALL_FIELDS = {BuntataNode.FIELD_ID, BuntataNode.FIELD_NAME, BuntataNode.FIELD_DESCRIPTION, BuntataNode.FIELD_DATASOURCE_ID, BuntataNode.FIELD_CREATED_ON, BuntataNode.FIELD_UPDATED_ON};
 
 	private static Map<String, Set<Integer>> CACHE_FILTER_POSITIVE = new LinkedHashMap<String, Set<Integer>>()
 	{
@@ -56,7 +56,7 @@ public class NodeManager extends AbstractManager<KnodelNodeAdvanced>
 	}
 
 	@Override
-	protected DatabaseObjectParser<KnodelNodeAdvanced> getDefaultParser()
+	protected DatabaseObjectParser<BuntataNodeAdvanced> getDefaultParser()
 	{
 		return Parser.Inst.get();
 	}
@@ -64,7 +64,7 @@ public class NodeManager extends AbstractManager<KnodelNodeAdvanced>
 	@Override
 	protected String getTableName()
 	{
-		return KnodelNode.TABLE_NAME;
+		return BuntataNode.TABLE_NAME;
 	}
 
 	@Override
@@ -73,9 +73,9 @@ public class NodeManager extends AbstractManager<KnodelNodeAdvanced>
 		return ALL_FIELDS;
 	}
 
-	public List<KnodelNodeAdvanced> getAllRoots()
+	public List<BuntataNodeAdvanced> getAllRoots()
 	{
-		List<KnodelNodeAdvanced> result = new ArrayList<>();
+		List<BuntataNodeAdvanced> result = new ArrayList<>();
 
 		try
 		{
@@ -133,9 +133,9 @@ public class NodeManager extends AbstractManager<KnodelNodeAdvanced>
 		return result;
 	}
 
-	public List<KnodelNodeAdvanced> getForParent(int parentId)
+	public List<BuntataNodeAdvanced> getForParent(int parentId)
 	{
-		List<KnodelNodeAdvanced> result = new ArrayList<>();
+		List<BuntataNodeAdvanced> result = new ArrayList<>();
 
 		try
 		{
@@ -262,7 +262,7 @@ public class NodeManager extends AbstractManager<KnodelNodeAdvanced>
 	 * @param query The query
 	 * @return <code>true</code> if the node itself or a child fulfills the query
 	 */
-	public boolean hasChildWithContent(KnodelNodeAdvanced node, String query)
+	public boolean hasChildWithContent(BuntataNodeAdvanced node, String query)
 	{
 		/* Lower case everything */
 		query = query.toLowerCase();
@@ -275,7 +275,7 @@ public class NodeManager extends AbstractManager<KnodelNodeAdvanced>
 		return CACHE_FILTER_POSITIVE.get(query).contains(node.getId());
 	}
 
-	private static class Parser extends DatabaseObjectParser<KnodelNodeAdvanced>
+	private static class Parser extends DatabaseObjectParser<BuntataNodeAdvanced>
 	{
 		static final class Inst
 		{
@@ -300,12 +300,12 @@ public class NodeManager extends AbstractManager<KnodelNodeAdvanced>
 		}
 
 		@Override
-		public KnodelNodeAdvanced parse(Context context, int datasourceId, DatabaseInternal.AdvancedCursor cursor) throws ParseException
+		public BuntataNodeAdvanced parse(Context context, int datasourceId, DatabaseInternal.AdvancedCursor cursor) throws ParseException
 		{
-			KnodelNodeAdvanced item = new KnodelNodeAdvanced(cursor.getInt(KnodelNode.FIELD_ID), new Date(cursor.getLong(KnodelNode.FIELD_CREATED_ON)), new Date(cursor.getLong(KnodelNode.FIELD_UPDATED_ON)));
-			item.setName(cursor.getString(KnodelNode.FIELD_NAME))
-				.setDescription(cursor.getString(KnodelNode.FIELD_DESCRIPTION))
-				.setDatasourceId(cursor.getInt(KnodelNode.FIELD_DATASOURCE_ID));
+			BuntataNodeAdvanced item = new BuntataNodeAdvanced(cursor.getInt(BuntataNode.FIELD_ID), new Date(cursor.getLong(BuntataNode.FIELD_CREATED_ON)), new Date(cursor.getLong(BuntataNode.FIELD_UPDATED_ON)));
+			item.setName(cursor.getString(BuntataNode.FIELD_NAME))
+				.setDescription(cursor.getString(BuntataNode.FIELD_DESCRIPTION))
+				.setDatasourceId(cursor.getInt(BuntataNode.FIELD_DATASOURCE_ID));
 
 			item.setMedia(new MediaManager(context, datasourceId).getForNode(null, item.getId()));
 

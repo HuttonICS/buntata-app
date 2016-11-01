@@ -39,8 +39,8 @@ public class ImageFragment extends Fragment
 
 	private MediaManager mediaManager;
 
-	private int       datasourceId;
-	private int       mediumId;
+	private int datasourceId;
+	private int mediumId;
 
 	@BindView(R.id.node_image_view)
 	ImageView imageView;
@@ -110,7 +110,7 @@ public class ImageFragment extends Fragment
 		super.onActivityCreated(savedInstanceState);
 
 			/* Get the medium object */
-		KnodelMediaAdvanced medium = mediaManager.getById(mediumId);
+		BuntataMediaAdvanced medium = mediaManager.getById(mediumId);
 
 			/* Show copyright information if available */
 		if (medium.getCopyright() != null)

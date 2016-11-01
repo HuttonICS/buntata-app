@@ -45,7 +45,7 @@ public class NodeFragment extends Fragment
 	private int datasourceId;
 
 	private NodeAdapter               adapter;
-	private List<KnodelNodeAdvanced>  originalList;
+	private List<BuntataNodeAdvanced> originalList;
 
 	@BindView(R.id.node_recycler_view)
 	RecyclerView recyclerView;
@@ -65,7 +65,7 @@ public class NodeFragment extends Fragment
 		NodeManager nodeManager = new NodeManager(getActivity(), datasourceId);
 
 		/* Get the parent node */
-		KnodelNodeAdvanced parent = nodeManager.getById(parentId);
+		BuntataNodeAdvanced parent = nodeManager.getById(parentId);
 
 		/* Inflate the layout */
 		View view = inflater.inflate(R.layout.fragment_node, container, false);
@@ -100,7 +100,7 @@ public class NodeFragment extends Fragment
 		adapter = new NodeAdapter(getActivity(), recyclerView, datasourceId, originalList)
 		{
 			@Override
-			public void onNodeClicked(View animationRoot, View title, KnodelNodeAdvanced node)
+			public void onNodeClicked(View animationRoot, View title, BuntataNodeAdvanced node)
 			{
 				((MainActivity) getActivity()).onFragmentChange(animationRoot, title, datasourceId, node.getId());
 			}
@@ -151,7 +151,7 @@ public class NodeFragment extends Fragment
 
 		String filter = ((MainActivity) getActivity()).getFilter();
 
-		if(filter == null)
+		if (filter == null)
 			filter = "";
 
 

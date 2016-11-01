@@ -47,7 +47,7 @@ public class IntroNetworkFragment extends Fragment
 	@BindView(R.id.network_status_refresh)
 	Button    networkStatusRefresh;
 
-	private Animator  anim;
+	private Animator anim;
 
 	private Unbinder unbinder;
 
