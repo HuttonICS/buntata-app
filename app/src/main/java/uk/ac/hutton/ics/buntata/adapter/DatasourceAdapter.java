@@ -332,11 +332,12 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		animate(holder);
 
 		/* If there is an icon, set it */
-		if (!StringUtils.isEmpty(item.getIcon()))
+		String iconPath = DatasourceService.getIcon(context, item);
+		if (!StringUtils.isEmpty(iconPath))
 		{
 			holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			Picasso.with(context)
-				   .load(item.getIcon())
+				   .load(iconPath)
 				   .noPlaceholder()
 				   .into(holder.imageView);
 		}

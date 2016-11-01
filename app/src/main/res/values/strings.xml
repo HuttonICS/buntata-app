@@ -19,6 +19,9 @@
 	<string name="title_activity_about">About</string>
 	<string name="title_activity_datasource">Data sources</string>
 
+	<string name="introduction_welcome_title">Welcome to Buntàta</string>
+	<string name="introduction_welcome_text">Buntàta is Scottish Gaelic for potato... Something else here...</string>
+
 	<string name="toast_exception">An error occurred: %1$s</string>
 
 	<string name="menu_data_source">Data source</string>

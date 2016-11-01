@@ -48,8 +48,8 @@ public class IntroductionActivity extends IntroActivity
 
 		/* Welcome slide */
 		addSlide(new SimpleSlide.Builder()
-				.title("Welcome to Buntàta") // TODO: i18n
-				.description("Lorem Ipsum and so on...") // TODO: i18n
+				.title(R.string.introduction_welcome_title)
+				.description(R.string.introduction_welcome_text)
 				.image(R.drawable.ic_logo)
 				.background(R.color.colorPrimary)
 				.backgroundDark(R.color.colorPrimaryDark)
@@ -66,13 +66,6 @@ public class IntroductionActivity extends IntroActivity
 				.background(R.color.colorPrimary)
 				.backgroundDark(R.color.colorPrimaryDark)
 				.fragment(new IntroNetworkFragment())
-				.build());
-
-		addSlide(new SimpleSlide.Builder()
-				.title("Placeholder") // TODO: i18n
-				.description("Something here") // TODO: i18n
-				.background(R.color.colorPrimary)
-				.backgroundDark(R.color.colorPrimaryDark)
 				.build());
 
 		/* Data source selection slide */

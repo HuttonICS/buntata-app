@@ -38,6 +38,7 @@ public class DatasourceService
 {
 	private static final String DATASOURCE_BASE_URL     = "datasource";
 	private static final String DATASOURCE_DOWNLOAD_URL = "/%s/download?includevideos=%s";
+	private static final String DATASOURCE_ICON_URL     = "/%s/icon";
 
 	private static Retrofit           RETROFIT;
 	private static DatasourceProvider PROVIDER;
@@ -119,6 +120,16 @@ public class DatasourceService
 				callback.onFailure(t);
 			}
 		});
+	}
+
+	public static String getIcon(Context context, BuntataDatasource ds)
+	{
+		String path = null;
+
+		if (ds.getIcon() != null)
+			path = getBaseUrl(context) + String.format(DATASOURCE_BASE_URL + DATASOURCE_ICON_URL, ds.getId());
+
+		return path;
 	}
 
 	/**

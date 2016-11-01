@@ -19,6 +19,7 @@ package uk.ac.hutton.ics.buntata.activity;
 import android.app.*;
 import android.content.*;
 import android.os.*;
+import android.support.design.widget.*;
 import android.support.v4.app.*;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -28,6 +29,7 @@ import android.view.*;
 
 import java.util.*;
 
+import butterknife.*;
 import uk.ac.hutton.ics.buntata.*;
 import uk.ac.hutton.ics.buntata.database.manager.*;
 import uk.ac.hutton.ics.buntata.fragment.*;
@@ -51,10 +53,15 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 	private boolean override = false;
 	private String  query    = null;
 
+	@BindView(R.id.main_view_fab)
+	FloatingActionButton fab;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+
+		ButterKnife.bind(this);
 
 		/* Make sure the default preferences are set */
 		PreferenceUtils.setDefaults(this);
@@ -118,6 +125,11 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 	 */
 	private void updateContent(View transitionRoot, final View title, int datasourceId, int parentId)
 	{
+		if (getSupportFragmentManager().getBackStackEntryCount() == 0)
+			fab.hide();
+		else
+			fab.show();
+
 		/* Check if this node has children */
 		boolean hasChildren = parentId == -1 || new NodeManager(this, datasourceId).hasChildren(parentId);
 
@@ -177,9 +189,21 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 		}
 	}
 
+	@OnClick(R.id.main_view_fab)
+	public void onFabClicked()
+	{
+		while(getSupportFragmentManager().getBackStackEntryCount() > 1)
+			onBackPressed();
+	}
+
 	@Override
 	public void onBackPressed()
 	{
+		if (getSupportFragmentManager().getBackStackEntryCount() > 2)
+			fab.show();
+		else
+			fab.hide();
+
 		/* If there's only one item left on the stack, finish as there's nothing to go back to */
 		if (getSupportFragmentManager().getBackStackEntryCount() == 1)
 			finish();
