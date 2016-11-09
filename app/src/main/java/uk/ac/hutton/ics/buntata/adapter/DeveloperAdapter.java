@@ -102,8 +102,8 @@ public class DeveloperAdapter extends RecyclerView.Adapter<DeveloperAdapter.View
 
 	private enum Developer
 	{
-		SEBASTIAN_RAUBACH("Sebastian Raubach", "Bioinformatics Software Developer", "Information & Computational Sciences", "The James Hutton Institute", "germinate@hutton.ac.uk"),
-		PAUL_SHAW("Paul Shaw", "Bioinformatician", "Information & Computational Sciences", "The James Hutton Institute", "germinate@hutton.ac.uk");
+		SEBASTIAN_RAUBACH("Sebastian Raubach", "Bioinformatics Software Developer", "Information & Computational Sciences", "The James Hutton Institute", "cropgeeksapps@hutton.ac.uk"),
+		PAUL_SHAW("Paul Shaw", "Bioinformatician", "Information & Computational Sciences", "The James Hutton Institute", "cropgeeksapps@hutton.ac.uk");
 
 		String name;
 		String title;

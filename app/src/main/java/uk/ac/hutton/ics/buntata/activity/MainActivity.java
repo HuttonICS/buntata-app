@@ -31,6 +31,7 @@ import java.util.*;
 
 import butterknife.*;
 import uk.ac.hutton.ics.buntata.*;
+import uk.ac.hutton.ics.buntata.database.entity.*;
 import uk.ac.hutton.ics.buntata.database.manager.*;
 import uk.ac.hutton.ics.buntata.fragment.*;
 import uk.ac.hutton.ics.buntata.service.*;
@@ -107,7 +108,7 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 				}
 				/* Else if the data source changed, update the content */
 				else if (datasourceId != this.datasourceId)
-					updateContent(null, null, datasourceId, -1);
+					updateContent(null, null, datasourceId, -1, -1);
 			}
 
 			/* Remember the new data source and disable override */
@@ -123,7 +124,7 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 	 * @param datasourceId   The current data source id
 	 * @param parentId       The id of the parent node
 	 */
-	private void updateContent(View transitionRoot, final View title, int datasourceId, int parentId)
+	private void updateContent(View transitionRoot, final View title, int datasourceId, int parentId, int mediumId)
 	{
 		if (getSupportFragmentManager().getBackStackEntryCount() == 0)
 			fab.hide();
@@ -131,28 +132,16 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 			fab.show();
 
 		/* Check if this node has children */
-		boolean hasChildren = parentId == -1 || new NodeManager(this, datasourceId).hasChildren(parentId);
+		List<BuntataNodeAdvanced> children = new NodeManager(this, datasourceId).getForParent(parentId);
+		boolean hasChildren = parentId == -1 || children.size() > 0;
 
 		/* If it does */
-		if (hasChildren)
+		if (!hasChildren || children.size() == 1)
 		{
-			/* Add a new fragment */
-			Fragment fragment = new NodeFragment();
+			/* If it's only got one child, jump straight to it */
+			if (children.size() == 1)
+				parentId = children.get(0).getId();
 
-			/* Pass parameters */
-			Bundle args = new Bundle();
-			args.putInt(NodeFragment.PARAM_PARENT_ID, parentId);
-			args.putInt(NodeFragment.PARAM_DATASOURCE_ID, datasourceId);
-			fragment.setArguments(args);
-
-			/* Add a slide transition */
-			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-			ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-			ft.addToBackStack(fragment.toString());
-			ft.replace(R.id.fragment_holder, fragment, fragment.toString()).commit();
-		}
-		else
-		{
 			/* If it's a leaf node, open the details activity */
 			Intent intent = new Intent(getApplicationContext(), NodeDetailsActivity.class);
 
@@ -160,13 +149,16 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 			Bundle args = new Bundle();
 			args.putInt(NodeDetailsActivity.PARAM_NODE_ID, parentId);
 			args.putInt(NodeDetailsActivity.PARAM_DATASOURCE_ID, datasourceId);
+			args.putInt(NodeDetailsActivity.PARAM_PREFERED_FIRST_MEDIUM, mediumId);
 			intent.putExtras(args);
 
 			/* Depending on the android version, transition views or just slide */
 			List<Pair<View, String>> pairs = new ArrayList<>();
 			pairs.add(Pair.create(transitionRoot, getString(R.string.transition_node_view)));
 			pairs.add(Pair.create(transitionRoot, getString(R.string.transition_node_details_view)));
-			pairs.add(Pair.create(title, "t_node_title"));
+
+			if (title.getVisibility() == View.VISIBLE)
+				pairs.add(Pair.create(title, "t_node_title"));
 
 			pairs.add(Pair.create((View) toolbar, "t_toolbar"));
 
@@ -186,6 +178,23 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 			ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pairs.toArray(new Pair[pairs.size()]));
 
 			startActivityForResult(intent, REQUEST_CODE_DETAILS, options.toBundle());
+		}
+		else
+		{
+			/* Add a new fragment */
+			Fragment fragment = new NodeFragment();
+
+			/* Pass parameters */
+			Bundle args = new Bundle();
+			args.putInt(NodeFragment.PARAM_PARENT_ID, parentId);
+			args.putInt(NodeFragment.PARAM_DATASOURCE_ID, datasourceId);
+			fragment.setArguments(args);
+
+			/* Add a slide transition */
+			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+			ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+			ft.addToBackStack(fragment.toString());
+			ft.replace(R.id.fragment_holder, fragment, fragment.toString()).commit();
 		}
 	}
 
@@ -328,8 +337,8 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 	}
 
 	@Override
-	public void onFragmentChange(View transitionRoot, View title, int datasourceId, int parentId)
+	public void onFragmentChange(View transitionRoot, View title, int datasourceId, int parentId, int mediumId)
 	{
-		updateContent(transitionRoot, title, datasourceId, parentId);
+		updateContent(transitionRoot, title, datasourceId, parentId, mediumId);
 	}
 }

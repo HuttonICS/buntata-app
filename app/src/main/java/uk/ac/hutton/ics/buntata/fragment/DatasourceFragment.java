@@ -18,6 +18,7 @@ package uk.ac.hutton.ics.buntata.fragment;
 
 import android.os.*;
 import android.support.v4.app.*;
+import android.support.v4.content.*;
 import android.support.v7.widget.*;
 import android.view.*;
 import android.widget.*;
@@ -44,6 +45,8 @@ import uk.ac.hutton.ics.buntata.util.*;
  */
 public class DatasourceFragment extends Fragment
 {
+	@BindView(R.id.datasource_text)
+	TextView     text;
 	@BindView(R.id.datasource_recycler_view)
 	RecyclerView recyclerView;
 	@BindView(R.id.datasource_network_warning)
@@ -59,8 +62,12 @@ public class DatasourceFragment extends Fragment
 
 		unbinder = ButterKnife.bind(this, view);
 
+		if (getActivity() instanceof IntroActivity)
+			text.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.white));
+
 		recyclerView.setHasFixedSize(false);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		recyclerView.setItemAnimator(null);
 
 		int valueInPixels = (int) getResources().getDimension(R.dimen.activity_vertical_margin) / 2;
 		recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, valueInPixels, valueInPixels, valueInPixels));
@@ -142,7 +149,7 @@ public class DatasourceFragment extends Fragment
 				{
 					networkWarning.setVisibility(View.GONE);
 
-					adapter = new DatasourceAdapter(getActivity(), dataset);
+					adapter = new DatasourceAdapter(getActivity(), recyclerView, dataset);
 					recyclerView.setAdapter(adapter);
 				}
 			}
@@ -179,7 +186,7 @@ public class DatasourceFragment extends Fragment
 				}
 
 				/* Set whatever we got now to the adapter */
-				adapter = new DatasourceAdapter(getActivity(), dataset);
+				adapter = new DatasourceAdapter(getActivity(), recyclerView, dataset);
 				recyclerView.setAdapter(adapter);
 			}
 		});

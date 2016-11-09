@@ -28,15 +28,22 @@ import uk.ac.hutton.ics.buntata.fragment.*;
  */
 public class ImagePagerAdapter extends FragmentStatePagerAdapter
 {
-	private final List<BuntataMediaAdvanced> dataset;
+	private final List<BuntataMediaAdvanced> dataset = new ArrayList<>();
 	private final int                        datasourceId;
 
 
-	public ImagePagerAdapter(FragmentManager fm, int datasourceId, List<BuntataMediaAdvanced> dataset)
+	public ImagePagerAdapter(FragmentManager fm, int datasourceId, List<BuntataMediaAdvanced> dataset, int preferedMediumId)
 	{
 		super(fm);
 		this.datasourceId = datasourceId;
-		this.dataset = dataset;
+
+		for (BuntataMediaAdvanced medium : dataset)
+		{
+			if (medium.getId() == preferedMediumId)
+				this.dataset.add(0, medium);
+			else
+				this.dataset.add(medium);
+		}
 	}
 
 	@Override

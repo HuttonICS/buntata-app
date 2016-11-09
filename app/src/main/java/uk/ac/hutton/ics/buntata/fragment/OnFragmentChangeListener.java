@@ -25,5 +25,5 @@ import android.view.*;
  */
 public interface OnFragmentChangeListener
 {
-	void onFragmentChange(View transitionRoot, View title, int datasourceId, int parentId);
+	void onFragmentChange(View transitionRoot, View title, int datasourceId, int parentId, int mediumId);
 }

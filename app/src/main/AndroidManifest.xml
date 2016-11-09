@@ -35,8 +35,7 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:name=".activity.IntroductionActivity"
-				  android:screenOrientation="portrait"/>
+		<activity android:name=".activity.IntroductionActivity"/>
 		<activity android:name=".activity.DatasourceActivity"/>
 		<activity android:name=".activity.NodeDetailsActivity"/>
 		<activity android:name=".activity.AboutActivity"/>

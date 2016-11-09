@@ -31,6 +31,7 @@ import java.io.*;
 import java.util.*;
 
 import butterknife.*;
+import jhi.buntata.resource.*;
 import uk.ac.hutton.ics.buntata.*;
 import uk.ac.hutton.ics.buntata.database.entity.*;
 import uk.ac.hutton.ics.buntata.database.manager.*;
@@ -48,7 +49,8 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 
 	private Context                   context;
 	private RecyclerView              parent;
-	private int                       datasourceId;
+	private BuntataDatasource         datasource;
+	private int                       parentMediaId;
 	private List<BuntataNodeAdvanced> dataset;
 	private UserFilter                userFilter;
 	private NodeManager               nodeManager;
@@ -87,23 +89,20 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		}
 	}
 
-	public NodeAdapter(Context context, RecyclerView parent, int datasourceId, List<BuntataNodeAdvanced> dataset)
+	public NodeAdapter(Context context, RecyclerView parent, int datasourceId, int parentMediaId, List<BuntataNodeAdvanced> dataset)
 	{
 		this.context = context;
 		this.parent = parent;
-		this.datasourceId = datasourceId;
 		this.dataset = dataset;
 		this.nodeManager = new NodeManager(context, datasourceId);
+		this.parentMediaId = parentMediaId;
+		DatasourceManager manager = new DatasourceManager(context, datasourceId);
+		this.datasource = manager.getById(datasourceId);
 
 		/* Get some default color */
 		this.defaultBackgroundColor = ContextCompat.getColor(context, R.color.cardview_light_background);
 		this.textColorLight = ContextCompat.getColor(context, android.R.color.primary_text_dark);
 		this.textColorDark = ContextCompat.getColor(context, android.R.color.primary_text_light);
-	}
-
-	public BuntataNodeAdvanced getAtPosition(int position)
-	{
-		return dataset.get(position);
 	}
 
 	@Override
@@ -120,57 +119,33 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 
 		boolean foundImage = false;
 
-		/* Listen to click events */
-		holder.view.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				int top = v.getTop();
-
-				if (top < 0 && USE_DIRTY_HACK_TO_FIX_SHARED_ELEMENT_TRANSITION)
-				{
-					/*
-					 * This is a very dirty hack to fix an issue where shared elements will overlap the toolbar and status bar
-					 * when the node is hidden behind them on click. Solutions on Stackoverflow suggested to include the toolbar
-					 * and status bar in the shared elements transition. This, however, didn't seem to work, thus this solution.
-					 * The view is then scrolled "into view" and the shared elements transition is postponed until the scroll
-					 * event finishes.
-					 */
-					parent.smoothScrollToPosition(holder.getAdapterPosition());
-					parent.addOnScrollListener(new RecyclerView.OnScrollListener()
-					{
-						@Override
-						public void onScrollStateChanged(RecyclerView recyclerView, int newState)
-						{
-							if (newState == RecyclerView.SCROLL_STATE_IDLE)
-							{
-								parent.removeOnScrollListener(this);
-								onNodeClicked(holder.image, holder.title, dataset.get(holder.getAdapterPosition()));
-							}
-						}
-					});
-				}
-				else
-				{
-					onNodeClicked(holder.image, holder.title, dataset.get(holder.getAdapterPosition()));
-				}
-			}
-		});
-
 		/* Try to find an image */
 		File imagePath = null;
+		BuntataMediaAdvanced medium = null;
 		if (item.getMedia().size() > 0)
 		{
+			/* First, check if we've got the same image as our parent. If so, show this one preferably */
 			for (BuntataMediaAdvanced m : item.getMedia())
 			{
-				if (m.getMediaType() != null && "Image".equals(m.getMediaType().getName()) && m.getInternalLink() != null)
+				if (m.getId() == parentMediaId)
 				{
-					imagePath = FileUtils.getFileForDatasource(context, datasourceId, m.getInternalLink());
-
+					medium = m;
 					foundImage = true;
-
+					imagePath = FileUtils.getFileForDatasource(context, datasource.getId(), m.getInternalLink());
 					break;
+				}
+			}
+
+			/* If we don't, check all our media and pick the first "Image" */
+			if (!foundImage)
+			{
+				BuntataMediaAdvanced m = item.getFirstImage();
+
+				if (m != null)
+				{
+					medium = m;
+					foundImage = true;
+					imagePath = FileUtils.getFileForDatasource(context, datasource.getId(), m.getInternalLink());
 				}
 			}
 		}
@@ -230,6 +205,51 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		}
 
 		holder.title.setText(item.getName());
+
+		if (datasource.isShowKeyName() || !item.hasChildren())
+			holder.title.setVisibility(View.VISIBLE);
+		else
+			holder.title.setVisibility(View.GONE);
+
+		final BuntataMediaAdvanced m = medium;
+
+		/* Listen to click events */
+		holder.view.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				int top = v.getTop();
+
+				if (top < 0 && USE_DIRTY_HACK_TO_FIX_SHARED_ELEMENT_TRANSITION)
+				{
+					/*
+					 * This is a very dirty hack to fix an issue where shared elements will overlap the toolbar and status bar
+					 * when the node is hidden behind them on click. Solutions on Stackoverflow suggested to include the toolbar
+					 * and status bar in the shared elements transition. This, however, didn't seem to work, thus this solution.
+					 * The view is then scrolled "into view" and the shared elements transition is postponed until the scroll
+					 * event finishes.
+					 */
+					parent.smoothScrollToPosition(holder.getAdapterPosition());
+					parent.addOnScrollListener(new RecyclerView.OnScrollListener()
+					{
+						@Override
+						public void onScrollStateChanged(RecyclerView recyclerView, int newState)
+						{
+							if (newState == RecyclerView.SCROLL_STATE_IDLE)
+							{
+								parent.removeOnScrollListener(this);
+								onNodeClicked(holder.image, holder.title, m, dataset.get(holder.getAdapterPosition()));
+							}
+						}
+					});
+				}
+				else
+				{
+					onNodeClicked(holder.image, holder.title, m, dataset.get(holder.getAdapterPosition()));
+				}
+			}
+		});
 	}
 
 	@Override
@@ -244,7 +264,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 	 * @param transitionRoot The {@link View} showing the image. It's used to start the scene transition
 	 * @param node           The actual node that has been clicked.
 	 */
-	public abstract void onNodeClicked(View transitionRoot, View title, BuntataNodeAdvanced node);
+	public abstract void onNodeClicked(View transitionRoot, View title, BuntataMediaAdvanced medium, BuntataNodeAdvanced node);
 
 	@Override
 	public Filter getFilter()

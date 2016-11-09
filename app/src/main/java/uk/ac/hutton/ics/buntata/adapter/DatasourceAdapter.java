@@ -28,13 +28,13 @@ import android.widget.*;
 
 import com.afollestad.sectionedrecyclerview.*;
 import com.squareup.picasso.*;
+import com.transitionseverywhere.*;
 
 import java.io.*;
 import java.util.*;
 
 import butterknife.*;
 import jhi.buntata.resource.*;
-import uk.ac.hutton.ics.buntata.*;
 import uk.ac.hutton.ics.buntata.R;
 import uk.ac.hutton.ics.buntata.activity.*;
 import uk.ac.hutton.ics.buntata.database.entity.*;
@@ -52,6 +52,8 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 	private static final int LOCAL  = 0;
 	private static final int REMOTE = 1;
 
+	private int expandedPosition = -1;
+
 	private Comparator<BuntataDatasourceAdvanced> comparator = new Comparator<BuntataDatasourceAdvanced>()
 	{
 		@Override
@@ -62,6 +64,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 	};
 
 	private Activity                        context;
+	private RecyclerView                    parent;
 	private List<BuntataDatasourceAdvanced> dataset;
 	private List<BuntataDatasourceAdvanced> local  = new ArrayList<>();
 	private List<BuntataDatasourceAdvanced> remote = new ArrayList<>();
@@ -96,17 +99,25 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 	static class ItemViewHolder extends AbstractViewHolder
 	{
 		@BindView(R.id.datasource_name_view)
-		TextView    nameView;
+		TextView     nameView;
 		@BindView(R.id.datasource_description_view)
-		TextView    descriptionView;
+		TextView     descriptionView;
 		@BindView(R.id.datasource_size_view)
-		TextView    sizeView;
+		TextView     sizeView;
 		@BindView(R.id.datasource_image_view)
-		ImageView   imageView;
+		ImageView    imageView;
 		@BindView(R.id.datasource_download_progress)
-		ProgressBar progressBar;
+		ProgressBar  progressBar;
 		@BindView(R.id.datasource_download_indicator)
-		ImageView   downloadStatus;
+		ImageView    downloadStatus;
+		@BindView(R.id.datasource_details_view)
+		LinearLayout detailsView;
+		@BindView(R.id.datasource_provider_view)
+		TextView     providerView;
+		@BindView(R.id.datasource_version_view)
+		TextView     versionView;
+		@BindView(R.id.datasource_contact_view)
+		TextView     contactView;
 
 		/* Remember the state */
 		boolean isDownloading = false;
@@ -119,69 +130,33 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		}
 	}
 
-	public DatasourceAdapter(Activity context, List<BuntataDatasourceAdvanced> dataset)
+	public DatasourceAdapter(Activity context, RecyclerView parent, List<BuntataDatasourceAdvanced> dataset)
 	{
 		this.context = context;
+		this.parent = parent;
 		this.dataset = dataset;
 
 //		shouldShowHeadersForEmptySections(true);
 
-		onDatasetChanged(-1, -1);
+		onDatasetChanged();
 	}
 
-	private void onDatasetChanged(int section, int relativePosition)
+	private synchronized void onDatasetChanged()
 	{
-		if (section == -1 && relativePosition == -1)
+		expandedPosition = -1;
+
+		local.clear();
+		remote.clear();
+
+		for (BuntataDatasourceAdvanced ds : dataset)
 		{
-			local.clear();
-			remote.clear();
-
-			for (BuntataDatasourceAdvanced ds : dataset)
-			{
-				if (ds.getState() == BuntataDatasourceAdvanced.InstallState.NOT_INSTALLED)
-					remote.add(ds);
-				else
-					local.add(ds);
-			}
+			if (ds.getState() == BuntataDatasourceAdvanced.InstallState.NOT_INSTALLED)
+				remote.add(ds);
+			else
+				local.add(ds);
 		}
-		else
-		{
-			int offset = 0;
 
-			if (local.size() != 0)
-				offset++;
-			if (section == REMOTE && remote.size() != 0)
-				offset++;
-
-			BuntataDatasourceAdvanced item;
-			switch (section)
-			{
-				case LOCAL:
-					item = local.remove(relativePosition);
-					notifyItemRemoved(relativePosition + offset);
-					remote.add(item);
-					notifyItemInserted(local.size() + remote.size() + offset);
-
-					Collections.sort(local, comparator);
-					Collections.sort(remote, comparator);
-
-					notifyItemRangeChanged(0, getItemCount());
-
-					break;
-				case REMOTE:
-					item = remote.remove(relativePosition);
-					notifyItemRemoved(local.size() + relativePosition + offset);
-					local.add(item);
-					notifyItemInserted(local.size() + offset);
-
-					Collections.sort(local, comparator);
-					Collections.sort(remote, comparator);
-
-					notifyItemRangeChanged(0, getItemCount());
-
-					break;
-			}
-		}
+		notifyDataSetChanged();
 	}
 
 	@Override
@@ -271,6 +246,12 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 					holder.count.setText(Integer.toString(0));
 				break;
 		}
+
+		if (context instanceof IntroductionActivity)
+		{
+			holder.header.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+			holder.count.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+		}
 	}
 
 	private BuntataDatasourceAdvanced get(int section, int relativePosition)
@@ -285,10 +266,28 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		}
 	}
 
+	private int getAbsolutePosition(int position, int section)
+	{
+		switch (section)
+		{
+			case 0:
+				return position + 1;
+			case 1:
+				if (local.size() > 0)
+					return position + 2;
+				else
+					return position + 3;
+		}
+
+		return -1;
+	}
+
 	@Override
-	public void onBindViewHolder(final AbstractViewHolder h, final int section, final int relativePosition, int absolutePosition)
+	public void onBindViewHolder(final AbstractViewHolder h, final int section, final int relativePosition, final int absolutePosition)
 	{
 		BuntataDatasource item;
+
+		final boolean isExpanded = getAbsolutePosition(absolutePosition, section) == expandedPosition;
 
 		switch (section)
 		{
@@ -305,6 +304,9 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		holder.nameView.setText(item.getName());
 		holder.descriptionView.setText(item.getDescription());
 		holder.sizeView.setText(context.getString(R.string.datasource_size, (item.getSizeNoVideo() / 1024 / 1024), (item.getSizeTotal() / 1024 / 1024)));
+		holder.contactView.setText(item.getContact());
+		holder.providerView.setText(item.getDataProvider());
+		holder.versionView.setText(Integer.toString(item.getVersionNumber()));
 
 		final BuntataDatasourceAdvanced ds = get(section, relativePosition);
 
@@ -327,9 +329,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		}
 
 		holder.downloadStatus.setImageResource(resource);
-		holder.downloadStatus.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimaryDark));
-
-		animate(holder);
+//		holder.downloadStatus.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimaryDark));
 
 		/* If there is an icon, set it */
 		String iconPath = DatasourceService.getIcon(context, item);
@@ -348,6 +348,27 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 			holder.imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 			holder.imageView.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimaryDark));
 		}
+
+		holder.detailsView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+
+		holder.view.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				expandedPosition = isExpanded ? -1 : getAbsolutePosition(absolutePosition, section);
+
+				/* Set a new transition */
+				ChangeBounds transition = new ChangeBounds();
+				/* For 150 ms */
+				transition.setDuration(150);
+				/* And start it */
+				TransitionManager.beginDelayedTransition(parent, transition);
+
+				/* Let the parent view know that something changed and that it needs to re-layout */
+				notifyDataSetChanged();
+			}
+		});
 
 		/* Add a long click handler */
 		holder.view.setOnLongClickListener(new View.OnLongClickListener()
@@ -388,8 +409,8 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 						if (installedDatasources < 1)
 							PreferenceUtils.removePreference(context, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE);
 
-						onDatasetChanged(section, relativePosition);
-//						notifyDataSetChanged();
+						onDatasetChanged();
+						animate(holder);
 					}
 				}, null);
 				return true;
@@ -397,7 +418,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		});
 
 		/* Add a click handler */
-		holder.view.setOnClickListener(new View.OnClickListener()
+		holder.downloadStatus.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
@@ -481,8 +502,8 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 
 				PreferenceUtils.setPreferenceAsBoolean(context, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, true);
 
-				onDatasetChanged(section, relativePosition);
-//				notifyDataSetChanged();
+				onDatasetChanged();
+				animate(holder);
 			}
 		});
 	}

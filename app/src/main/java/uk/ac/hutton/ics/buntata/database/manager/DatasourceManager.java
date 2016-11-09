@@ -33,7 +33,7 @@ import uk.ac.hutton.ics.buntata.util.*;
  */
 public class DatasourceManager extends AbstractManager<BuntataDatasource>
 {
-	private static final String[] ALL_FIELDS = {BuntataDatasource.FIELD_ID, BuntataDatasource.FIELD_NAME, BuntataDatasource.FIELD_DESCRIPTION, BuntataDatasource.FIELD_VERSION_NUMBER, BuntataDatasource.FIELD_DATA_PROVIDER, BuntataDatasource.FIELD_CONTACT, BuntataDatasource.FIELD_ICON, BuntataDatasource.FIELD_SIZE_TOTAL, BuntataDatasource.FIELD_SIZE_NO_VIDEO, BuntataDatasource.FIELD_CREATED_ON, BuntataDatasource.FIELD_UPDATED_ON};
+	private static final String[] ALL_FIELDS = {BuntataDatasource.FIELD_ID, BuntataDatasource.FIELD_NAME, BuntataDatasource.FIELD_DESCRIPTION, BuntataDatasource.FIELD_VERSION_NUMBER, BuntataDatasource.FIELD_DATA_PROVIDER, BuntataDatasource.FIELD_CONTACT, BuntataDatasource.FIELD_SHOW_KEY_NAME, BuntataDatasource.FIELD_ICON, BuntataDatasource.FIELD_SIZE_TOTAL, BuntataDatasource.FIELD_SIZE_NO_VIDEO, BuntataDatasource.FIELD_CREATED_ON, BuntataDatasource.FIELD_UPDATED_ON};
 
 	public DatasourceManager(Context context, int datasourceId)
 	{
@@ -213,6 +213,7 @@ public class DatasourceManager extends AbstractManager<BuntataDatasource>
 					.setVersionNumber(cursor.getInt(BuntataDatasource.FIELD_VERSION_NUMBER))
 					.setDataProvider(cursor.getString(BuntataDatasource.FIELD_DATA_PROVIDER))
 					.setContact(cursor.getString(BuntataDatasource.FIELD_CONTACT))
+					.setShowKeyName(cursor.getBoolean(BuntataDatasource.FIELD_SHOW_KEY_NAME))
 					.setIcon(cursor.getString(BuntataDatasource.FIELD_ICON))
 					.setSizeTotal(cursor.getInt(BuntataDatasource.FIELD_SIZE_TOTAL))
 					.setSizeNoVideo(cursor.getInt(BuntataDatasource.FIELD_SIZE_NO_VIDEO));

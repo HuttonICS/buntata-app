@@ -28,7 +28,8 @@ import jhi.buntata.resource.*;
  */
 public class BuntataNodeAdvanced extends BuntataNode
 {
-	private List<BuntataMediaAdvanced> media = new ArrayList<>();
+	private List<BuntataMediaAdvanced> media       = new ArrayList<>();
+	private boolean                    hasChildren = false;
 
 	public BuntataNodeAdvanced()
 	{
@@ -59,6 +60,30 @@ public class BuntataNodeAdvanced extends BuntataNode
 	public BuntataNodeAdvanced addMedia(BuntataMediaAdvanced medium)
 	{
 		this.media.add(medium);
+		return this;
+	}
+
+	public BuntataMediaAdvanced getFirstImage()
+	{
+		for (BuntataMediaAdvanced m : getMedia())
+		{
+			if (m.getMediaType() != null && "Image".equals(m.getMediaType().getName()) && m.getInternalLink() != null)
+			{
+				return m;
+			}
+		}
+
+		return null;
+	}
+
+	public boolean hasChildren()
+	{
+		return hasChildren;
+	}
+
+	public BuntataNodeAdvanced setHasChildren(boolean hasChildren)
+	{
+		this.hasChildren = hasChildren;
 		return this;
 	}
 

@@ -66,8 +66,7 @@ public class AboutInformationFragment extends Fragment
 	public void onShareClicked()
 	{
 		ShareCompat.IntentBuilder.from(getActivity())
-								 .setText("text/plain")
-								 .setSubject(getString(R.string.contact_email_subject))
+								 .setType("text/plain")
 								 .setText(getString(R.string.google_play_url))
 								 .setChooserTitle(R.string.share_chooser_title)
 								 .startChooser();

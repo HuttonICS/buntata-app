@@ -17,8 +17,6 @@
 package uk.ac.hutton.ics.buntata.activity;
 
 import android.*;
-import android.content.pm.*;
-import android.content.res.*;
 import android.os.*;
 
 import com.heinrichreimersoftware.materialintro.app.*;
@@ -50,7 +48,7 @@ public class IntroductionActivity extends IntroActivity
 		addSlide(new SimpleSlide.Builder()
 				.title(R.string.introduction_welcome_title)
 				.description(R.string.introduction_welcome_text)
-				.image(R.drawable.ic_logo)
+				.image(R.mipmap.ic_launcher_2x)
 				.background(R.color.colorPrimary)
 				.backgroundDark(R.color.colorPrimaryDark)
 				.permission(Manifest.permission.INTERNET)
@@ -115,12 +113,12 @@ public class IntroductionActivity extends IntroActivity
 	}
 
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig)
-	{
-		super.onConfigurationChanged(newConfig);
-
-		/* Force portrait */
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-	}
+//	@Override
+//	public void onConfigurationChanged(Configuration newConfig)
+//	{
+//		super.onConfigurationChanged(newConfig);
+//
+//		/* Force portrait */
+//		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//	}
 }

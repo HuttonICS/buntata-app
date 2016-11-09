@@ -26,6 +26,7 @@ import android.view.*;
 import java.util.*;
 
 import butterknife.*;
+import jhi.buntata.resource.*;
 import uk.ac.hutton.ics.buntata.*;
 import uk.ac.hutton.ics.buntata.activity.*;
 import uk.ac.hutton.ics.buntata.adapter.*;
@@ -66,6 +67,7 @@ public class NodeFragment extends Fragment
 
 		/* Get the parent node */
 		BuntataNodeAdvanced parent = nodeManager.getById(parentId);
+		BuntataDatasource datasource = new DatasourceManager(getActivity(), datasourceId).getById(datasourceId);
 
 		/* Inflate the layout */
 		View view = inflater.inflate(R.layout.fragment_node, container, false);
@@ -75,6 +77,7 @@ public class NodeFragment extends Fragment
 		recyclerView.setHasFixedSize(true);
 
 		String title = getString(R.string.app_name);
+		int parentMediaId = -1;
 
 		/* If we don't have a parent, get all roots */
 		if (parent == null)
@@ -84,25 +87,29 @@ public class NodeFragment extends Fragment
 		/* Else get all the children of the parent */
 		else
 		{
+			BuntataMediaAdvanced m = parent.getFirstImage();
+
+			if (m != null)
+				parentMediaId = m.getId();
+
 			originalList = nodeManager.getForParent(parentId);
 
-			title = parent.getName();
+			if (datasource.isShowKeyName())
+				title = parent.getName();
 		}
 
 		/* Set the name of the parent (if available) to the tool bar */
 		ActionBar toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
 		if (toolbar != null)
-		{
 			toolbar.setTitle(title);
-		}
 
 		/* Set the data to the adapter */
-		adapter = new NodeAdapter(getActivity(), recyclerView, datasourceId, originalList)
+		adapter = new NodeAdapter(getActivity(), recyclerView, datasourceId, parentMediaId, originalList)
 		{
 			@Override
-			public void onNodeClicked(View animationRoot, View title, BuntataNodeAdvanced node)
+			public void onNodeClicked(View animationRoot, View title, BuntataMediaAdvanced medium, BuntataNodeAdvanced node)
 			{
-				((MainActivity) getActivity()).onFragmentChange(animationRoot, title, datasourceId, node.getId());
+				((MainActivity) getActivity()).onFragmentChange(animationRoot, title, datasourceId, node.getId(), medium.getId());
 			}
 		};
 		recyclerView.setAdapter(adapter);
@@ -124,7 +131,7 @@ public class NodeFragment extends Fragment
 	{
 		int columns = getResources().getInteger(R.integer.node_recyclerview_columns);
 		int valueInPixels = (int) getResources().getDimension(R.dimen.activity_vertical_margin) / 2;
-		recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columns));
+		recyclerView.setLayoutManager(new StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL));
 
 		if (decoration != null)
 			recyclerView.removeItemDecoration(decoration);
@@ -154,17 +161,11 @@ public class NodeFragment extends Fragment
 		if (filter == null)
 			filter = "";
 
-
 		filter(filter);
 	}
 
 	public void filter(String query)
 	{
 		adapter.getFilter().filter(query);
-	}
-
-	public void hideTitle()
-	{
-
 	}
 }

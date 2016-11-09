@@ -37,9 +37,9 @@ public class BuntataDatasourceAdvanced extends BuntataDatasource
 		super(id, createdOn, updatedOn);
 	}
 
-	public BuntataDatasourceAdvanced(int id, Date createdOn, Date updatedOn, String name, String description, int versionNumber, String dataProvider, String contact, String icon, long size, InstallState state)
+	public BuntataDatasourceAdvanced(int id, Date createdOn, Date updatedOn, String name, String description, int versionNumber, String dataProvider, String contact, boolean showKeyName, String icon, long size, InstallState state)
 	{
-		super(id, createdOn, updatedOn, name, description, versionNumber, dataProvider, contact, icon, size);
+		super(id, createdOn, updatedOn, name, description, versionNumber, dataProvider, contact, showKeyName, icon, size);
 		this.state = state;
 	}
 
@@ -66,6 +66,7 @@ public class BuntataDatasourceAdvanced extends BuntataDatasource
 		result.setSizeTotal(ds.getSizeTotal());
 		result.setSizeNoVideo(ds.getSizeNoVideo());
 		result.setIcon(ds.getIcon());
+		result.setShowKeyName(ds.isShowKeyName());
 		result.setCreatedOn(ds.getCreatedOn());
 		result.setUpdatedOn(ds.getUpdatedOn());
 

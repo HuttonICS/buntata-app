@@ -34,8 +34,7 @@ public class PreferenceUtils
 	public static final String PREFS_SELECTED_DATASOURCE_ID  = "prefs.selected.datasource.id";
 	public static final String PREFS_GA_OPT_OUT              = "prefs.google.analytics.opt.out";
 
-	private static final String DEFAULT_PREF_SERVER_URL = "https://ics.hutton.ac.uk/buntata/v1/";
-//	public static final String DEFAULT_PREF_SERVER_URL = "http://wildcat.hutton.ac.uk:8080/buntata/v1/";
+	private static final String DEFAULT_PREF_SERVER_URL = "https://ics.hutton.ac.uk/buntata/v1.1/";
 
 	/**
 	 * Sets the defaults for all preferences that don't have a value yet

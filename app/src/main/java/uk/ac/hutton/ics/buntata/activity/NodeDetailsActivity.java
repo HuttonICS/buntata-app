@@ -40,8 +40,9 @@ import uk.ac.hutton.ics.buntata.database.manager.*;
  */
 public class NodeDetailsActivity extends BaseActivity
 {
-	public static final String PARAM_DATASOURCE_ID = "datasourceId";
-	public static final String PARAM_NODE_ID       = "nodeId";
+	public static final String PARAM_DATASOURCE_ID         = "datasourceId";
+	public static final String PARAM_PREFERED_FIRST_MEDIUM = "preferedMediumId";
+	public static final String PARAM_NODE_ID               = "nodeId";
 	@BindView(R.id.node_details_image_pager)
 	ViewPager       pager;
 	@BindView(R.id.node_details_image_indicator)
@@ -64,6 +65,7 @@ public class NodeDetailsActivity extends BaseActivity
 		Bundle args = getIntent().getExtras();
 		int datasourceId = args.getInt(PARAM_DATASOURCE_ID, -1);
 		int nodeId = args.getInt(PARAM_NODE_ID, -1);
+		int preferedMediumId = args.getInt(PARAM_PREFERED_FIRST_MEDIUM, -1);
 
 		/* Initialize the media manager */
 		MediaManager mediaManager = new MediaManager(this, datasourceId);
@@ -93,7 +95,7 @@ public class NodeDetailsActivity extends BaseActivity
 		if (splitByType.get(BuntataMediaType.TYPE_IMAGE).size() > 0)
 		{
 			/* Set to the pager */
-			final ImagePagerAdapter adapter = new ImagePagerAdapter(getSupportFragmentManager(), datasourceId, splitByType.get(BuntataMediaType.TYPE_IMAGE));
+			final ImagePagerAdapter adapter = new ImagePagerAdapter(getSupportFragmentManager(), datasourceId, splitByType.get(BuntataMediaType.TYPE_IMAGE), preferedMediumId);
 			pager.setAdapter(adapter);
 			circleIndicator.setViewPager(pager);
 		}

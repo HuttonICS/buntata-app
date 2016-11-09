@@ -15,12 +15,20 @@
   -->
 
 <resources>
-	<string name="app_name" translatable="false">Buntàta</string>
+	<string name="app_name" translatable="false">Buntata</string>
 	<string name="title_activity_about">About</string>
 	<string name="title_activity_datasource">Data sources</string>
 
-	<string name="introduction_welcome_title">Welcome to Buntàta</string>
-	<string name="introduction_welcome_text">Buntàta is Scottish Gaelic for potato... Something else here...</string>
+	<string name="introduction_welcome_title">Welcome to Buntata</string>
+	<string name="introduction_welcome_text">We named our app after the Scottish Gaelic word for potato. Scotland’s a great place, but sometimes a bit
+		rainy...
+	</string>
+
+	<string name="introduction_eula_title">EULA Page</string>
+	<string name="introduction_eula_text_1">In order to use Buntata we need you to agree to one of our End User Licence Agreements (EULA). We have a
+		EULA for both consumers/private users and commercial users. The EULA sets out our legal obligations to our end users.
+	</string>
+	<string name="introduction_eula_text_2">We do not share any information you provide us with any other party.</string>
 
 	<string name="toast_exception">An error occurred: %1$s</string>
 
@@ -74,14 +82,18 @@
 
 	<string name="google_play_url" translatable="false">https://play.google.com/store/apps/details?id=uk.ac.hutton.ics.buntata</string>
 
-	<string name="contact_email_subject" translatable="false">Buntàta</string>
-	<string name="contact_email_address" translatable="false">sebastian.raubach@hutton.ac.uk</string>
+	<string name="contact_email_subject" translatable="false">Buntata</string>
+	<string name="contact_email_address" translatable="false">cropgeeksapps@hutton.ac.uk</string>
 	<string name="contact_email_dialog_title">Send email</string>
 
 	<string name="share_chooser_title">Share</string>
 
 	<string name="datasource_list_header_local">Local data sources</string>
 	<string name="datasource_list_header_remote">Remote data sources</string>
+
+	<string name="datasource_text">The following datasets are available to download. Downloading datasets allows you to use Buntata without a data
+		connection. When datasets are updated you will be prompted to download an updated version.
+	</string>
 
 	<string name="license_view_option_title">Choose an option</string>
 	<string name="license_view_option_view_license">View license</string>
@@ -92,13 +104,16 @@
 	<string name="notification_enable_internet">The device needs to have a network connection to download data sources. Please enable it.</string>
 
 	<string name="network_intro_title">Checking network connection</string>
+	<string name="network_intro_text">To download datasets you need to have a network connection. We are checking for that now.</string>
 	<string name="network_intro_status_available">Network connection detected.</string>
 	<string name="network_intro_status_unavailable">No network connection detected. Please enable wifi or mobile data to continue.</string>
 
 	<string name="network_intro_button_settings">Settings</string>
 	<string name="network_intro_button_refresh">Refresh</string>
 
-	<string name="eula_intro_select">Please select a EULA type</string>
+	<string name="eula_intro_select">In order to use Buntata we need you to agree to one of our End User Licence Agreements (EULA). We have a EULA for
+		both consumers/private users and commercial users. The EULA sets out our legal obligations to our end users.
+	</string>
 
 	<string name="label_eula_commercial">EULA for commercial users</string>
 	<string name="label_eula_consumer">EULA for consumers</string>
@@ -111,4 +126,9 @@
 	<string name="acknowledgements_bbsrc_url">http://www.bbsrc.ac.uk/</string>
 
 	<string name="node_instructions">Select the item that you want to investigate.</string>
+
+	<string name="datasource_details_description">Description</string>
+	<string name="datasource_details_provider">Provider</string>
+	<string name="datasource_details_contact">Contact</string>
+	<string name="datasource_details_version">Version</string>
 </resources>

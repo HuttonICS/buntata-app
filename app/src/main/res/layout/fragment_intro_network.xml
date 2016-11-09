@@ -36,6 +36,17 @@
 		android:gravity="center_horizontal"
 		android:textSize="20sp"/>
 
+	<TextView
+		android:id="@+id/network_status_text"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/network_status_title"
+		android:textColor="@android:color/white"
+		android:text="@string/network_intro_text"
+		android:layout_centerHorizontal="true"
+		android:gravity="center_horizontal"
+		android:textSize="14sp"/>
+
 	<ImageView
 		android:id="@+id/network_status_image"
 		android:layout_width="wrap_content"

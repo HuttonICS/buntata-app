@@ -87,7 +87,9 @@ public class NodeManager extends AbstractManager<BuntataNodeAdvanced>
 			{
 				try
 				{
-					result.add(getDefaultParser().parse(context, datasourceId, new DatabaseInternal.AdvancedCursor(cursor)));
+					BuntataNodeAdvanced node = getDefaultParser().parse(context, datasourceId, new DatabaseInternal.AdvancedCursor(cursor));
+					node.setHasChildren(hasChildren(node.getId()));
+					result.add(node);
 				}
 				catch (ParseException e)
 				{
@@ -147,7 +149,9 @@ public class NodeManager extends AbstractManager<BuntataNodeAdvanced>
 			{
 				try
 				{
-					result.add(getDefaultParser().parse(context, datasourceId, new DatabaseInternal.AdvancedCursor(cursor)));
+					BuntataNodeAdvanced node = getDefaultParser().parse(context, datasourceId, new DatabaseInternal.AdvancedCursor(cursor));
+					node.setHasChildren(hasChildren(node.getId()));
+					result.add(node);
 				}
 				catch (ParseException e)
 				{
