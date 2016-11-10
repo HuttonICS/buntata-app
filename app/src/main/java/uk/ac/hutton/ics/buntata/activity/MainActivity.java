@@ -24,6 +24,7 @@ import android.support.v4.app.*;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.*;
+import android.support.v4.view.*;
 import android.support.v7.widget.*;
 import android.view.*;
 
@@ -271,40 +272,44 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 		SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
 
 		/* Get the actual search view */
-		final SearchView searchView = (SearchView) searchItem.getActionView();
-		searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
-		searchView.setQueryHint(getString(R.string.search_query_hint));
-		/* Listen to submit events */
-		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+		final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+		if (searchView != null)
 		{
-			@Override
-			public boolean onQueryTextSubmit(String query)
+			searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
+			searchView.setQueryHint(getString(R.string.search_query_hint));
+			/* Listen to submit events */
+			searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
 			{
-				searchView.clearFocus();
+				@Override
+				public boolean onQueryTextSubmit(String query)
+				{
+					searchView.clearFocus();
 
-				MainActivity.this.query = query;
-				filter(query);
+					MainActivity.this.query = query;
+					filter(query);
 
-				return false;
-			}
+					return false;
+				}
 
-			@Override
-			public boolean onQueryTextChange(String s)
+				@Override
+				public boolean onQueryTextChange(String s)
+				{
+					return false;
+				}
+			});
+			searchView.setOnCloseListener(new SearchView.OnCloseListener()
 			{
-				return false;
-			}
-		});
-		searchView.setOnCloseListener(new SearchView.OnCloseListener()
-		{
-			@Override
-			public boolean onClose()
-			{
-				MainActivity.this.query = null;
-				filter("");
+				@Override
+				public boolean onClose()
+				{
+					MainActivity.this.query = null;
+					filter("");
 
-				return false;
-			}
-		});
+					return false;
+				}
+			});
+		}
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -322,6 +327,11 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 
 		/* Then filter it */
 		fragment.filter(query);
+
+		if (!StringUtils.isEmpty(query))
+		{
+			GoogleAnalyticsUtils.trackEvent(this, getTracker(BaseActivity.TrackerName.APP_TRACKER), getString(R.string.ga_event_category_node_search), "Datasource: " + datasourceId, query);
+		}
 	}
 
 	@Override

@@ -89,6 +89,8 @@ public class EulaFragment extends Fragment
 	@OnClick(R.id.eula_button_accept)
 	public void onAcceptClicked()
 	{
+		GoogleAnalyticsUtils.trackEvent(getActivity(), BaseActivity.getTracker(getActivity(), BaseActivity.TrackerName.APP_TRACKER), getActivity().getString(R.string.ga_event_category_eula), getActivity().getString(R.string.ga_event_action_eula_accepted), type.name());
+
 		PreferenceUtils.setPreferenceAsBoolean(getActivity(), PreferenceUtils.PREFS_EULA_ACCEPTED, true);
 		PreferenceUtils.setPreference(getActivity(), PreferenceUtils.PREFS_EULA_TYPE, type.name());
 		((IntroductionActivity) getActivity()).nextSlide();
@@ -97,6 +99,8 @@ public class EulaFragment extends Fragment
 	@OnClick(R.id.eula_button_cancel)
 	public void onCancelClicked()
 	{
+		GoogleAnalyticsUtils.trackEvent(getActivity(), BaseActivity.getTracker(getActivity(), BaseActivity.TrackerName.APP_TRACKER), getActivity().getString(R.string.ga_event_category_eula), getActivity().getString(R.string.ga_event_action_eula_declined), type.name());
+
 		getActivity().finish();
 	}
 

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2016 Information & Computational Sciences, The James Hutton Institute
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<resources>
+	<string name="title_activity_about">Über</string>
+	<string name="title_activity_datasource">Datenquellen</string>
+	<string name="introduction_welcome_title">Willkommen zu Buntata</string>
+	<string name="introduction_welcome_text">Wir haben die App nach dem Schottisch-Gälischen Wort für Kartoffel benannt. Schottland ist ein
+		großartiger Ort, aber manchmal etwas regnerisch...
+	</string>
+	<string name="introduction_eula_title">EULA-Seite</string>
+	<string name="introduction_eula_text_1">Um Buntata verwenden zu können müssen Sie einer unserer Endbenutzer Lizenz Vereinbarungen (EULA)
+		zustimmen. Wir haben eine EULA für Verbraucher/private Anwender und gewerbliche Nutzer. Die EULA regelt unsere gesetzlichen Verpflichtungen
+		für unsere Endbenutzer.
+	</string>
+	<string name="introduction_eula_text_2">Wir teilen keine Informationen, die Sie uns gegeben haben mit einer anderen Partei.</string>
+	<string name="toast_exception">Ein Fehler ist aufgetreten: %1$s</string>
+	<string name="menu_data_source">Datenquelle</string>
+	<string name="menu_visit_homepage">Homepage besuchen</string>
+	<string name="menu_online_help">Online-Hilfe</string>
+	<string name="menu_settings">Einstellungen</string>
+	<string name="menu_about">Über</string>
+	<string name="menu_action_search">Suchen</string>
+	<string name="menu_action_zoom">Zoom</string>
+	<string name="drawer_open">Navigationsschublade öffnen</string>
+	<string name="drawer_close">Navigationsschublade schließen</string>
+	<string name="generic_settings">Einstellungen</string>
+	<string name="generic_yes">Ja</string>
+	<string name="generic_no">Nein</string>
+	<string name="generic_cancel">Abbrechen</string>
+	<string name="generic_accept">Akzeptieren</string>
+	<string name="datasource_size">Mediengröße: ~%1$d MB (~%2$d MB)</string>
+	<string name="snackbar_already_downloaded">Datenquelle bereits heruntergeladen.</string>
+	<string name="snackbar_currently_downloading">Datenquelle wird gerade heruntergeladen.</string>
+	<string name="snackbar_download_successful">Datenquelle erfolgreich heruntergeladen.</string>
+	<string name="snackbar_select_datasource">Bitte wählen Sie eine Datenquelle.</string>
+	<string name="dialog_delete_datasource_title">Datenquelle löschen</string>
+	<string name="dialog_delete_datasource_text">Diese Datenquelle entfernen?</string>
+	<string name="dialog_restlet_please_wait">Bitte warten</string>
+	<string name="dialog_download_title">Herunterladen</string>
+	<string name="dialog_download_message">Videos herunterladen?</string>
+	<string name="dialog_download_cancel_title">Download abbrechen?</string>
+	<string name="dialog_download_cancel_text">Download im Gange. Möchten Sie abbrechen?</string>
+	<string name="about_tab_information">Über</string>
+	<string name="about_tab_developers">Entwickler</string>
+	<string name="about_tab_acknowledgements">Danksagungen</string>
+	<string name="about_tab_license">Lizenz</string>
+	<string name="about_information_text">Etwas über die App hier. Dies ist nur ein Platzhalter um zu sehen, wie es aussehen wird.</string>
+	<string name="contact_email_dialog_title">E-Mail senden</string>
+	<string name="share_chooser_title">Teilen</string>
+	<string name="datasource_list_header_local">Lokale Datenquellen</string>
+	<string name="datasource_list_header_remote">Verfügbare Datenquellen</string>
+	<string name="datasource_text">Die folgenden Datensätze stehen zum Download bereit. Das Herunterladen von Datensätze erlaubt Ihnen Buntata ohne
+		Datenverbindung zu verwenden. Wenn Datensätze aktualisiert werden, werden Sie aufgefordert, eine aktualisierte Version herunterzuladen.
+	</string>
+	<string name="license_view_option_title">Wählen Sie eine Option</string>
+	<string name="license_view_option_view_license">Lizenz ansehen</string>
+	<string name="license_view_option_view_github">Auf GitHub ansehen</string>
+	<string name="search_query_hint">Suche nach Symptom oder Namen</string>
+	<string name="notification_enable_internet">Das Gerät benötigt eine Netzwerkverbindung um Datenquellen herunterzuladen. Bitte aktivieren Sie es.
+	</string>
+	<string name="network_intro_title">Überprüfe die Netzwerkverbindung</string>
+	<string name="network_intro_text">Um Datensätze herunterzuladen ist eine Datenverbindung erforderlich. Wir überprüfen dies nun.</string>
+	<string name="network_intro_status_available">Netzwerkverbindung gefunden.</string>
+	<string name="network_intro_status_unavailable">Keine Verbindung zum Netzwerk gefunden. Bitte aktivieren Sie WLAN oder eine mobile Datenverbindung
+		um fortzufahren.
+	</string>
+	<string name="network_intro_button_settings">Einstellungen</string>
+	<string name="network_intro_button_refresh">Aktualisieren</string>
+	<string name="eula_intro_select">Um Buntata verwenden zu können müssen Sie einer unserer Endbenutzer Lizenz Vereinbarungen (EULA) zustimmen. Wir
+		haben eine EULA für Verbraucher/private Anwender und gewerbliche Nutzer. Die EULA regelt unsere gesetzlichen Verpflichtungen für unsere
+		Endbenutzer.
+	</string>
+	<string name="label_eula_commercial">EULA für kommerzielle Nutzer</string>
+	<string name="label_eula_consumer">EULA für Verbraucher</string>
+	<string name="acknowledgements_jhi_text">Diese app wurde am James Hutton Institut entwickelt</string>
+	<string name="acknowledgements_st_andrews_text">In Zusammenarbeit mit der University of St. Andrews</string>
+	<string name="acknowledgements_bbsrc_text">Mit finanzieller Unterstützung durch die Biotechnology and Biological Sciences Research Council
+	</string>
+	<string name="acknowledgements_jhi_url">http://www.hutton.ac.uk</string>
+	<string name="acknowledgements_st_andrews_url">https://www.st-andrews.ac.uk/</string>
+	<string name="acknowledgements_bbsrc_url">http://www.bbsrc.ac.uk/</string>
+	<string name="node_instructions">Wählen Sie das Element, das Sie untersuchen möchten.</string>
+	<string name="datasource_details_description">Beschreibung</string>
+	<string name="datasource_details_provider">Anbieter</string>
+	<string name="datasource_details_contact">Kontakt</string>
+	<string name="datasource_details_version">Version</string>
+	<string name="preferences_ga_opt_out_title">Teilen von Statistiken</string>
+	<string name="preferences_ga_opt_out_message">Wir werden diese Informationen nur zur Analyse und Verbesserung der durch diese App angebotenen
+		Dienste verwenden. Mehr Informationen befinden sich in der EULA.
+	</string>
+</resources>

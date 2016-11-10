@@ -42,8 +42,6 @@ import uk.ac.hutton.ics.buntata.util.*;
  */
 public abstract class BaseActivity extends AppCompatActivity
 {
-	public static AppCompatActivity INSTANCE;
-
 	protected static Set<String> deniedPermissions = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
 
 	/**
@@ -65,7 +63,25 @@ public abstract class BaseActivity extends AppCompatActivity
 	/**
 	 * The Trackers
 	 */
-	private HashMap<TrackerName, Tracker> mTrackers = new HashMap<>();
+	private static HashMap<TrackerName, Tracker> mTrackers = new HashMap<>();
+
+	/**
+	 * Returns the Tracker based on the tracker name
+	 *
+	 * @param trackerId The {@link uk.ac.hutton.ics.buntata.activity.BaseActivity.TrackerName}
+	 * @return The Tracker
+	 */
+	public static synchronized Tracker getTracker(Context context, TrackerName trackerId)
+	{
+		if (!mTrackers.containsKey(trackerId))
+		{
+			GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
+			Tracker t = (trackerId == TrackerName.APP_TRACKER) ? analytics.newTracker(R.xml.app_tracker) : analytics.newTracker(PROPERTY_ID);
+			mTrackers.put(trackerId, t);
+
+		}
+		return mTrackers.get(trackerId);
+	}
 
 	/**
 	 * Returns the Tracker based on the tracker name
@@ -75,15 +91,7 @@ public abstract class BaseActivity extends AppCompatActivity
 	 */
 	public synchronized Tracker getTracker(TrackerName trackerId)
 	{
-		if (!mTrackers.containsKey(trackerId))
-		{
-			GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-			Tracker t = (trackerId == TrackerName.APP_TRACKER) ? analytics.newTracker(R.xml.app_tracker)
-					: analytics.newTracker(PROPERTY_ID);
-			mTrackers.put(trackerId, t);
-
-		}
-		return mTrackers.get(trackerId);
+		return getTracker(this, trackerId);
 	}
 
 	@Override
@@ -91,8 +99,6 @@ public abstract class BaseActivity extends AppCompatActivity
 	{
 		/* Don't forget to call the parent class */
 		super.onCreate(savedInstanceState);
-
-		INSTANCE = this;
 
         /* Get the property id */
 		PROPERTY_ID = getString(R.string.ga_tracking_id);
@@ -117,8 +123,6 @@ public abstract class BaseActivity extends AppCompatActivity
 	protected void onStart()
 	{
 		super.onStart();
-
-		INSTANCE = this;
 
         /* Handle uncaught exceptions */
 		if (!isDebugApplication())
@@ -221,7 +225,7 @@ public abstract class BaseActivity extends AppCompatActivity
 
 	protected boolean isDebugApplication()
 	{
-		String packageName = INSTANCE.getPackageName();
+		String packageName = this.getPackageName();
 		return packageName != null && packageName.endsWith(".debug");
 	}
 }

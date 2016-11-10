@@ -18,6 +18,7 @@ package uk.ac.hutton.ics.buntata.util;
 
 import android.app.*;
 import android.content.*;
+import android.support.v7.app.AlertDialog;
 
 /**
  * {@link uk.ac.hutton.ics.buntata.util.DialogUtils} contains methods to easily create {@link AlertDialog}s.
@@ -29,7 +30,7 @@ public class DialogUtils
 	/**
 	 * Ceates an {@link AlertDialog} with the given title, message and positive/negative button handling
 	 *
-	 * @param context          The current {@link Activity}
+	 * @param context          The current {@link Context}
 	 * @param title            The title resource to use
 	 * @param message          The message resource to use
 	 * @param positiveText     The positive button resource to use
@@ -50,10 +51,10 @@ public class DialogUtils
 	/**
 	 * Creates an {@link AlertDialog} with the given title and message.
 	 *
-	 * @param context The current {@link Activity}
+	 * @param context The current {@link Context}
 	 * @param title   The title resource to use
 	 * @param error   The error resource to use
-	 * @param finish  Finish the {@link Activity} after showing the {@link AlertDialog}?
+	 * @param finish  Finish the {@link Context} after showing the {@link AlertDialog}?
 	 */
 	public static void showDialog(Activity context, int title, int error, boolean finish)
 	{

@@ -128,9 +128,9 @@ public abstract class DrawerActivity extends BaseActivity
 //			case R.id.drawer_menu_online_help:
 //				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_online_help))));
 //				break;
-//			case R.id.drawer_menu_settings:
-//				startActivityForResult(new Intent(getApplicationContext(), PreferencesActivity.class), REQUEST_PREFS);
-//				break;
+			case R.id.drawer_menu_settings:
+				startActivityForResult(new Intent(getApplicationContext(), PreferencesActivity.class), REQUEST_PREFS);
+				break;
 			case R.id.drawer_menu_about:
 				startActivity(new Intent(getApplicationContext(), AboutActivity.class));
 				break;

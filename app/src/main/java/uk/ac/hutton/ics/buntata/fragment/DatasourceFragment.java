@@ -16,6 +16,7 @@
 
 package uk.ac.hutton.ics.buntata.fragment;
 
+import android.database.sqlite.*;
 import android.os.*;
 import android.support.v4.app.*;
 import android.support.v4.content.*;
@@ -119,11 +120,27 @@ public class DatasourceFragment extends Fragment
 	private void requestData()
 	{
 		/* Get the local data sources */
-		final List<BuntataDatasource> localList = new DatasourceManager(getActivity(), -1).getAll();
+		List<BuntataDatasource> local;
+
+		try
+		{
+			local = new DatasourceManager(getActivity(), -1).getAll();
+		}
+		catch (SQLiteException e)
+		{
+
+			local = new ArrayList<>();
+		}
+
+		final List<BuntataDatasource> localList = local;
 		/* Keep track of their status (installed no update, installed update, not installed) */
 		final List<BuntataDatasourceAdvanced> dataset = new ArrayList<>();
 
-		boolean cancelable = getActivity() instanceof DatasourceActivity;
+		final boolean cancelable = getActivity() instanceof DatasourceActivity;
+
+		/* Set it initially */
+		adapter = new DatasourceAdapter(getActivity(), recyclerView, dataset);
+		recyclerView.setAdapter(adapter);
 
 		/* Then try to get the online resources */
 		DatasourceService.getAll(getActivity(), cancelable, new RemoteCallback<List<BuntataDatasource>>(getActivity())

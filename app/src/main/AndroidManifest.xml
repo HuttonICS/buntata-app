@@ -35,12 +35,15 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:name=".activity.IntroductionActivity"/>
-		<activity android:name=".activity.DatasourceActivity"/>
+		<activity android:name=".activity.IntroductionActivity"
+				  android:configChanges="orientation|screenSize"/>
+		<activity android:name=".activity.DatasourceActivity"
+				  android:configChanges="orientation|screenSize"/>
 		<activity android:name=".activity.NodeDetailsActivity"/>
 		<activity android:name=".activity.AboutActivity"/>
 		<activity android:name=".activity.ApacheLicenseActivity"/>
 		<activity android:name=".activity.VideoActivity"/>
+		<activity android:name=".activity.PreferencesActivity"/>
 	</application>
 
 </manifest>

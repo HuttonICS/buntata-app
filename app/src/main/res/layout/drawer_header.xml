@@ -21,6 +21,6 @@
 	android:layout_height="wrap_content"
 	android:background="@color/drawerHeader"
 	android:padding="16dp"
-	android:src="@mipmap/ic_launcher_2x"
+	android:src="@drawable/ic_launcher_2x"
 	android:elevation="@dimen/cardview_default_elevation"
 	android:scaleType="centerInside"/>

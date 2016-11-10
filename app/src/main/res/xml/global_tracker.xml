@@ -28,5 +28,5 @@
     <bool name="ga_dryRun">false</bool>
 
     <!-- The screen names that will appear in reports -->
-    <string name="uk.ac.hutton.ics.buntata.activity.BaseActivity">Buntàta Base Activity</string>
+    <string name="uk.ac.hutton.ics.buntata.activity.BaseActivity">Buntata Base Activity</string>
 </resources>

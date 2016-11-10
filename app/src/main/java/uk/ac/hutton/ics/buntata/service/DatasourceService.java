@@ -141,7 +141,7 @@ public class DatasourceService
 	 * @param ds            The current data source
 	 * @param callback      The {@link RemoteCallback} to call when the query returns
 	 */
-	public static void download(final Context context, boolean includeVideos, ProgressBar progressBar, final BuntataDatasource ds, final RemoteCallback<File> callback)
+	public static DownloadTask download(final Context context, boolean includeVideos, ProgressBar progressBar, final BuntataDatasource ds, final RemoteCallback<File> callback)
 	{
 		String url = getBaseUrl(context) + String.format(DATASOURCE_BASE_URL + DATASOURCE_DOWNLOAD_URL, ds.getId(), Boolean.toString(includeVideos));
 
@@ -149,7 +149,7 @@ public class DatasourceService
 		File file = FileUtils.getFileForDatasource(context, ds.getId(), ds.getId() + ".zip");
 
 		/* Start the download */
-		new DownloadTask(progressBar, includeVideos, ds, file)
+		DownloadTask task = new DownloadTask(progressBar, includeVideos, ds, file)
 		{
 			@Override
 			protected void processData(File file)
@@ -175,6 +175,9 @@ public class DatasourceService
 					callback.onFailure(ex);
 				}
 			}
-		}.execute(url);
+		};
+		task.execute(url);
+
+		return task;
 	}
 }

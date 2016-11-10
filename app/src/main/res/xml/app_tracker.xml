@@ -33,5 +33,5 @@
     <!-- How long a session exists before giving up -->
     <integer name="ga_sessionTimeout">-1</integer>
 
-    <screenName name="uk.ac.hutton.ics.buntata.activity.BaseActivity">Buntàta Base Activity</screenName>
+    <screenName name="uk.ac.hutton.ics.buntata.activity.BaseActivity">Buntata Base Activity</screenName>
 </resources>
