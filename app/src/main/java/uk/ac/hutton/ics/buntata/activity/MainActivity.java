@@ -81,7 +81,7 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 
 	private void init()
 	{
-		boolean showIntro = !PreferenceUtils.getPreferenceAsBoolean(this, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, false);
+		boolean showIntro = !PreferenceUtils.getPreferenceAsBoolean(this, PreferenceUtils.PREFS_EULA_ACCEPTED, false);
 
 		if (showIntro)
 		{
@@ -109,7 +109,9 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 				}
 				/* Else if the data source changed, update the content */
 				else if (datasourceId != this.datasourceId)
+				{
 					updateContent(null, null, datasourceId, -1, -1);
+				}
 			}
 
 			/* Remember the new data source and disable override */
@@ -202,7 +204,7 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 	@OnClick(R.id.main_view_fab)
 	public void onFabClicked()
 	{
-		while(getSupportFragmentManager().getBackStackEntryCount() > 1)
+		while (getSupportFragmentManager().getBackStackEntryCount() > 1)
 			onBackPressed();
 	}
 

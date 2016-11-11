@@ -28,10 +28,36 @@ public class PreferencesActivity extends BaseActivity
 			getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 		}
 
+		/* Set the toolbar as the action bar */
+		if (getSupportActionBar() != null)
+		{
+			/* Set the title */
+			getSupportActionBar().setTitle(R.string.title_activity_datasource);
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+			{
+				getSupportActionBar().setHomeButtonEnabled(true);
+			}
+		}
+
         /* Show the fragment */
 		getFragmentManager().beginTransaction()
 							.replace(R.id.preferences_layout, prefsFragment)
 							.commit();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				onBackPressed();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override

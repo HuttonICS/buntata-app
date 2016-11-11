@@ -29,7 +29,7 @@ import uk.ac.hutton.ics.buntata.fragment.*;
 public class ImagePagerAdapter extends FragmentStatePagerAdapter
 {
 	private final List<BuntataMediaAdvanced> dataset = new ArrayList<>();
-	private final int                        datasourceId;
+	private final int datasourceId;
 
 
 	public ImagePagerAdapter(FragmentManager fm, int datasourceId, List<BuntataMediaAdvanced> dataset, int preferedMediumId)

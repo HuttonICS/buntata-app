@@ -35,8 +35,7 @@ import uk.ac.hutton.ics.buntata.*;
 import uk.ac.hutton.ics.buntata.util.*;
 
 /**
- * {@link BaseActivity} is the main {@link android.app.Activity} type of Buntàta. All activities should subclass
- * this class or a child of this class.
+ * {@link BaseActivity} is the main {@link android.app.Activity} type of Buntàta. All activities should subclass this class or a child of this class.
  *
  * @author Sebastian Raubach
  */
