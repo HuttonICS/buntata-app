@@ -41,7 +41,7 @@ public class PreferencesActivity extends BaseActivity
 			}
 		}
 
-        /* Show the fragment */
+		/* Show the fragment */
 		getFragmentManager().beginTransaction()
 							.replace(R.id.preferences_layout, prefsFragment)
 							.commit();
@@ -79,7 +79,7 @@ public class PreferencesActivity extends BaseActivity
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	public static class PrefsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener
+	public static class PrefsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener
 	{
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -98,8 +98,10 @@ public class PreferencesActivity extends BaseActivity
 		{
 			super.onCreate(savedInstanceState);
 
-            /* Load the preferences from an XML resource */
+			/* Load the preferences from an XML resource */
 			addPreferencesFromResource(R.xml.prefs);
+
+			findPreference(PreferenceUtils.PREFS_SHOW_CHANGELOG).setOnPreferenceClickListener(this);
 		}
 
 		@Override
@@ -128,6 +130,26 @@ public class PreferencesActivity extends BaseActivity
 					GoogleAnalytics.getInstance(getActivity().getApplicationContext()).setAppOptOut(!PreferenceUtils.getPreferenceAsBoolean(getActivity(), PreferenceUtils.PREFS_GA_OPT_OUT, true));
 					break;
 			}
+		}
+
+		@Override
+		public boolean onPreferenceClick(Preference preference)
+		{
+			String key = preference.getKey();
+
+			switch (key)
+			{
+				case PreferenceUtils.PREFS_SHOW_CHANGELOG:
+					startActivity(new Intent(getActivity(), ChangelogActivity.class));
+
+					if (getActivity() instanceof BaseActivity)
+					{
+						GoogleAnalyticsUtils.trackEvent(getActivity(), ((BaseActivity) getActivity()).getTracker(TrackerName.APP_TRACKER), getString(R.string.ga_event_category_preferences), getString(R.string.ga_event_action_show_changelog));
+					}
+					return true;
+			}
+
+			return false;
 		}
 	}
 }

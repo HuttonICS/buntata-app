@@ -26,4 +26,10 @@
 		android:summary="@string/preferences_ga_opt_out_message"
 		android:icon="@drawable/preferences_ga_opt_out"/>
 
+	<Preference
+		android:key="prefs.show.changelog"
+		android:title="@string/preferences_changelog_title"
+		android:summary="@string/preferences_changelog_summary"
+		android:icon="@drawable/preferences_changelog"/>
+
 </PreferenceScreen>

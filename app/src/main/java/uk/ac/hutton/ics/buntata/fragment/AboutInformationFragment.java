@@ -17,11 +17,13 @@
 package uk.ac.hutton.ics.buntata.fragment;
 
 import android.content.*;
+import android.content.pm.*;
 import android.net.*;
 import android.os.*;
 import android.support.v4.app.*;
 import android.support.v7.widget.*;
 import android.view.*;
+import android.widget.*;
 
 import butterknife.*;
 import uk.ac.hutton.ics.buntata.*;
@@ -34,6 +36,8 @@ import uk.ac.hutton.ics.buntata.*;
 public class AboutInformationFragment extends Fragment
 {
 	private Unbinder unbinder;
+	@BindView(R.id.about_information_version)
+	TextView version;
 	@BindView(R.id.about_information_email)
 	CardView email;
 	@BindView(R.id.about_information_share)
@@ -47,6 +51,16 @@ public class AboutInformationFragment extends Fragment
 		View view = inflater.inflate(R.layout.fragment_about_information, container, false);
 
 		unbinder = ButterKnife.bind(this, view);
+
+		try
+		{
+			version.setText(getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName);
+		}
+		catch (PackageManager.NameNotFoundException e)
+		{
+			version.setVisibility(View.GONE);
+			e.printStackTrace();
+		}
 
 		return view;
 	}

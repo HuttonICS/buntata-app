@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--~
+  ~ Germinate Scan is written and developed by Sebastian Raubach, Paul Shaw and David Marshall from the Information and Computational Sciences Group at JHI Dundee.
+  ~ For further information contact us at germinate@hutton.ac.uk or visit our webpages at http://ics.hutton.ac.uk/germinate-scan/
+  ~
+  ~ Copyright (c) 2013-2016, Information & Computational Sciences, The James Hutton Institute. All rights reserved.
+  ~ Use is subject to the accompanying licence terms.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:id="@+id/chg_rowheader"
+			  android:layout_width="match_parent"
+			  android:layout_height="wrap_content"
+			  android:gravity="center_vertical"
+			  android:minHeight="@dimen/chglib_material_minHeight"
+			  android:orientation="horizontal"
+			  android:paddingLeft="@dimen/chglib_material_keyline1"
+			  android:paddingRight="@dimen/chglib_material_keyline1">
+
+
+	<!-- ChangeLog Header [Version] You have to use the id="chg_headerVersion" -->
+	<TextView
+		android:id="@+id/chg_headerVersion"
+		style="?android:attr/listSeparatorTextViewStyle"
+		android:layout_width="0dp"
+		android:layout_weight="1"
+		android:layout_height="match_parent"
+		android:gravity="center_vertical"
+		android:paddingBottom="@dimen/chglib_material_keyline1"
+		android:paddingTop="@dimen/chglib_material_keyline1"
+		android:textAllCaps="true"
+		android:textSize="@dimen/chglib_material_list_suheader_fontsize"
+		android:textStyle="bold"/>
+
+	<!-- ChangeLog Header [Date] You have to use the id="chg_headerDate" -->
+	<TextView
+		android:id="@+id/chg_headerDate"
+		style="?android:attr/listSeparatorTextViewStyle"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:gravity="center_vertical"
+		android:paddingBottom="@dimen/chglib_material_keyline1"
+		android:paddingTop="@dimen/chglib_material_keyline1"
+		android:textAllCaps="true"
+		android:textSize="@dimen/chglib_material_list_suheader_fontsize"
+		android:textStyle="bold"/>
+
+
+</LinearLayout>

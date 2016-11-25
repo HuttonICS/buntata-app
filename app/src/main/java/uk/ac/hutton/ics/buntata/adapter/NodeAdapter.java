@@ -334,20 +334,27 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 					if (!newDataset.contains(dataset.get(i)))
 						adapter.notifyItemRemoved(i);
 				}
+				adapter.dataset = new ArrayList<>(newDataset);
 			}
 			/* Else, the new data is larger (items have been added) */
 			else
 			{
-				/* Insert each item that's new to the dataset with the default transition */
-				for (int i = 0; i < newDataset.size(); i++)
-				{
-					if (!adapter.dataset.contains(newDataset.get(i)))
-						adapter.notifyItemInserted(i);
-				}
+				adapter.dataset = new ArrayList<>(newDataset);
+				notifyDataSetChanged();
+//				/* Insert each item that's new to the dataset with the default transition */
+//				for (int i = 0; i < newDataset.size(); i++)
+//				{
+//					if (!adapter.dataset.contains(newDataset.get(i)))
+//					{
+//						adapter.dataset.add(i, newDataset.get(i));
+//						adapter.notifyItemInserted(i);
+//					}
+//					else
+//					{
+//						adapter.notifyItemChanged(i);
+//					}
+//				}
 			}
-
-			/* Remember the new dataset */
-			adapter.dataset = new ArrayList<>(newDataset);
 		}
 	}
 }

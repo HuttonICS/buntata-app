@@ -33,6 +33,8 @@ public class PreferenceUtils
 	public static final String PREFS_EULA_TYPE               = "prefs.eula.type";
 	public static final String PREFS_SELECTED_DATASOURCE_ID  = "prefs.selected.datasource.id";
 	public static final String PREFS_GA_OPT_OUT              = "prefs.google.analytics.opt.out";
+	public static final String PREFS_LAST_VERSION            = "prefs.last.version.code";
+	public static final String PREFS_SHOW_CHANGELOG          = "prefs.show.changelog";
 
 	private static final String DEFAULT_PREF_SERVER_URL = "https://ics.hutton.ac.uk/buntata/v1.1/";
 

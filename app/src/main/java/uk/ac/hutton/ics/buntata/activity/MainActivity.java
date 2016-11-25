@@ -18,6 +18,7 @@ package uk.ac.hutton.ics.buntata.activity;
 
 import android.app.*;
 import android.content.*;
+import android.content.pm.*;
 import android.os.*;
 import android.support.design.widget.*;
 import android.support.v4.app.*;
@@ -117,6 +118,38 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 			/* Remember the new data source and disable override */
 			this.datasourceId = datasourceId;
 			this.override = false;
+		}
+
+		showWhatsNew();
+	}
+
+	protected void showWhatsNew()
+	{
+		try
+		{
+			/* Get the versionCode of the Package, which must be different (incremented) in each release on the market in the AndroidManifest.xml */
+			final PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES);
+
+			int lastVersionCode = PreferenceUtils.getPreferenceAsInt(this, PreferenceUtils.PREFS_LAST_VERSION, -1);
+
+			/* If this is the first start, show nothing just remember the version number */
+			if (lastVersionCode == -1)
+			{
+				PreferenceUtils.setPreferenceAsInt(this, PreferenceUtils.PREFS_LAST_VERSION, packageInfo.versionCode);
+			}
+			/* Else show what's new if version numbers differ */
+			else
+			{
+				if (packageInfo.versionCode > lastVersionCode)
+				{
+					startActivity(new Intent(getApplicationContext(), ChangelogActivity.class));
+				}
+			}
+
+		}
+		catch (PackageManager.NameNotFoundException e)
+		{
+			e.printStackTrace();
 		}
 	}
 
@@ -286,6 +319,9 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 				@Override
 				public boolean onQueryTextSubmit(String query)
 				{
+					/* Trim leading and trailing spaces that some keyboards will add */
+					query = query.trim();
+
 					searchView.clearFocus();
 
 					MainActivity.this.query = query;

@@ -30,7 +30,7 @@
 	<SurfaceView
 		android:id="@+id/video_view_surface"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="match_parent"
 		android:transitionName="@string/transition_video_details_view"
 		android:layout_gravity="center">
 	</SurfaceView>

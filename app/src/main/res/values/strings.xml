@@ -53,6 +53,8 @@
 	<string name="ga_event_category_eula" translatable="false">EULA</string>
 	<string name="ga_event_action_eula_accepted" translatable="false">Accepted</string>
 	<string name="ga_event_action_eula_declined" translatable="false">Declined</string>
+	<string name="ga_event_category_preferences" translatable="false">Preferences</string>
+	<string name="ga_event_action_show_changelog" translatable="false">Show Changelog</string>
 
 	<string name="generic_settings">Settings</string>
 	<string name="generic_yes">Yes</string>
@@ -145,4 +147,7 @@
 	<string name="preferences_ga_opt_out_message">We will only use this info to analyse and improve the services offered through this app. For more
 		details see our EULA.
 	</string>
+
+	<string name="preferences_changelog_title">Show Changelog</string>
+	<string name="preferences_changelog_summary">Show the latest changes</string>
 </resources>

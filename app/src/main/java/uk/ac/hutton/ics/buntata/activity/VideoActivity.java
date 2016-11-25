@@ -45,10 +45,12 @@ public class VideoActivity extends BaseActivity implements MediaController.Media
 
 	private MediaPlayer player;
 	private Uri         uri;
+
 	@BindView(R.id.video_view_surface)
 	SurfaceView sv;
 	@BindView(R.id.toolbar)
 	Toolbar     toolbar;
+
 	private MediaController mediaController;
 
 	@Override
@@ -177,15 +179,6 @@ public class VideoActivity extends BaseActivity implements MediaController.Media
 					{
 						mediaController.setMediaPlayer(VideoActivity.this);
 						mediaController.setAnchorView(sv);
-
-						new Handler().postDelayed(new Runnable()
-						{
-							public void run()
-							{
-								mediaController.show(3000);
-							}
-						}, 100);
-
 					}
 				});
 				player.prepare();
