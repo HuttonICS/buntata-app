@@ -29,13 +29,16 @@ import uk.ac.hutton.ics.buntata.fragment.*;
 public class ImagePagerAdapter extends FragmentStatePagerAdapter
 {
 	private final List<BuntataMediaAdvanced> dataset = new ArrayList<>();
-	private final int datasourceId;
+	private final int     datasourceId;
+	private final int     nodeId;
+	private final boolean isFullscreen;
 
-
-	public ImagePagerAdapter(FragmentManager fm, int datasourceId, List<BuntataMediaAdvanced> dataset, int preferedMediumId)
+	public ImagePagerAdapter(FragmentManager fm, int datasourceId, int nodeId, boolean isFullscreen, List<BuntataMediaAdvanced> dataset, int preferedMediumId)
 	{
 		super(fm);
 		this.datasourceId = datasourceId;
+		this.nodeId = nodeId;
+		this.isFullscreen = isFullscreen;
 
 		for (BuntataMediaAdvanced medium : dataset)
 		{
@@ -55,6 +58,6 @@ public class ImagePagerAdapter extends FragmentStatePagerAdapter
 	@Override
 	public Fragment getItem(final int position)
 	{
-		return ImageFragment.newInstance(datasourceId, dataset.get(position).getId());
+		return ImageFragment.newInstance(datasourceId, nodeId, position == 0, dataset.get(position).getId(), isFullscreen);
 	}
 }

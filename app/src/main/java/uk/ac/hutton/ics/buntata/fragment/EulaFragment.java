@@ -29,7 +29,7 @@ import android.widget.*;
 import java.io.*;
 
 import butterknife.*;
-import uk.ac.hutton.ics.buntata.*;
+import uk.ac.hutton.ics.buntata.R;
 import uk.ac.hutton.ics.buntata.activity.*;
 import uk.ac.hutton.ics.buntata.util.*;
 

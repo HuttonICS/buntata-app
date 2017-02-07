@@ -26,7 +26,7 @@ import android.view.*;
 import android.widget.*;
 
 import butterknife.*;
-import uk.ac.hutton.ics.buntata.*;
+import uk.ac.hutton.ics.buntata.R;
 import uk.ac.hutton.ics.buntata.util.*;
 
 /**

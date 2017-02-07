@@ -32,7 +32,7 @@ import java.util.*;
 
 import butterknife.*;
 import jhi.buntata.resource.*;
-import uk.ac.hutton.ics.buntata.*;
+import uk.ac.hutton.ics.buntata.R;
 import uk.ac.hutton.ics.buntata.database.entity.*;
 import uk.ac.hutton.ics.buntata.database.manager.*;
 import uk.ac.hutton.ics.buntata.util.*;

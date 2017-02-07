@@ -53,8 +53,10 @@ public abstract class AbstractManager<T extends DatabaseObject>
 
 	void close()
 	{
-		database.close();
-		databaseHelper.close();
+		if (database != null)
+			database.close();
+		if (databaseHelper != null)
+			databaseHelper.close();
 	}
 
 	/**

@@ -29,7 +29,7 @@ import android.widget.*;
 import java.io.*;
 
 import butterknife.*;
-import uk.ac.hutton.ics.buntata.*;
+import uk.ac.hutton.ics.buntata.R;
 import uk.ac.hutton.ics.buntata.database.entity.*;
 import uk.ac.hutton.ics.buntata.util.*;
 
@@ -65,6 +65,8 @@ public class VideoActivity extends BaseActivity implements MediaController.Media
 		BuntataMediaAdvanced media = (BuntataMediaAdvanced) args.getSerializable(PARAM_MEDIA);
 		int datasourceId = args.getInt(PARAM_DATASOURCE_ID, -1);
 
+		GoogleAnalyticsUtils.trackEvent(this, getTracker(TrackerName.APP_TRACKER), getString(R.string.ga_event_category_video), getString(R.string.ga_event_action_video_view), media.getName());
+
 		/* Prompt the user to select at least one data source */
 		if (!PreferenceUtils.getPreferenceAsBoolean(this, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, false))
 			SnackbarUtils.show(findViewById(android.R.id.content), R.string.snackbar_select_datasource, Snackbar.LENGTH_LONG);
@@ -76,11 +78,7 @@ public class VideoActivity extends BaseActivity implements MediaController.Media
 		{
 			getSupportActionBar().setTitle(media.getName());
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-			{
-				getSupportActionBar().setHomeButtonEnabled(true);
-			}
+			getSupportActionBar().setHomeButtonEnabled(true);
 		}
 
 		File file = FileUtils.getFileForDatasource(this, datasourceId, media.getInternalLink());

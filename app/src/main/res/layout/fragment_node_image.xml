@@ -20,12 +20,11 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
-	<uk.co.senab.photoview.PhotoView
-		android:id="@+id/node_image_view"
-		android:scaleType="centerCrop"
-		android:layout_height="match_parent"
-		android:layout_width="match_parent"
-		android:src="@drawable/missing_image"/>
+	<ImageView android:id="@+id/node_image_view"
+			   android:scaleType="centerCrop"
+			   android:src="@drawable/missing_image"
+			   android:layout_width="match_parent"
+			   android:layout_height="match_parent"/>
 
 	<TextView
 		android:id="@+id/node_image_copyright"

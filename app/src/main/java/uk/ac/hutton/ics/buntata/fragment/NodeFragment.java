@@ -27,7 +27,7 @@ import java.util.*;
 
 import butterknife.*;
 import jhi.buntata.resource.*;
-import uk.ac.hutton.ics.buntata.*;
+import uk.ac.hutton.ics.buntata.R;
 import uk.ac.hutton.ics.buntata.activity.*;
 import uk.ac.hutton.ics.buntata.adapter.*;
 import uk.ac.hutton.ics.buntata.database.entity.*;
@@ -130,6 +130,10 @@ public class NodeFragment extends Fragment
 	private void updateItemDecorator()
 	{
 		int columns = getResources().getInteger(R.integer.node_recyclerview_columns);
+
+		if (columns > originalList.size())
+			columns = originalList.size();
+
 		int valueInPixels = (int) getResources().getDimension(R.dimen.activity_vertical_margin) / 2;
 		recyclerView.setLayoutManager(new StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL));
 

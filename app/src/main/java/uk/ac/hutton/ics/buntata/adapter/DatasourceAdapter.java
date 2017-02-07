@@ -306,7 +306,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 
 		holder.nameView.setText(item.getName());
 		holder.descriptionView.setText(item.getDescription());
-		holder.sizeView.setText(context.getString(R.string.datasource_size, (item.getSizeNoVideo() / 1024 / 1024), (item.getSizeTotal() / 1024 / 1024)));
+		holder.sizeView.setText(context.getString(R.string.datasource_size, (item.getSizeNoVideo() / 1024f / 1024f), (item.getSizeTotal() / 1024f / 1024f)));
 		holder.contactView.setText(item.getContact());
 		holder.providerView.setText(item.getDataProvider());
 		holder.versionView.setText(Integer.toString(item.getVersionNumber()));

@@ -22,7 +22,7 @@ import android.support.v7.widget.*;
 import android.view.*;
 
 import butterknife.*;
-import uk.ac.hutton.ics.buntata.*;
+import uk.ac.hutton.ics.buntata.R;
 import uk.ac.hutton.ics.buntata.adapter.*;
 
 /**

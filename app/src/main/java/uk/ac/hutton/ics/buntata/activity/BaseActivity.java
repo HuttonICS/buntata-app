@@ -31,7 +31,7 @@ import com.google.android.gms.analytics.*;
 import java.util.*;
 import java.util.concurrent.*;
 
-import uk.ac.hutton.ics.buntata.*;
+import uk.ac.hutton.ics.buntata.R;
 import uk.ac.hutton.ics.buntata.util.*;
 
 /**

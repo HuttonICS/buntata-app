@@ -22,7 +22,7 @@ import android.widget.*;
 import java.io.*;
 
 import butterknife.*;
-import uk.ac.hutton.ics.buntata.*;
+import uk.ac.hutton.ics.buntata.R;
 
 /**
  * The {@link ApacheLicenseActivity} just shows the Apache License, Version 2.0 for compliance reasons. That's it. Nothing to see here.

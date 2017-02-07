@@ -25,7 +25,7 @@ import android.support.v7.widget.*;
 import android.view.*;
 
 import butterknife.*;
-import uk.ac.hutton.ics.buntata.*;
+import uk.ac.hutton.ics.buntata.R;
 import uk.ac.hutton.ics.buntata.fragment.*;
 
 /**
@@ -61,11 +61,7 @@ public class AboutActivity extends BaseActivity
 			/* Set the title */
 			getSupportActionBar().setTitle(" ");
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-			{
-				getSupportActionBar().setHomeButtonEnabled(true);
-			}
+			getSupportActionBar().setHomeButtonEnabled(true);
 		}
 
 		/* Get the view pager and set the fragment adapter */

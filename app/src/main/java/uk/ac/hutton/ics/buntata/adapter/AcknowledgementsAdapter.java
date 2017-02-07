@@ -25,7 +25,7 @@ import android.view.*;
 import android.widget.*;
 
 import butterknife.*;
-import uk.ac.hutton.ics.buntata.*;
+import uk.ac.hutton.ics.buntata.R;
 
 /**
  * The {@link AcknowledgementsAdapter} takes care of all the {@link Acknowledgements}.

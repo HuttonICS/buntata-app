@@ -37,7 +37,7 @@ public class DatabaseInternal extends SQLiteOpenHelper
 
 	public DatabaseInternal(Context context, int datasourceId)
 	{
-		super(context, DATABASE_NAME + datasourceId, null, DATABASE_VERSION);
+		super(context.getApplicationContext(), DATABASE_NAME + datasourceId, null, DATABASE_VERSION);
 		this.context = context;
 		this.datasourceId = datasourceId;
 	}

@@ -27,7 +27,7 @@ import android.support.v7.app.*;
 import android.view.*;
 
 import butterknife.*;
-import uk.ac.hutton.ics.buntata.*;
+import uk.ac.hutton.ics.buntata.R;
 
 /**
  * {@link DrawerActivity} extends {@link BaseActivity} and adds a {@link DrawerLayout} to the {@link android.app.Activity}.
@@ -58,11 +58,7 @@ public abstract class DrawerActivity extends BaseActivity
 		if (getSupportActionBar() != null)
 		{
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-			{
-				getSupportActionBar().setHomeButtonEnabled(true);
-			}
+			getSupportActionBar().setHomeButtonEnabled(true);
 		}
 
 		drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);

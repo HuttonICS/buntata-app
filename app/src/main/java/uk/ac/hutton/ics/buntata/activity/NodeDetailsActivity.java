@@ -17,6 +17,7 @@
 package uk.ac.hutton.ics.buntata.activity;
 
 
+import android.net.*;
 import android.os.*;
 import android.support.design.widget.*;
 import android.support.v4.view.*;
@@ -32,6 +33,7 @@ import uk.ac.hutton.ics.buntata.R;
 import uk.ac.hutton.ics.buntata.adapter.*;
 import uk.ac.hutton.ics.buntata.database.entity.*;
 import uk.ac.hutton.ics.buntata.database.manager.*;
+import uk.ac.hutton.ics.buntata.util.*;
 
 /**
  * The {@link NodeDetailsActivity} shows detailed information about the node. This contains images, attributes and videos.
@@ -63,9 +65,40 @@ public class NodeDetailsActivity extends BaseActivity
 
 		/* Get parameters */
 		Bundle args = getIntent().getExtras();
-		int datasourceId = args.getInt(PARAM_DATASOURCE_ID, -1);
-		int nodeId = args.getInt(PARAM_NODE_ID, -1);
-		int preferedMediumId = args.getInt(PARAM_PREFERED_FIRST_MEDIUM, -1);
+		Uri data = getIntent().getData();
+
+		int datasourceId = -1;
+		int nodeId = -1;
+		int preferedMediumId = -1;
+
+		/* If this Activity has been called based on deep linking, then get the parameters from the request */
+		if (data != null)
+		{
+			String paramDatasourceId = data.getQueryParameter("d");
+			try
+			{
+				datasourceId = Integer.parseInt(paramDatasourceId);
+				PreferenceUtils.setPreferenceAsInt(this, PreferenceUtils.PREFS_SELECTED_DATASOURCE_ID, datasourceId);
+			}
+			catch (NullPointerException | NumberFormatException e)
+			{
+			}
+			String paramNodeId = data.getQueryParameter("n");
+			try
+			{
+				nodeId = Integer.parseInt(paramNodeId);
+			}
+			catch (NullPointerException | NumberFormatException e)
+			{
+			}
+		}
+		/* Otherwise get the parameters from the calling Activity */
+		else if (args != null)
+		{
+			datasourceId = args.getInt(PARAM_DATASOURCE_ID, -1);
+			nodeId = args.getInt(PARAM_NODE_ID, -1);
+			preferedMediumId = args.getInt(PARAM_PREFERED_FIRST_MEDIUM, -1);
+		}
 
 		/* Initialize the media manager */
 		MediaManager mediaManager = new MediaManager(this, datasourceId);
@@ -75,29 +108,29 @@ public class NodeDetailsActivity extends BaseActivity
 		/* Get the node */
 		BuntataNode node = new NodeManager(this, datasourceId).getById(nodeId);
 
+		GoogleAnalyticsUtils.trackEvent(this, getTracker(TrackerName.APP_TRACKER), getString(R.string.ga_event_category_node), getString(R.string.ga_event_action_node_view), node.getName());
+
 		/* Set the toolbar as the action bar */
 		if (getSupportActionBar() != null)
 		{
 			/* Set the title */
 			getSupportActionBar().setTitle(node.getName());
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-			{
-				getSupportActionBar().setHomeButtonEnabled(true);
-			}
+			getSupportActionBar().setHomeButtonEnabled(true);
 		}
 
 		/* Get all the media */
 		List<BuntataMediaAdvanced> media = mediaManager.getForNode(null, nodeId);
 		Map<String, List<BuntataMediaAdvanced>> splitByType = mediaManager.splitByType(media);
 
-		if (splitByType.get(BuntataMediaType.TYPE_IMAGE).size() > 0)
+		int imageCount = splitByType.get(BuntataMediaType.TYPE_IMAGE).size();
+		if (imageCount > 0)
 		{
 			/* Set to the pager */
-			final ImagePagerAdapter adapter = new ImagePagerAdapter(getSupportFragmentManager(), datasourceId, splitByType.get(BuntataMediaType.TYPE_IMAGE), preferedMediumId);
+			final ImagePagerAdapter adapter = new ImagePagerAdapter(getSupportFragmentManager(), datasourceId, nodeId, false, splitByType.get(BuntataMediaType.TYPE_IMAGE), preferedMediumId);
 			pager.setAdapter(adapter);
 			circleIndicator.setViewPager(pager);
+			circleIndicator.setVisibility(imageCount > 1 ? View.VISIBLE : View.GONE);
 		}
 		else
 		{
@@ -156,6 +189,15 @@ public class NodeDetailsActivity extends BaseActivity
 	@Override
 	public void onBackPressed()
 	{
+//		Intent upIntent = NavUtils.getParentActivityIntent(this);
+//		if (NavUtils.shouldUpRecreateTask(this, upIntent) || isTaskRoot())
+//		{
+//			TaskStackBuilder.create(this)
+//							.addNextIntentWithParentStack(upIntent)
+//							.startActivities();
+//		}
+//		else
+//		{
 		if (pager.getVisibility() == View.VISIBLE)
 		{
 			if (pager.getCurrentItem() < 2)
@@ -163,5 +205,6 @@ public class NodeDetailsActivity extends BaseActivity
 		}
 
 		super.onBackPressed();
+//		}
 	}
 }

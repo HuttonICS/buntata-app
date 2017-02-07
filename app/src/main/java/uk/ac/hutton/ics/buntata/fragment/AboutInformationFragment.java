@@ -26,7 +26,7 @@ import android.view.*;
 import android.widget.*;
 
 import butterknife.*;
-import uk.ac.hutton.ics.buntata.*;
+import uk.ac.hutton.ics.buntata.R;
 
 /**
  * The {@link AboutInformationFragment} shows information about the app in general.
