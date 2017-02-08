@@ -21,6 +21,7 @@ import android.app.*;
 import android.content.*;
 import android.graphics.*;
 import android.support.design.widget.*;
+import android.support.v4.app.*;
 import android.support.v4.content.*;
 import android.support.v7.widget.*;
 import android.view.*;
@@ -288,7 +289,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 	@Override
 	public void onBindViewHolder(final AbstractViewHolder h, final int section, final int relativePosition, final int absolutePosition)
 	{
-		BuntataDatasource item;
+		final BuntataDatasource item;
 
 		final boolean isExpanded = getAbsolutePosition(absolutePosition, section) == expandedPosition;
 
@@ -308,6 +309,20 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		holder.descriptionView.setText(item.getDescription());
 		holder.sizeView.setText(context.getString(R.string.datasource_size, (item.getSizeNoVideo() / 1024f / 1024f), (item.getSizeTotal() / 1024f / 1024f)));
 		holder.contactView.setText(item.getContact());
+		holder.contactView.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				ShareCompat.IntentBuilder.from(context)
+										 .setType("message/rfc822")
+										 .addEmailTo(item.getContact())
+										 .setSubject(context.getString(R.string.contact_email_subject))
+										 .setChooserTitle(R.string.contact_email_dialog_title)
+										 .startChooser();
+			}
+		});
+
 		holder.providerView.setText(item.getDataProvider());
 		holder.versionView.setText(Integer.toString(item.getVersionNumber()));
 
@@ -339,10 +354,17 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		if (!StringUtils.isEmpty(iconPath))
 		{
 			holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			Picasso.with(context)
-				   .load(iconPath)
-				   .noPlaceholder()
-				   .into(holder.imageView);
+
+			RequestCreator r;
+
+			File f = new File(iconPath);
+			if (f.exists())
+				r = Picasso.with(context).load(f);
+			else
+				r = Picasso.with(context).load(iconPath);
+
+			r.noPlaceholder()
+			 .into(holder.imageView);
 		}
 		/* Else set a default icon */
 		else

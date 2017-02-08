@@ -40,6 +40,7 @@ public class ImageViewPagerActivity extends BaseActivity
 	ViewPager       pager;
 	@BindView(R.id.node_details_image_indicator)
 	CircleIndicator circleIndicator;
+	private ImagePagerAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -72,10 +73,13 @@ public class ImageViewPagerActivity extends BaseActivity
 
 		int imageCount = splitByType.get(BuntataMediaType.TYPE_IMAGE).size();
 			/* Set to the pager */
-		final ImagePagerAdapter adapter = new ImagePagerAdapter(getSupportFragmentManager(), datasourceId, nodeId, true, splitByType.get(BuntataMediaType.TYPE_IMAGE), preferedMediumId);
+		adapter = new ImagePagerAdapter(getSupportFragmentManager(), datasourceId, nodeId, true, splitByType.get(BuntataMediaType.TYPE_IMAGE), preferedMediumId);
 		pager.setAdapter(adapter);
 		circleIndicator.setViewPager(pager);
 		circleIndicator.setVisibility(imageCount > 1 ? View.VISIBLE : View.GONE);
+
+		/* Hide the status bar */
+		getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 	}
 
 	@Override
@@ -88,5 +92,13 @@ public class ImageViewPagerActivity extends BaseActivity
 	protected Integer getToolbarId()
 	{
 		return null;
+	}
+
+	@Override
+	public void finishAfterTransition()
+	{
+		super.finishAfterTransition();
+
+		adapter.cleanup();
 	}
 }

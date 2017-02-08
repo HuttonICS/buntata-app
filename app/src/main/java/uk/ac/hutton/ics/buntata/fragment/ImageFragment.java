@@ -59,7 +59,8 @@ public class ImageFragment extends Fragment
 	@BindView(R.id.node_image_copyright)
 	TextView  copyright;
 
-	private Unbinder unbinder;
+	private Unbinder          unbinder;
+	private PhotoViewAttacher photoViewAttacher;
 
 	public static ImageFragment newInstance(int datasourceId, int nodeId, boolean transition, int mediumId, boolean isFullscreen)
 	{
@@ -191,8 +192,8 @@ public class ImageFragment extends Fragment
 			@Override
 			public void onSuccess()
 			{
-				if (isFullscreen)
-					new PhotoViewAttacher(imageView);
+				if (isFullscreen && imageView != null)
+					photoViewAttacher = new PhotoViewAttacher(imageView);
 			}
 
 			@Override
@@ -200,5 +201,11 @@ public class ImageFragment extends Fragment
 			{
 			}
 		});
+	}
+
+	public void cleanup()
+	{
+		if (photoViewAttacher != null)
+			photoViewAttacher.cleanup();
 	}
 }

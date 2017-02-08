@@ -127,7 +127,14 @@ public class DatasourceService
 		String path = null;
 
 		if (ds.getIcon() != null)
-			path = getBaseUrl(context) + String.format(DATASOURCE_BASE_URL + DATASOURCE_ICON_URL, ds.getId());
+		{
+			File localImage = FileUtils.getFileForDatasource(context, ds.getId(), ds.getIcon());
+
+			if (localImage.exists() && localImage.isFile())
+				path = localImage.getAbsolutePath();
+			else
+				path = getBaseUrl(context) + String.format(DATASOURCE_BASE_URL + DATASOURCE_ICON_URL, ds.getId());
+		}
 
 		return path;
 	}

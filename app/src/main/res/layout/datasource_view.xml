@@ -145,7 +145,7 @@
 				<TextView
 					android:id="@+id/datasource_contact_view"
 					android:layout_gravity="start"
-					android:textColor="@android:color/secondary_text_light"/>
+					android:textColor="@color/colorAccent"/>
 
 				<TextView
 					android:textColor="@android:color/secondary_text_light"

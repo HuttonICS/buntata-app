@@ -33,6 +33,8 @@ public class ImagePagerAdapter extends FragmentStatePagerAdapter
 	private final int     nodeId;
 	private final boolean isFullscreen;
 
+	private WeakHashMap<Integer, ImageFragment> fragments = new WeakHashMap<>();
+
 	public ImagePagerAdapter(FragmentManager fm, int datasourceId, int nodeId, boolean isFullscreen, List<BuntataMediaAdvanced> dataset, int preferedMediumId)
 	{
 		super(fm);
@@ -58,6 +60,14 @@ public class ImagePagerAdapter extends FragmentStatePagerAdapter
 	@Override
 	public Fragment getItem(final int position)
 	{
-		return ImageFragment.newInstance(datasourceId, nodeId, position == 0, dataset.get(position).getId(), isFullscreen);
+		ImageFragment f = ImageFragment.newInstance(datasourceId, nodeId, position == 0, dataset.get(position).getId(), isFullscreen);
+		fragments.put(position, f);
+		return f;
+	}
+
+	public void cleanup()
+	{
+		for (ImageFragment f : fragments.values())
+			f.cleanup();
 	}
 }

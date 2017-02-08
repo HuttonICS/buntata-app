@@ -21,7 +21,6 @@
 	android:layout_height="match_parent">
 
 	<ImageView android:id="@+id/node_image_view"
-			   android:scaleType="centerCrop"
 			   android:src="@drawable/missing_image"
 			   android:layout_width="match_parent"
 			   android:layout_height="match_parent"/>

@@ -36,7 +36,6 @@ import uk.ac.hutton.ics.buntata.adapter.*;
 import uk.ac.hutton.ics.buntata.database.entity.*;
 import uk.ac.hutton.ics.buntata.database.manager.*;
 import uk.ac.hutton.ics.buntata.service.*;
-import uk.ac.hutton.ics.buntata.util.*;
 
 /**
  * The {@link DatasourceFragment} shows all the {@link BuntataDatasource}s that are available locally and the ones available online (if connection
@@ -106,15 +105,15 @@ public class DatasourceFragment extends Fragment
 
 	private void updateStatus()
 	{
-		if (!NetworkUtils.hasNetworkConnection(getActivity()))
-		{
-			networkWarning.setVisibility(View.VISIBLE);
-		}
-		else
-		{
+//		if (!NetworkUtils.hasNetworkConnection(getActivity()))
+//		{
+//			networkWarning.setVisibility(View.VISIBLE);
+//		}
+//		else
+//		{
 			networkWarning.setVisibility(View.GONE);
 			requestData();
-		}
+//		}
 	}
 
 	private void requestData()
