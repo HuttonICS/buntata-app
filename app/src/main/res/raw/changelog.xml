@@ -17,8 +17,13 @@
   -->
 
 <changelog bulletedList="true">
-	<changelogversion versionName="X.XX.XX.XX" changeDate="XX/XX/XXXX">
-		<changelogText>Added round launcher icon for Android 7.1 devices.</changelogText>
+	<changelogversion versionName="0.17.02.21" changeDate="21/02/2017">
+		<changelogtext>Added round launcher icon for Android 7.1 devices.</changelogtext>
+		<changelogtext>Added image details view where you can zoom/pan images. Open it by clicking on any of the images on the node details page.
+		</changelogtext>
+		<changelogtext>Made the data source selection page work offline so that you can switch between data sources that are already downloaded even
+			without a network connection.
+		</changelogtext>
 	</changelogversion>
 	<changelogversion versionName="0.16.11.25" changeDate="25/11/2016">
 		<changelogtext>Changed search so that it removes leading and trailing spaces from search terms.</changelogtext>
