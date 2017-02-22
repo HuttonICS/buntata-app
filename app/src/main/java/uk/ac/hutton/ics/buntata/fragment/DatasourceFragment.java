@@ -62,6 +62,8 @@ public class DatasourceFragment extends Fragment
 
 		unbinder = ButterKnife.bind(this, view);
 
+		setRetainInstance(true);
+
 		if (getActivity() instanceof IntroActivity)
 			text.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.white));
 
@@ -72,6 +74,10 @@ public class DatasourceFragment extends Fragment
 		int valueInPixels = (int) getResources().getDimension(R.dimen.activity_vertical_margin) / 2;
 		recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, valueInPixels, valueInPixels, valueInPixels));
 
+		/* If  this is part of the DatasourceActivity, then load the content here */
+		if (getActivity() instanceof DatasourceActivity)
+			updateStatus();
+
 		return view;
 	}
 
@@ -81,16 +87,6 @@ public class DatasourceFragment extends Fragment
 		super.onDestroyView();
 
 		unbinder.unbind();
-	}
-
-	@Override
-	public void onResume()
-	{
-		super.onResume();
-
-		/* If  this is part of the DatasourceActivity, then load the content here */
-		if (getActivity() instanceof DatasourceActivity)
-			updateStatus();
 	}
 
 	@Override
@@ -111,8 +107,8 @@ public class DatasourceFragment extends Fragment
 //		}
 //		else
 //		{
-			networkWarning.setVisibility(View.GONE);
-			requestData();
+		networkWarning.setVisibility(View.GONE);
+		requestData();
 //		}
 	}
 

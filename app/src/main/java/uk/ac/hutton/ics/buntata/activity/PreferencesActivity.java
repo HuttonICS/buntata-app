@@ -48,7 +48,7 @@ public class PreferencesActivity extends BaseActivity
 		if (getSupportActionBar() != null)
 		{
 			/* Set the title */
-			getSupportActionBar().setTitle(R.string.title_activity_datasource);
+			getSupportActionBar().setTitle(R.string.title_activity_settings);
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 			getSupportActionBar().setHomeButtonEnabled(true);
 		}

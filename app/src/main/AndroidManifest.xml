@@ -41,7 +41,7 @@
 		<activity android:name=".activity.IntroductionActivity"
 				  android:configChanges="orientation|screenSize"/>
 		<activity android:name=".activity.DatasourceActivity"
-				  android:configChanges="orientation|screenSize"/>
+				  android:configChanges="keyboardHidden|orientation|screenSize"/>
 		<activity android:name=".activity.ImageViewPagerActivity"
 				  android:configChanges="orientation|screenSize"/>
 		<activity android:name=".activity.NodeDetailsActivity"

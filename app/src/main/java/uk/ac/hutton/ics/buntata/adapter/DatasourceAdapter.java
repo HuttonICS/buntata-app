@@ -56,15 +56,6 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 
 	private int expandedPosition = -1;
 
-	private Comparator<BuntataDatasourceAdvanced> comparator = new Comparator<BuntataDatasourceAdvanced>()
-	{
-		@Override
-		public int compare(BuntataDatasourceAdvanced o1, BuntataDatasourceAdvanced o2)
-		{
-			return o1.getName().compareTo(o2.getName());
-		}
-	};
-
 	private Activity                        context;
 	private RecyclerView                    parent;
 	private List<BuntataDatasourceAdvanced> dataset;

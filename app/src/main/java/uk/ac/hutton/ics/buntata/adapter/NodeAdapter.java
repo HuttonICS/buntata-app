@@ -168,40 +168,53 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		else
 		{
 			/* Load the image */
-			final PaletteTransformation paletteTransformation = PaletteTransformation.instance();
-			Picasso.with(context)
-				   .load(imagePath) // Load from file
-				   .transform(paletteTransformation) // Generate the palette based on the image
-				   .resize(viewWidth, viewWidth) // Resize to fit
-				   .onlyScaleDown() // But only scale down
-				   .centerCrop() // And respect the aspect ratio
-				   .into(holder.image, new Callback.EmptyCallback() // When done, use the palette
-				   {
-					   @Override
-					   public void onError()
-					   {
-						   /* Set the placeholder */
-						   holder.image.setImageResource(R.drawable.missing_image);
-						   holder.image.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-					   }
+			PaletteTransformation paletteTransformation;
 
-					   @Override
-					   public void onSuccess()
-					   {
-						   /* Get back the bitmap */
-						   Bitmap bitmap = ((BitmapDrawable) holder.image.getDrawable()).getBitmap(); // Ew!
-						   /* Get the generated palette */
-						   Palette palette = PaletteTransformation.getPalette(bitmap);
+			RequestCreator c = Picasso.with(context)
+									  .load(imagePath); /* Load from file */
 
-						   /* Get the vibrant color and a high-contrast text color */
-						   int vibrantColor = palette.getVibrantColor(defaultBackgroundColor);
-						   int textColor = ColorUtils.isColorDark(vibrantColor) ? textColorLight : textColorDark;
+			final boolean showKeys = datasource.isShowKeyName();
 
-						   holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-						   holder.title.setBackgroundColor(vibrantColor);
-						   holder.title.setTextColor(textColor);
-					   }
-				   });
+			if (showKeys)
+			{
+				paletteTransformation = PaletteTransformation.instance();
+				c.transform(paletteTransformation);  /* Generate the palette based on the image */
+			}
+
+			c.resize(viewWidth, viewWidth) /* Resize to fit */
+			 .onlyScaleDown() /* But only scale down */
+			 .centerCrop() /* And respect the aspect ratio */
+			 .into(holder.image, new Callback.EmptyCallback() /* When done, use the palette */
+			 {
+				 @Override
+				 public void onError()
+				 {
+					 /* Set the placeholder */
+					 holder.image.setImageResource(R.drawable.missing_image);
+					 holder.image.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+				 }
+
+				 @Override
+				 public void onSuccess()
+				 {
+					 holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+					 if (showKeys)
+					 {
+						 /* Get back the bitmap */
+						 Bitmap bitmap = ((BitmapDrawable) holder.image.getDrawable()).getBitmap(); /* Ew! */
+
+					 	/* Get the generated palette */
+						 Palette palette = PaletteTransformation.getPalette(bitmap);
+
+						 /* Get the vibrant color and a high-contrast text color */
+						 int vibrantColor = palette.getVibrantColor(defaultBackgroundColor);
+						 int textColor = ColorUtils.isColorDark(vibrantColor) ? textColorLight : textColorDark;
+						 holder.title.setBackgroundColor(vibrantColor);
+						 holder.title.setTextColor(textColor);
+					 }
+				 }
+			 });
 		}
 
 		holder.title.setText(item.getName());
@@ -299,6 +312,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 
 			final String filterPattern = constraint.toString();
 
+			/* If the filter is empty, restore original list */
 			if (constraint.length() == 0)
 			{
 				filteredList.addAll(originalList);
@@ -307,6 +321,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 			{
 				for (final BuntataNodeAdvanced item : originalList)
 				{
+					/* Check if this item has a child that matches */
 					if (nodeManager.hasChildWithContent(item, filterPattern))
 					{
 						filteredList.add(item);

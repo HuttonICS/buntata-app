@@ -143,7 +143,7 @@ public class NodeManager extends AbstractManager<BuntataNodeAdvanced>
 		{
 			open();
 
-			Cursor cursor = database.rawQuery("SELECT * FROM nodes WHERE EXISTS (SELECT 1 FROM relationships WHERE relationships.child = nodes.id AND relationships.parent = ?)", new String[]{Integer.toString(parentId)});
+			Cursor cursor = database.rawQuery("SELECT * FROM nodes WHERE EXISTS (SELECT 1 FROM relationships WHERE relationships.child = nodes.id AND relationships.parent = ?) ORDER BY nodes.name", new String[]{Integer.toString(parentId)});
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast())
 			{

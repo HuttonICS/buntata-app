@@ -17,6 +17,10 @@
   -->
 
 <changelog bulletedList="true">
+	<changelogversion versionName="0.17.02.22" changeDate="22/02/2017">
+		<changelogtext>Search now closes with a single click on the "x" symbol.</changelogtext>
+		<changelogtext>Fixed wrong preference activity title.</changelogtext>
+	</changelogversion>
 	<changelogversion versionName="0.17.02.21" changeDate="21/02/2017">
 		<changelogtext>Added round launcher icon for Android 7.1 devices.</changelogtext>
 		<changelogtext>Added image details view where you can zoom/pan images. Open it by clicking on any of the images on the node details page.

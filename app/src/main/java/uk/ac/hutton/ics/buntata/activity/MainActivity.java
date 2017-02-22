@@ -333,6 +333,9 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 				@Override
 				public boolean onQueryTextChange(String s)
 				{
+					/* Close the search field when the search string is empty */
+					if (StringUtils.isEmpty(s))
+						searchView.setIconified(true);
 					return false;
 				}
 			});

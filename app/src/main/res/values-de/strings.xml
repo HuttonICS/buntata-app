@@ -17,6 +17,7 @@
 <resources>
 	<string name="title_activity_about">Über</string>
 	<string name="title_activity_datasource">Datenquellen</string>
+	<string name="title_activity_settings">Einstellungen</string>
 	<string name="introduction_welcome_title">Willkommen zu Buntata</string>
 	<string name="introduction_welcome_text">Wir haben die App nach dem Schottisch-Gälischen Wort für Kartoffel benannt. Schottland ist ein
 		großartiger Ort, aber manchmal etwas regnerisch...
