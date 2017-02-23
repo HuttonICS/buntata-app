@@ -70,6 +70,7 @@
 	<string name="datasource_size">Media size: ~%1$.1f MB (~%2$.1f MB)</string>
 
 	<string name="snackbar_already_downloaded">Data source already downloaded.</string>
+	<string name="snackbar_only_one_download">Only one download at a time allowed.</string>
 	<string name="snackbar_currently_downloading">Data source download in progress.</string>
 	<string name="snackbar_download_successful">Data source downloaded successfully.</string>
 	<string name="snackbar_select_datasource">Please select a data source.</string>

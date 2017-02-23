@@ -17,21 +17,29 @@
   -->
 
 <changelog bulletedList="true">
+	<changelogversion versionName="0.17.02.23" changeDate="23/02/2017">
+		<changelogbug>Fixed a bug with concurrent data source downloads by only allowing one download at a time for now.</changelogbug>
+		<changelogbug>Fixed an issue where a downloaded data source that is no longer available on the server wasn't selectable anymore.
+		</changelogbug>
+		<changelogbug>Fixed the floating action button (FAB) not reappearing after scrolling on the node view.</changelogbug>
+	</changelogversion>
 	<changelogversion versionName="0.17.02.22" changeDate="22/02/2017">
 		<changelogtext>Search now closes with a single click on the "x" symbol.</changelogtext>
-		<changelogtext>Fixed wrong preference activity title.</changelogtext>
+		<changelogbug>Fixed wrong preference activity title.</changelogbug>
 	</changelogversion>
 	<changelogversion versionName="0.17.02.21" changeDate="21/02/2017">
-		<changelogtext>Added round launcher icon for Android 7.1 devices.</changelogtext>
-		<changelogtext>Added image details view where you can zoom/pan images. Open it by clicking on any of the images on the node details page.
-		</changelogtext>
-		<changelogtext>Made the data source selection page work offline so that you can switch between data sources that are already downloaded even
+		<changelogimprovement>Added round launcher icon for Android 7.1 devices.</changelogimprovement>
+		<changelogimprovement>Added image details view where you can zoom/pan images. Open it by clicking on any of the images on the node details
+			page.
+		</changelogimprovement>
+		<changelogimprovement>Made the data source selection page work offline so that you can switch between data sources that are already downloaded
+			even
 			without a network connection.
-		</changelogtext>
+		</changelogimprovement>
 	</changelogversion>
 	<changelogversion versionName="0.16.11.25" changeDate="25/11/2016">
 		<changelogtext>Changed search so that it removes leading and trailing spaces from search terms.</changelogtext>
-		<changelogtext>Fixed issue with layout update when the search is cancelled.</changelogtext>
+		<changelogbug>Fixed issue with layout update when the search is cancelled.</changelogbug>
 	</changelogversion>
 	<changelogversion versionName="0.16.11.10" changeDate="10/11/2016">
 		<changelogtext>Initial release of Buntata to closed alpha.</changelogtext>

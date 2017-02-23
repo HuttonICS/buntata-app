@@ -113,9 +113,6 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		@BindView(R.id.datasource_contact_view)
 		TextView     contactView;
 
-		/* Remember the state */
-		boolean isDownloading = false;
-
 		ItemViewHolder(View v)
 		{
 			super(v);
@@ -318,6 +315,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		holder.versionView.setText(Integer.toString(item.getVersionNumber()));
 
 		final BuntataDatasourceAdvanced ds = get(section, relativePosition);
+		holder.progressBar.setVisibility(ds.isDownloading() ? View.VISIBLE : View.GONE);
 
 		/* Set the state icon */
 		int resource;
@@ -393,7 +391,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 			public boolean onLongClick(View v)
 			{
 				/* If it's not installed or if it's currently downloading, do nothing */
-				if ((ds.getState() == BuntataDatasourceAdvanced.InstallState.NOT_INSTALLED) || holder.isDownloading)
+				if ((ds.getState() == BuntataDatasourceAdvanced.InstallState.NOT_INSTALLED) || ds.isDownloading())
 					return true;
 
 				/* Show the option do delete the data source */
@@ -441,7 +439,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 			@Override
 			public void onClick(View v)
 			{
-				if (holder.isDownloading)
+				if (ds.isDownloading())
 				{
 
 					DialogUtils.showDialog(context, R.string.dialog_download_cancel_title, R.string.dialog_download_cancel_text, R.string.generic_yes, R.string.generic_no, new DialogInterface.OnClickListener()
@@ -453,12 +451,23 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 							{
 								downloadTask.cancel(true);
 								holder.progressBar.setVisibility(View.GONE);
-								holder.isDownloading = false;
+								ds.setDownloading(false);
 								downloadTask = null;
 							}
 						}
 					}, null);
 					return;
+				}
+				else
+				{
+					for (BuntataDatasourceAdvanced dss : dataset)
+					{
+						if (dss.isDownloading())
+						{
+							SnackbarUtils.show(v, R.string.snackbar_only_one_download, ContextCompat.getColor(context, android.R.color.primary_text_dark), ContextCompat.getColor(context, R.color.colorPrimaryDark), Snackbar.LENGTH_LONG);
+							return;
+						}
+					}
 				}
 
 				switch (ds.getState())
@@ -509,7 +518,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 	{
 		holder.progressBar.setVisibility(View.VISIBLE);
 		holder.progressBar.setIndeterminate(true);
-		holder.isDownloading = true;
+		ds.setDownloading(true);
 
 		/* Start the download */
 		downloadTask = DatasourceService.download(context, includeVideos, holder.progressBar, ds, new RemoteCallback<File>(context)
@@ -520,7 +529,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 				super.onFailure(caught);
 
 				holder.progressBar.setVisibility(View.GONE);
-				holder.isDownloading = false;
+				ds.setDownloading(false);
 				downloadTask = null;
 			}
 
@@ -531,7 +540,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 
 				holder.progressBar.setVisibility(View.GONE);
 				ds.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
-				holder.isDownloading = false;
+				ds.setDownloading(false);
 
 				PreferenceUtils.setPreferenceAsInt(context, PreferenceUtils.PREFS_SELECTED_DATASOURCE_ID, ds.getId());
 				SnackbarUtils.show(holder.view, R.string.snackbar_download_successful, ContextCompat.getColor(context, android.R.color.primary_text_dark), ContextCompat.getColor(context, R.color.colorPrimaryDark), Snackbar.LENGTH_LONG);

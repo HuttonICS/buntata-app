@@ -27,6 +27,7 @@ import jhi.buntata.resource.*;
 public class BuntataDatasourceAdvanced extends BuntataDatasource
 {
 	private InstallState state;
+	private boolean isDownloading = false;
 
 	public BuntataDatasourceAdvanced()
 	{
@@ -51,6 +52,17 @@ public class BuntataDatasourceAdvanced extends BuntataDatasource
 	public BuntataDatasourceAdvanced setState(InstallState state)
 	{
 		this.state = state;
+		return this;
+	}
+
+	public boolean isDownloading()
+	{
+		return isDownloading;
+	}
+
+	public BuntataDatasourceAdvanced setDownloading(boolean downloading)
+	{
+		isDownloading = downloading;
 		return this;
 	}
 

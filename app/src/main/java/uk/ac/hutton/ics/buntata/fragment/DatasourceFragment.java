@@ -123,18 +123,17 @@ public class DatasourceFragment extends Fragment
 		}
 		catch (SQLiteException e)
 		{
-
 			local = new ArrayList<>();
 		}
 
 		final List<BuntataDatasource> localList = local;
 		/* Keep track of their status (installed no update, installed update, not installed) */
-		final List<BuntataDatasourceAdvanced> dataset = new ArrayList<>();
+		final List<BuntataDatasourceAdvanced> datasources = new ArrayList<>();
 
 		final boolean cancelable = getActivity() instanceof DatasourceActivity;
 
 		/* Set it initially */
-		adapter = new DatasourceAdapter(getActivity(), recyclerView, dataset);
+		adapter = new DatasourceAdapter(getActivity(), recyclerView, datasources);
 		recyclerView.setAdapter(adapter);
 
 		/* Then try to get the online resources */
@@ -150,10 +149,10 @@ public class DatasourceFragment extends Fragment
 				{
 					BuntataDatasourceAdvanced adv = BuntataDatasourceAdvanced.create(ds);
 					adv.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
-					dataset.add(adv);
+					datasources.add(adv);
 				}
 
-				if (dataset.size() < 1)
+				if (datasources.size() < 1)
 				{
 					networkWarning.setVisibility(View.VISIBLE);
 				}
@@ -161,7 +160,7 @@ public class DatasourceFragment extends Fragment
 				{
 					networkWarning.setVisibility(View.GONE);
 
-					adapter = new DatasourceAdapter(getActivity(), recyclerView, dataset);
+					adapter = new DatasourceAdapter(getActivity(), recyclerView, datasources);
 					recyclerView.setAdapter(adapter);
 				}
 			}
@@ -181,12 +180,12 @@ public class DatasourceFragment extends Fragment
 					{
 						BuntataDatasource old = localList.get(index);
 
-						boolean isNewer = DatasourceManager.isNewer(ds, old);
-
-						if (isNewer)
+						if (DatasourceManager.isNewer(ds, old))
 							adv.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_HAS_UPDATE);
 						else
 							adv.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
+
+						localList.remove(index);
 					}
 					/* Is not installed */
 					else
@@ -194,11 +193,18 @@ public class DatasourceFragment extends Fragment
 						adv.setState(BuntataDatasourceAdvanced.InstallState.NOT_INSTALLED);
 					}
 
-					dataset.add(adv);
+					datasources.add(adv);
+				}
+
+				for (BuntataDatasource ds : localList)
+				{
+					BuntataDatasourceAdvanced adv = BuntataDatasourceAdvanced.create(ds);
+					adv.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
+					datasources.add(adv);
 				}
 
 				/* Set whatever we got now to the adapter */
-				adapter = new DatasourceAdapter(getActivity(), recyclerView, dataset);
+				adapter = new DatasourceAdapter(getActivity(), recyclerView, datasources);
 				recyclerView.setAdapter(adapter);
 			}
 		});

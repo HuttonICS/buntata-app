@@ -29,7 +29,7 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior
 {
 	public ScrollAwareFABBehavior(Context context, AttributeSet attrs)
 	{
-		super(context, attrs);
+		super();
 	}
 
 	@Override
@@ -45,7 +45,16 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior
 
 		if (dyConsumed > 0 && child.getVisibility() == View.VISIBLE)
 		{
-			child.hide();
+			/* http://stackoverflow.com/questions/41153619/floating-action-button-not-visible-on-scrolling-after-updating-google-support/41386278#41386278 */
+			child.hide(new FloatingActionButton.OnVisibilityChangedListener()
+			{
+				@Override
+				public void onHidden(FloatingActionButton fab)
+				{
+					super.onShown(fab);
+					fab.setVisibility(View.INVISIBLE);
+				}
+			});
 		}
 		else if (dyConsumed < 0 && child.getVisibility() != View.VISIBLE)
 		{
