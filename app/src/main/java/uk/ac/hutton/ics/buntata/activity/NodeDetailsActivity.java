@@ -149,7 +149,7 @@ public class NodeDetailsActivity extends BaseActivity
 
 		/* Set them to the recycler view */
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
-		recyclerView.setAdapter(new AttributeValueVideoAdapter(this, recyclerView, datasourceId, attributeValues, splitByType.get(BuntataMediaType.TYPE_VIDEO)));
+		recyclerView.setAdapter(new AttributeValueVideoAdapter(this, datasourceId, attributeValues, splitByType.get(BuntataMediaType.TYPE_VIDEO)));
 
 		/* Set the separator width */
 		int valueInPixels = (int) getResources().getDimension(R.dimen.activity_vertical_margin) / 2;

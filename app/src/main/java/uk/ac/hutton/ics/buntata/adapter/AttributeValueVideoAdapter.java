@@ -29,8 +29,6 @@ import android.util.*;
 import android.view.*;
 import android.widget.*;
 
-import com.transitionseverywhere.*;
-
 import java.io.*;
 import java.util.*;
 
@@ -48,13 +46,9 @@ import uk.ac.hutton.ics.buntata.util.*;
 public class AttributeValueVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
 	private Activity                            context;
-	private RecyclerView                        parent;
 	private List<BuntataAttributeValueAdvanced> attributes;
 	private List<BuntataMediaAdvanced>          videos;
 	private int                                 datasourceId;
-
-	private int     expandedPosition = -1;
-	private boolean firstStart       = true;
 
 	static class AttributeViewHolder extends RecyclerView.ViewHolder
 	{
@@ -63,8 +57,6 @@ public class AttributeValueVideoAdapter extends RecyclerView.Adapter<RecyclerVie
 		TextView  title;
 		@BindView(R.id.attribute_view_content)
 		TextView  content;
-		@BindView(R.id.attribute_view_expand_icon)
-		ImageView expandIcon;
 
 		AttributeViewHolder(View v)
 		{
@@ -97,13 +89,11 @@ public class AttributeValueVideoAdapter extends RecyclerView.Adapter<RecyclerVie
 	/**
 	 * Creates a new instance of this adapter
 	 *
-	 * @param parent     The {@link RecyclerView} that'll show the items
 	 * @param attributes The {@link List} of {@link BuntataAttributeValueAdvanced} objects to show
 	 */
-	public AttributeValueVideoAdapter(Activity context, RecyclerView parent, int datasourceId, List<BuntataAttributeValueAdvanced> attributes, List<BuntataMediaAdvanced> videos)
+	public AttributeValueVideoAdapter(Activity context, int datasourceId, List<BuntataAttributeValueAdvanced> attributes, List<BuntataMediaAdvanced> videos)
 	{
 		this.context = context;
-		this.parent = parent;
 		this.datasourceId = datasourceId;
 		this.attributes = attributes;
 		this.videos = videos;
@@ -239,43 +229,6 @@ public class AttributeValueVideoAdapter extends RecyclerView.Adapter<RecyclerVie
 	private void onBindAttributeViewHolder(final AttributeViewHolder holder, int position)
 	{
 		BuntataAttributeValueAdvanced item = attributes.get(position);
-
-		final boolean isExpanded;
-
-		/* Expand the first item by default */
-		if (position == 0 && firstStart)
-		{
-			isExpanded = true;
-			firstStart = false;
-		}
-		/* Else, expand based on the last selected item */
-		else
-		{
-			isExpanded = position == expandedPosition;
-		}
-
-		/* Show or hide the content */
-		holder.content.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
-		/* Activate/deactivate the item */
-		holder.itemView.setActivated(isExpanded);
-		/* On click change the state */
-		holder.itemView.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				expandedPosition = isExpanded ? -1 : holder.getAdapterPosition();
-
-				/* Set a new transition */
-				ChangeBounds transition = new ChangeBounds();
-				/* For 150 ms */
-				transition.setDuration(150);
-				/* And start it */
-				TransitionManager.beginDelayedTransition(parent, transition);
-				/* Let the parent view know that something changed and that it needs to re-layout */
-				notifyDataSetChanged();
-			}
-		});
 
 		/* Set the title and content */
 		holder.title.setText(item.getAttribute().getName());

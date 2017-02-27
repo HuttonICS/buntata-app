@@ -208,7 +208,21 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 						 Palette palette = PaletteTransformation.getPalette(bitmap);
 
 						 /* Get the vibrant color and a high-contrast text color */
+						 /* Try a couple of fallback colors. Hopefully one of them is present. */
 						 int vibrantColor = palette.getVibrantColor(defaultBackgroundColor);
+						 if (vibrantColor == defaultBackgroundColor)
+							 vibrantColor = palette.getDarkVibrantColor(defaultBackgroundColor);
+						 if (vibrantColor == defaultBackgroundColor)
+							 vibrantColor = palette.getLightVibrantColor(defaultBackgroundColor);
+						 if (vibrantColor == defaultBackgroundColor)
+							 vibrantColor = palette.getMutedColor(defaultBackgroundColor);
+						 if (vibrantColor == defaultBackgroundColor)
+							 vibrantColor = palette.getDarkMutedColor(defaultBackgroundColor);
+						 if (vibrantColor == defaultBackgroundColor)
+							 vibrantColor = palette.getLightMutedColor(defaultBackgroundColor);
+						 if (vibrantColor == defaultBackgroundColor)
+							 vibrantColor = palette.getDominantColor(defaultBackgroundColor);
+
 						 int textColor = ColorUtils.isColorDark(vibrantColor) ? textColorLight : textColorDark;
 						 holder.title.setBackgroundColor(vibrantColor);
 						 holder.title.setTextColor(textColor);

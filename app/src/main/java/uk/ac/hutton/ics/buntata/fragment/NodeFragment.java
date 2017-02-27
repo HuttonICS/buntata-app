@@ -151,8 +151,22 @@ public class NodeFragment extends Fragment
 	{
 		super.onConfigurationChanged(newConfig);
 
-		updateItemDecorator();
-		adapter.notifyDataSetChanged();
+		/*
+		 * We wait for the orientation change to take full effect, i.e. wait until the new layout has finished.
+		 * Then let the adapter know about it so that it can resize its children accordingly.
+		 */
+		recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+		{
+			@Override
+			public void onGlobalLayout()
+			{
+				/* Remember to remove this listener again */
+				recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+				updateItemDecorator();
+				adapter.notifyDataSetChanged();
+			}
+		});
 	}
 
 	@Override

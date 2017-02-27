@@ -17,6 +17,11 @@
   -->
 
 <changelog bulletedList="true">
+	<changelogversion versionName="X.XX.XX.XX" changeDate="XX/XX/XXXX">
+		<changelogtext>Simplified attribute view by removing expand/collapse buttons.</changelogtext>
+		<changelogtext>Made color palette detection code more robust, so that it finds a color for the image in almost all cases.</changelogtext>
+		<changelogbug>Fixed annoying orientation change bug where the node images weren't sized correctly.</changelogbug>
+	</changelogversion>
 	<changelogversion versionName="0.17.02.23" changeDate="23/02/2017">
 		<changelogbug>Fixed a bug with concurrent data source downloads by only allowing one download at a time for now.</changelogbug>
 		<changelogbug>Fixed an issue where a downloaded data source that is no longer available on the server wasn't selectable anymore.
