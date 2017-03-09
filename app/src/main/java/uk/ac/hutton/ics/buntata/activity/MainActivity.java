@@ -53,8 +53,8 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 
 	private int datasourceId = -1;
 
-	private boolean override = false;
-	private String  query    = null;
+	public static boolean override = false;
+	private       String  query    = null;
 
 	@BindView(R.id.main_view_fab)
 	FloatingActionButton fab;

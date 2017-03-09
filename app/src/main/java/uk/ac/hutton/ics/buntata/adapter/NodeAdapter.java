@@ -19,6 +19,7 @@ package uk.ac.hutton.ics.buntata.adapter;
 import android.content.*;
 import android.graphics.*;
 import android.graphics.drawable.*;
+import android.os.*;
 import android.support.v4.content.*;
 import android.support.v7.graphics.*;
 import android.support.v7.widget.*;
@@ -33,6 +34,7 @@ import java.util.*;
 import butterknife.*;
 import jhi.buntata.resource.*;
 import uk.ac.hutton.ics.buntata.R;
+import uk.ac.hutton.ics.buntata.activity.*;
 import uk.ac.hutton.ics.buntata.database.entity.*;
 import uk.ac.hutton.ics.buntata.database.manager.*;
 import uk.ac.hutton.ics.buntata.util.*;
@@ -75,6 +77,8 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 	static class ViewHolder extends RecyclerView.ViewHolder
 	{
 		View view;
+		@BindView(R.id.node_view_layout)
+		CardView  layout;
 		@BindView(R.id.node_view_image)
 		ImageView image;
 		@BindView(R.id.node_view_title)
@@ -152,6 +156,19 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 
 		/* Get the width of the view */
 		int viewWidth = (parent.getWidth() - left - right - (columnCount - 1) * padding) / columnCount;
+
+		if (context instanceof MainActivity && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+		{
+			holder.image.setTransitionName(context.getString(R.string.transition_node_view));
+		}
+		else
+		{
+			viewWidth = context.getResources().getDimensionPixelSize(R.dimen.node_image_height) / 2;
+			holder.image.setMaxHeight(viewWidth);
+			holder.image.setMaxWidth(viewWidth);
+			holder.layout.getLayoutParams().width = viewWidth;
+		}
+
 		holder.image.setMinimumHeight(viewWidth);
 
 		/* If no image is found */

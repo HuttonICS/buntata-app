@@ -114,6 +114,8 @@ public class PreferencesActivity extends BaseActivity
 			addPreferencesFromResource(R.xml.prefs);
 
 			findPreference(PreferenceUtils.PREFS_SHOW_CHANGELOG).setOnPreferenceClickListener(this);
+			findPreference(PreferenceUtils.PREFS_COLUMNS_PORTRAIT).setSummary(getString(R.string.preferences_columns_portrait_summary, PreferenceUtils.getPreferenceAsInt(getActivity(), PreferenceUtils.PREFS_COLUMNS_PORTRAIT, 2)));
+			findPreference(PreferenceUtils.PREFS_COLUMNS_LANDSCAPE).setSummary(getString(R.string.preferences_columns_landscape_summary, PreferenceUtils.getPreferenceAsInt(getActivity(), PreferenceUtils.PREFS_COLUMNS_LANDSCAPE, 3)));
 		}
 
 		@Override
@@ -140,6 +142,14 @@ public class PreferencesActivity extends BaseActivity
 				case PreferenceUtils.PREFS_GA_OPT_OUT:
 					/* Disable GA tracking */
 					GoogleAnalytics.getInstance(getActivity().getApplicationContext()).setAppOptOut(!PreferenceUtils.getPreferenceAsBoolean(getActivity(), PreferenceUtils.PREFS_GA_OPT_OUT, true));
+					break;
+				case PreferenceUtils.PREFS_COLUMNS_PORTRAIT:
+					findPreference(key).setSummary(getString(R.string.preferences_columns_portrait_summary, PreferenceUtils.getPreferenceAsInt(getActivity(), key, 2)));
+					MainActivity.override = true;
+					break;
+				case PreferenceUtils.PREFS_COLUMNS_LANDSCAPE:
+					findPreference(key).setSummary(getString(R.string.preferences_columns_landscape_summary, PreferenceUtils.getPreferenceAsInt(getActivity(), key, 3)));
+					MainActivity.override = true;
 					break;
 			}
 		}

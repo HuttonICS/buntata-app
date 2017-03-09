@@ -18,6 +18,7 @@ package uk.ac.hutton.ics.buntata.database.manager;
 
 import android.content.*;
 import android.database.*;
+import android.util.*;
 
 import java.text.*;
 import java.util.*;
@@ -33,6 +34,8 @@ import uk.ac.hutton.ics.buntata.database.entity.*;
  */
 public class NodeManager extends AbstractManager<BuntataNodeAdvanced>
 {
+	private static final String TAG = NodeManager.class.getCanonicalName();
+
 	private static final String[] ALL_FIELDS = {BuntataNode.FIELD_ID, BuntataNode.FIELD_NAME, BuntataNode.FIELD_DESCRIPTION, BuntataNode.FIELD_DATASOURCE_ID, BuntataNode.FIELD_CREATED_ON, BuntataNode.FIELD_UPDATED_ON};
 
 	private static Map<String, Set<Integer>> CACHE_FILTER_POSITIVE = new LinkedHashMap<String, Set<Integer>>()
@@ -126,6 +129,46 @@ public class NodeManager extends AbstractManager<BuntataNodeAdvanced>
 			}
 
 			cursor.close();
+		}
+		finally
+		{
+			close();
+		}
+
+		return result;
+	}
+
+	public List<BuntataNodeAdvanced> getSimilarNodes(int sourceId)
+	{
+		List<BuntataNodeAdvanced> result = new ArrayList<>();
+
+		try
+		{
+			open();
+
+			Cursor cursor = database.rawQuery("SELECT * FROM nodes WHERE EXISTS (SELECT 1 FROM similarities WHERE (similarities.node_a_id = nodes.id AND similarities.node_b_id = ?) OR (similarities.node_b_id = nodes.id AND similarities.node_a_id = ?)) ORDER BY nodes.name", new String[]{Integer.toString(sourceId), Integer.toString(sourceId)});
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast())
+			{
+				try
+				{
+					BuntataNodeAdvanced node = getDefaultParser().parse(context, datasourceId, new DatabaseInternal.AdvancedCursor(cursor));
+					node.setHasChildren(hasChildren(node.getId()));
+					result.add(node);
+				}
+				catch (ParseException e)
+				{
+					e.printStackTrace();
+				}
+
+				cursor.moveToNext();
+			}
+
+			cursor.close();
+		}
+		catch (SQLException e)
+		{
+			Log.e(TAG, e.getLocalizedMessage(), e);
 		}
 		finally
 		{

@@ -71,19 +71,25 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration
 		int x = left + right + (spanCount - 1) * horizontalSpacing;
 		int y = top + bottom + (maxRow) * verticalSpacing;
 
-		int xPad = x / spanCount;
+		int xPad = x / spanCount / 2;
 
-		/* If this is the first column, add the left margin, plus a fraction of the right padding */
-		if (column == 0)
+		/* If this is the first AND last column, add the left and right margin */
+		if (column == 0 && column == spanCount - 1)
 		{
 			outRect.left = left;
-			outRect.right = xPad - left;
+			outRect.right = right;
+		}
+		/* If this is the first column, add the left margin, plus a fraction of the right padding */
+		else if (column == 0)
+		{
+			outRect.left = left;
+			outRect.right = xPad / 2;// Math.max(0, xPad - left);
 		}
 		/* If this is the last column, add the right margin, plus a fraction of the left padding */
 		else if (column == spanCount - 1)
 		{
 			outRect.right = right;
-			outRect.left = xPad - right;
+			outRect.left = xPad / 2;//Math.max(0, xPad - right);
 		}
 		/* Else, it's an item in the middle, add fraction of left and right padding*/
 		else
@@ -106,5 +112,7 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration
 		{
 			outRect.bottom = bottom;
 		}
+
+		System.out.println(position + " -> " + outRect);
 	}
 }

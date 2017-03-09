@@ -17,6 +17,8 @@
 package uk.ac.hutton.ics.buntata.activity;
 
 import android.content.*;
+import android.content.res.*;
+import android.graphics.*;
 import android.net.*;
 import android.os.*;
 import android.provider.*;
@@ -226,5 +228,24 @@ public abstract class BaseActivity extends AppCompatActivity
 	{
 		String packageName = this.getPackageName();
 		return packageName != null && packageName.endsWith(".debug");
+	}
+
+	public int getScreenOrientation()
+	{
+		Display getOrient = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+
+		getOrient.getSize(size);
+
+		int orientation;
+		if (size.x < size.y)
+		{
+			orientation = Configuration.ORIENTATION_PORTRAIT;
+		}
+		else
+		{
+			orientation = Configuration.ORIENTATION_LANDSCAPE;
+		}
+		return orientation;
 	}
 }

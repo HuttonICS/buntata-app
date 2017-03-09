@@ -151,6 +151,8 @@
 	<string name="datasource_details_contact">Contact</string>
 	<string name="datasource_details_version">Version</string>
 
+	<string name="node_details_similar_nodes">Similar items</string>
+
 	<string name="preferences_ga_opt_out_title">Share statistics</string>
 	<string name="preferences_ga_opt_out_message">We will only use this info to analyse and improve the services offered through this app. For more
 		details see our EULA.
@@ -158,6 +160,12 @@
 
 	<string name="datasource_details_image_copyright" translatable="false">\u00A9 %1$s</string>
 
+	<string name="preferences_category_layout_title">Layout</string>
+	<string name="preferences_category_misc_title">Miscellaneous</string>
 	<string name="preferences_changelog_title">Show Changelog</string>
 	<string name="preferences_changelog_summary">Show the latest changes</string>
+	<string name="preferences_columns_portrait_title">Portrait mode columns</string>
+	<string name="preferences_columns_portrait_summary">Number of columns in portrait mode: %1$d</string>
+	<string name="preferences_columns_landscape_title">Landscape mode columns</string>
+	<string name="preferences_columns_landscape_summary">Number of columns in landscape mode: %1$d</string>
 </resources>

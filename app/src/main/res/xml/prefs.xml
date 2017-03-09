@@ -17,7 +17,36 @@
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<SwitchPreference
+	<PreferenceCategory
+		android:title="@string/preferences_category_layout_title">
+		<uk.ac.hutton.ics.buntata.util.NumberPickerPreference
+			android:key="prefs.columns.portrait"
+			android:title="@string/preferences_columns_portrait_title"
+			android:summary="@string/preferences_columns_portrait_summary"
+			android:icon="@drawable/preferences_columns_portrait"
+			min="1"
+			max="3"
+			android:defaultValue="2"/>
+
+		<uk.ac.hutton.ics.buntata.util.NumberPickerPreference
+			android:key="prefs.columns.landscape"
+			android:title="@string/preferences_columns_landscape_title"
+			android:summary="@string/preferences_columns_landscape_summary"
+			android:icon="@drawable/preferences_columns_landscape"
+			min="2"
+			max="5"
+			android:defaultValue="3"/>
+	</PreferenceCategory>
+
+	<PreferenceCategory
+		android:title="@string/preferences_category_misc_title">
+		<Preference
+			android:key="prefs.show.changelog"
+			android:title="@string/preferences_changelog_title"
+			android:summary="@string/preferences_changelog_summary"
+			android:icon="@drawable/preferences_changelog"/>
+
+		<SwitchPreference
 		android:dialogTitle="@string/preferences_ga_opt_out_title"
 		android:key="prefs.google.analytics.opt.out"
 		android:switchTextOff="@string/generic_no"
@@ -25,11 +54,5 @@
 		android:title="@string/preferences_ga_opt_out_title"
 		android:summary="@string/preferences_ga_opt_out_message"
 		android:icon="@drawable/preferences_ga_opt_out"/>
-
-	<Preference
-		android:key="prefs.show.changelog"
-		android:title="@string/preferences_changelog_title"
-		android:summary="@string/preferences_changelog_summary"
-		android:icon="@drawable/preferences_changelog"/>
-
+	</PreferenceCategory>
 </PreferenceScreen>

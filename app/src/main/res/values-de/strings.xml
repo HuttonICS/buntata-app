@@ -100,11 +100,18 @@
 	<string name="datasource_details_provider">Anbieter</string>
 	<string name="datasource_details_contact">Kontakt</string>
 	<string name="datasource_details_version">Version</string>
+	<string name="node_details_similar_nodes">Ähnliche Elemente</string>
+
+	<string name="preferences_category_layout_title">Anordnung</string>
+	<string name="preferences_category_misc_title">Sonstiges</string>
+	<string name="preferences_columns_portrait_title">Spalten im Hochformat</string>
+	<string name="preferences_columns_portrait_summary">Anzahl Spalten im Hochformat: %1$d</string>
+	<string name="preferences_columns_landscape_title">Spalten im Querformat</string>
+	<string name="preferences_columns_landscape_summary">Anzahl Spalten im Querformat: %1$d</string>
 	<string name="preferences_ga_opt_out_title">Teilen von Statistiken</string>
 	<string name="preferences_ga_opt_out_message">Wir werden diese Informationen nur zur Analyse und Verbesserung der durch diese App angebotenen
 		Dienste verwenden. Mehr Informationen befinden sich in der EULA.
 	</string>
-
 	<string name="preferences_changelog_title">Changelog anzeigen</string>
 	<string name="preferences_changelog_summary">Zeigt die letzten Änderungen an</string>
 </resources>

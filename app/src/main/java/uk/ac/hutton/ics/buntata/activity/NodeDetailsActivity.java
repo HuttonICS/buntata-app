@@ -17,12 +17,15 @@
 package uk.ac.hutton.ics.buntata.activity;
 
 
+import android.content.*;
 import android.net.*;
 import android.os.*;
 import android.support.design.widget.*;
 import android.support.v4.view.*;
 import android.support.v7.widget.*;
+import android.support.v7.widget.Toolbar;
 import android.view.*;
+import android.widget.*;
 
 import java.util.*;
 
@@ -45,16 +48,26 @@ public class NodeDetailsActivity extends BaseActivity
 	public static final String PARAM_DATASOURCE_ID         = "datasourceId";
 	public static final String PARAM_PREFERED_FIRST_MEDIUM = "preferedMediumId";
 	public static final String PARAM_NODE_ID               = "nodeId";
+
+	private int datasourceId = -1;
+	private int nodeId       = -1;
+
 	@BindView(R.id.node_details_image_pager)
 	ViewPager       pager;
 	@BindView(R.id.node_details_image_indicator)
 	CircleIndicator circleIndicator;
 	@BindView(R.id.node_details_attributes)
-	RecyclerView    recyclerView;
+	RecyclerView    attributeRecyclerView;
 	@BindView(R.id.node_details_app_bar)
 	AppBarLayout    appBarLayout;
 	@BindView(R.id.toolbar)
 	Toolbar         toolbar;
+	@BindView(R.id.node_details_similar_nodes_header)
+	TextView        similarNodesHeader;
+	@BindView(R.id.node_details_similar_nodes)
+	RecyclerView    similarNodes;
+	@BindView(R.id.node_details_similar_nodes_layout)
+	LinearLayout    similarNodesLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -67,8 +80,6 @@ public class NodeDetailsActivity extends BaseActivity
 		Bundle args = getIntent().getExtras();
 		Uri data = getIntent().getData();
 
-		int datasourceId = -1;
-		int nodeId = -1;
 		int preferedMediumId = -1;
 
 		/* If this Activity has been called based on deep linking, then get the parameters from the request */
@@ -102,6 +113,7 @@ public class NodeDetailsActivity extends BaseActivity
 
 		/* Initialize the media manager */
 		MediaManager mediaManager = new MediaManager(this, datasourceId);
+		NodeManager nodeManager = new NodeManager(this, datasourceId);
 
 		setSupportActionBar(toolbar);
 
@@ -148,17 +160,60 @@ public class NodeDetailsActivity extends BaseActivity
 		List<BuntataAttributeValueAdvanced> attributeValues = new AttributeValueManager(this, datasourceId).getForNode(nodeId);
 
 		/* Set them to the recycler view */
-		recyclerView.setLayoutManager(new LinearLayoutManager(this));
-		recyclerView.setAdapter(new AttributeValueVideoAdapter(this, datasourceId, attributeValues, splitByType.get(BuntataMediaType.TYPE_VIDEO)));
+		attributeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+		attributeRecyclerView.setAdapter(new AttributeValueVideoAdapter(this, datasourceId, attributeValues, splitByType.get(BuntataMediaType.TYPE_VIDEO)));
 
 		/* Set the separator width */
-		int valueInPixels = (int) getResources().getDimension(R.dimen.activity_vertical_margin) / 2;
-
-		int horizontalMargin = (int) getResources().getDimension(R.dimen.activity_horizontal_margin);
-		int verticalMargin = (int) getResources().getDimension(R.dimen.activity_vertical_margin);
+		final int valueInPixels = getResources().getDimensionPixelSize(R.dimen.activity_vertical_margin);
+		final int horizontalMargin = getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
+		final int verticalMargin = getResources().getDimensionPixelSize(R.dimen.activity_vertical_margin);
 
 		/* Add the item decorator */
-		recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, horizontalMargin, verticalMargin, valueInPixels));
+		attributeRecyclerView.addItemDecoration(new GridSpacingItemDecoration(1, horizontalMargin, verticalMargin, valueInPixels / 2));
+
+		/* Get all the similar nodes */
+		final List<BuntataNodeAdvanced> similarNodeList = nodeManager.getSimilarNodes(nodeId);
+
+		if (similarNodeList.size() > 0)
+		{
+			similarNodesLayout.setVisibility(View.VISIBLE);
+
+			/* Wait for the view to fully become visible */
+			similarNodesLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+			{
+				@Override
+				public void onGlobalLayout()
+				{
+					similarNodesLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+					/* Then add the data */
+					similarNodes.setLayoutManager(new LinearLayoutManager(NodeDetailsActivity.this, LinearLayoutManager.HORIZONTAL, false));
+					similarNodes.addItemDecoration(new GridSpacingItemDecoration(similarNodeList.size(), horizontalMargin, verticalMargin, valueInPixels / 2));
+					similarNodes.setAdapter(new NodeAdapter(NodeDetailsActivity.this, similarNodes, datasourceId, -1, similarNodeList)
+					{
+						@Override
+						public void onNodeClicked(View transitionRoot, View title, BuntataMediaAdvanced medium, BuntataNodeAdvanced node)
+						{
+							/* Open the details activity */
+							Intent intent = new Intent(getApplicationContext(), NodeDetailsActivity.class);
+
+							/* Pass parameters */
+							Bundle args = new Bundle();
+							args.putInt(NodeDetailsActivity.PARAM_NODE_ID, node.getId());
+							args.putInt(NodeDetailsActivity.PARAM_DATASOURCE_ID, node.getDatasourceId());
+							args.putInt(NodeDetailsActivity.PARAM_PREFERED_FIRST_MEDIUM, -1);
+							intent.putExtras(args);
+
+							startActivity(intent);
+						}
+					});
+
+					/* Snap the recyclerview items */
+					SnapHelper helper = new LinearSnapHelper();
+					helper.attachToRecyclerView(similarNodes);
+				}
+			});
+		}
 	}
 
 	@Override

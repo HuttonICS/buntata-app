@@ -32,6 +32,7 @@ import uk.ac.hutton.ics.buntata.activity.*;
 import uk.ac.hutton.ics.buntata.adapter.*;
 import uk.ac.hutton.ics.buntata.database.entity.*;
 import uk.ac.hutton.ics.buntata.database.manager.*;
+import uk.ac.hutton.ics.buntata.util.*;
 
 /**
  * The {@link NodeFragment} shows the nodes in a grid.
@@ -129,7 +130,8 @@ public class NodeFragment extends Fragment
 
 	private void updateItemDecorator()
 	{
-		int columns = getResources().getInteger(R.integer.node_recyclerview_columns);
+		String columnsPreference = ((BaseActivity) getActivity()).getScreenOrientation() == Configuration.ORIENTATION_LANDSCAPE ? PreferenceUtils.PREFS_COLUMNS_LANDSCAPE : PreferenceUtils.PREFS_COLUMNS_PORTRAIT;
+		int columns = PreferenceUtils.getPreferenceAsInt(getContext(), columnsPreference, 2);
 
 		if (columns > originalList.size())
 			columns = originalList.size();
