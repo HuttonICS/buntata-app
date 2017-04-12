@@ -43,11 +43,13 @@
 	<string name="generic_no">Nein</string>
 	<string name="generic_cancel">Abbrechen</string>
 	<string name="generic_accept">Akzeptieren</string>
+	<string name="generic_show">Anzeigen</string>
 	<string name="datasource_size">Mediengröße: ~%1$.1f MB (~%2$.1f MB)</string>
 	<string name="snackbar_already_downloaded">Datenquelle bereits heruntergeladen.</string>
 	<string name="snackbar_only_one_download">Nur ein Download auf einmal erlaubt.</string>
 	<string name="snackbar_currently_downloading">Datenquelle wird gerade heruntergeladen.</string>
 	<string name="snackbar_download_successful">Datenquelle erfolgreich heruntergeladen.</string>
+	<string name="snackbar_download_unsuccessful">Fehler beim Download der Datenquelle.</string>
 	<string name="snackbar_select_datasource">Bitte wählen Sie eine Datenquelle.</string>
 	<string name="dialog_delete_datasource_title">Datenquelle löschen</string>
 	<string name="dialog_delete_datasource_text">Diese Datenquelle entfernen?</string>
@@ -56,11 +58,15 @@
 	<string name="dialog_download_message">Videos herunterladen?</string>
 	<string name="dialog_download_cancel_title">Download abbrechen?</string>
 	<string name="dialog_download_cancel_text">Download im Gange. Möchten Sie abbrechen?</string>
+	<string name="snackbar_updates_available">Neue Updates verfügbar</string>
 	<string name="about_tab_information">Über</string>
-	<string name="about_tab_developers">Entwickler</string>
+	<string name="about_tab_team">Team</string>
 	<string name="about_tab_acknowledgements">Danksagungen</string>
 	<string name="about_tab_license">Lizenz</string>
-	<string name="about_information_text">Etwas über die App hier. Dies ist nur ein Platzhalter um zu sehen, wie es aussehen wird.</string>
+	<string name="about_information_text">Buntata ist eine App die als Unterstützung bei der Identifikation von Pflanzenkrankheiten und Pathogenen
+		dient und Farmern zeigt wo sie weitere Informationen erhalten können. Die App bietet herunterladbare Datensätze an wodurch der Benutzer keine
+		Datenverbindung benötigt während er unterwegs ist.
+	</string>
 	<string name="contact_email_dialog_title">E-Mail senden</string>
 	<string name="share_chooser_title">Teilen</string>
 	<string name="datasource_list_header_local">Lokale Datenquellen</string>
@@ -92,9 +98,13 @@
 	<string name="acknowledgements_st_andrews_text">In Zusammenarbeit mit der University of St. Andrews</string>
 	<string name="acknowledgements_bbsrc_text">Mit finanzieller Unterstützung durch die Biotechnology and Biological Sciences Research Council
 	</string>
+	<string name="acknowledgements_ahdb_text">Einige der Bilder wurden freundlicherweise von der AHDB bereitgestellt.</string>
+	<string name="acknowledgements_scottish_government_text">Irgendwas ueber das Scottish Government hier.</string>
 	<string name="acknowledgements_jhi_url">http://www.hutton.ac.uk</string>
 	<string name="acknowledgements_st_andrews_url">https://www.st-andrews.ac.uk/</string>
 	<string name="acknowledgements_bbsrc_url">http://www.bbsrc.ac.uk/</string>
+	<string name="acknowledgements_ahdb_url">http://www.ahdb.org.uk/</string>
+	<string name="acknowledgements_scottish_government_url">http://www.gov.scot/</string>
 	<string name="node_instructions">Wählen Sie das Element, das Sie untersuchen möchten.</string>
 	<string name="datasource_details_description">Beschreibung</string>
 	<string name="datasource_details_provider">Anbieter</string>
@@ -114,4 +124,11 @@
 	</string>
 	<string name="preferences_changelog_title">Changelog anzeigen</string>
 	<string name="preferences_changelog_summary">Zeigt die letzten Änderungen an</string>
+
+	<string name="toast_datasource_not_found">Angeforderte Datenquellen nicht gefunden.</string>
+	<string name="toast_node_not_found">Angefordertes Element nicht gefunden.</string>
+	<string name="team_others_title">Andere</string>
+	<string name="team_others_name">Zusätzlich möchten wir uns bei John Jones, Ian Toth, Jennie Brierley, Alison Lees, Graham Cowan und Sonia Humphris
+		für ihre Hilfe beim Organizieren der Kartoffeldaten und -bilder bedanken.
+	</string>
 </resources>

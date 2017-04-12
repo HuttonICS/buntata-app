@@ -13,8 +13,7 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  -->
-
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 		  xmlns:tools="http://schemas.android.com/tools"
 		  package="uk.ac.hutton.ics.buntata">
@@ -22,39 +21,44 @@
 	<uses-permission android:name="android.permission.INTERNET"/>
 
 	<application
-		tools:replace="android:allowBackup"
 		android:allowBackup="true"
 		android:icon="@mipmap/ic_launcher"
-		android:roundIcon="@mipmap/ic_launcher_round"
 		android:label="@string/app_name"
+		android:roundIcon="@mipmap/ic_launcher_round"
 		android:supportsRtl="true"
-		android:theme="@style/AppTheme">
-		<activity android:name=".activity.MainActivity"
-				  android:configChanges="orientation|screenSize">
+		android:theme="@style/AppTheme"
+		tools:replace="android:allowBackup">
+		<activity
+			android:name=".activity.MainActivity"
+			android:configChanges="orientation|screenSize">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
-
-		<activity android:name=".activity.IntroductionActivity"
-				  android:configChanges="orientation|screenSize"/>
-		<activity android:name=".activity.DatasourceActivity"
-				  android:configChanges="keyboardHidden|orientation|screenSize"/>
-		<activity android:name=".activity.ImageViewPagerActivity"
-				  android:configChanges="orientation|screenSize"/>
-		<activity android:name=".activity.NodeDetailsActivity"
-				  android:parentActivityName=".activity.MainActivity">
+		<activity
+			android:name=".activity.IntroductionActivity"
+			android:configChanges="orientation|screenSize"/>
+		<activity
+			android:name=".activity.DatasourceActivity"
+			android:configChanges="keyboardHidden|orientation|screenSize"/>
+		<activity
+			android:name=".activity.ImageViewPagerActivity"
+			android:configChanges="orientation|screenSize"/>
+		<activity
+			android:name=".activity.NodeDetailsActivity"
+			android:parentActivityName=".activity.MainActivity">
 			<intent-filter android:label="@string/app_name">
 				<action android:name="android.intent.action.VIEW"/>
+
 				<category android:name="android.intent.category.DEFAULT"/>
 				<category android:name="android.intent.category.BROWSABLE"/>
-				<!-- note that the leading "/" is required for pathPrefix-->
+				<!-- note that the leading "/" is required for pathPrefix -->
 				<!-- Accepts URIs that begin with "http://bunta.ta” -->
-				<data android:scheme="http"
-					  android:host="bunta.ta"/>
-
+				<data
+					android:host="bunta.ta"
+					android:scheme="http"/>
 			</intent-filter>
 		</activity>
 		<activity android:name=".activity.AboutActivity"/>

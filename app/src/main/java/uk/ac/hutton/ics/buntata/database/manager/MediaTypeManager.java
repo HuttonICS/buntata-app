@@ -31,8 +31,6 @@ import uk.ac.hutton.ics.buntata.database.*;
  */
 public class MediaTypeManager extends AbstractManager<BuntataMediaType>
 {
-	private static final String[] ALL_FIELDS = {BuntataMediaType.FIELD_ID, BuntataMediaType.FIELD_NAME, BuntataMediaType.FIELD_CREATED_ON, BuntataMediaType.FIELD_UPDATED_ON};
-
 	public MediaTypeManager(Context context, int datasourceId)
 	{
 		super(context, datasourceId);
@@ -48,12 +46,6 @@ public class MediaTypeManager extends AbstractManager<BuntataMediaType>
 	protected String getTableName()
 	{
 		return BuntataMediaType.TABLE_NAME;
-	}
-
-	@Override
-	protected String[] getAllFields()
-	{
-		return ALL_FIELDS;
 	}
 
 	private static class Parser extends DatabaseObjectParser<BuntataMediaType>

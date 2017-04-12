@@ -101,8 +101,10 @@ public class AcknowledgementsAdapter extends RecyclerView.Adapter<Acknowledgemen
 	private enum Acknowledgements
 	{
 		JHI(R.drawable.jhi, R.string.acknowledgements_jhi_text, R.string.acknowledgements_jhi_url),
-		ST_ANDREWS(R.drawable.st_andrews, R.string.acknowledgements_st_andrews_text, R.string.acknowledgements_st_andrews_url),
-		BBSRC(R.drawable.bbsrc, R.string.acknowledgements_bbsrc_text, R.string.acknowledgements_bbsrc_url);
+		ST_ANDREWS(R.drawable.st_andrews_with_name, R.string.acknowledgements_st_andrews_text, R.string.acknowledgements_st_andrews_url),
+		BBSRC(R.drawable.bbsrc, R.string.acknowledgements_bbsrc_text, R.string.acknowledgements_bbsrc_url),
+		AHDB(R.drawable.ahdb, R.string.acknowledgements_ahdb_text, R.string.acknowledgements_ahdb_url),
+		SCOTTISH_GOVERNMENT(R.drawable.scottish_government, R.string.acknowledgements_scottish_government_text, R.string.acknowledgements_scottish_government_url);
 
 		@DrawableRes
 		int image;

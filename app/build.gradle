@@ -30,8 +30,8 @@ android {
         applicationId "uk.ac.hutton.ics.buntata"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 7
-        versionName "0.17.02.23"
+        versionCode 9
+        versionName "0.17.04.12"
         multiDexEnabled true
     }
 
@@ -102,3 +102,4 @@ android.signingConfigs.release.storeFile rootProject.file(props.keyStore)
 android.signingConfigs.release.storePassword props.keyStorePassword
 android.signingConfigs.release.keyAlias props.keyAlias
 android.signingConfigs.release.keyPassword props.keyAliasPassword
+0

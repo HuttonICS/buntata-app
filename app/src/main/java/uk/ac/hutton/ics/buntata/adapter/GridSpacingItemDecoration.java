@@ -112,7 +112,5 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration
 		{
 			outRect.bottom = bottom;
 		}
-
-		System.out.println(position + " -> " + outRect);
 	}
 }

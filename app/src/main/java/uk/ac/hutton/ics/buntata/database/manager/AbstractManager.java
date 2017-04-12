@@ -60,8 +60,7 @@ public abstract class AbstractManager<T extends DatabaseObject>
 	}
 
 	/**
-	 * Returns all the {@link DatabaseObject}s for this type of {@link AbstractManager}. Uses {@link #getDefaultParser()}, {@link #getTableName()} and
-	 * {@link #getAllFields()} to get the data from the database into the Java classes.
+	 * Returns all the {@link DatabaseObject}s for this type of {@link AbstractManager}. Uses {@link #getDefaultParser()} and {@link #getTableName()} to get the data from the database into the Java classes.
 	 *
 	 * @return The {@link List} of {@link DatabaseObject}s.
 	 */
@@ -73,7 +72,7 @@ public abstract class AbstractManager<T extends DatabaseObject>
 
 			List<T> result = new ArrayList<>();
 
-			Cursor cursor = database.query(getTableName(), getAllFields(), null, null, null, null, null);
+			Cursor cursor = database.query(getTableName(), new String[]{getTableName() + ".*"}, null, null, null, null, null);
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast())
 			{
@@ -101,8 +100,7 @@ public abstract class AbstractManager<T extends DatabaseObject>
 	}
 
 	/**
-	 * Returns the {@link DatabaseObject} for this type of {@link AbstractManager}. Uses {@link #getDefaultParser()}, {@link #getTableName()} and
-	 * {@link #getAllFields()} to get the data from the database into the Java classes.
+	 * Returns the {@link DatabaseObject} for this type of {@link AbstractManager}. Uses {@link #getDefaultParser()} and {@link #getTableName()} to get the data from the database into the Java classes.
 	 *
 	 * @param id The id of the {@link DatabaseObject}
 	 * @return The {@link DatabaseObject}.
@@ -115,7 +113,7 @@ public abstract class AbstractManager<T extends DatabaseObject>
 
 			T result = null;
 
-			Cursor cursor = database.query(getTableName(), getAllFields(), DatabaseObject.FIELD_ID + " = ?", new String[]{Integer.toString(id)}, null, null, null);
+			Cursor cursor = database.query(getTableName(), new String[]{getTableName() + ".*"}, DatabaseObject.FIELD_ID + " = ?", new String[]{Integer.toString(id)}, null, null, null);
 			cursor.moveToFirst();
 			if (!cursor.isAfterLast())
 			{
@@ -152,11 +150,4 @@ public abstract class AbstractManager<T extends DatabaseObject>
 	 * @return The database table for this type of {@link DatabaseObject}.
 	 */
 	protected abstract String getTableName();
-
-	/**
-	 * Returns the fields of the database table for this type of {@link DatabaseObject}.
-	 *
-	 * @return The fields of the database table for this type of {@link DatabaseObject}.
-	 */
-	protected abstract String[] getAllFields();
 }

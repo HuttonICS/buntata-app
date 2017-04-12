@@ -73,32 +73,34 @@ public class DatabaseInternal extends SQLiteOpenHelper
 
 		public String getString(String columnName)
 		{
-			return cursor.getString(cursor.getColumnIndex(columnName));
+			if (cursor.getColumnIndex(columnName) == -1)
+				return null;
+			else
+				return cursor.getString(cursor.getColumnIndex(columnName));
 		}
 
 		public int getInt(String columnName)
 		{
-			return cursor.getInt(cursor.getColumnIndex(columnName));
+			if (cursor.getColumnIndex(columnName) == -1)
+				return -1;
+			else
+				return cursor.getInt(cursor.getColumnIndex(columnName));
 		}
 
 		public long getLong(String columnName)
 		{
-			return cursor.getLong(cursor.getColumnIndex(columnName));
-		}
-
-		public double getDouble(String columnName)
-		{
-			return cursor.getDouble(cursor.getColumnIndex(columnName));
-		}
-
-		public float getFloat(String columnName)
-		{
-			return cursor.getFloat(cursor.getColumnIndex(columnName));
+			if (cursor.getColumnIndex(columnName) == -1)
+				return -1;
+			else
+				return cursor.getLong(cursor.getColumnIndex(columnName));
 		}
 
 		public boolean getBoolean(String columnName)
 		{
-			return cursor.getInt(cursor.getColumnIndex(columnName)) == 1;
+			if (cursor.getColumnIndex(columnName) == -1)
+				return false;
+			else
+				return cursor.getInt(cursor.getColumnIndex(columnName)) == 1;
 		}
 	}
 }

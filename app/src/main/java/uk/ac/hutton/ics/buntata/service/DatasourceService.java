@@ -18,6 +18,7 @@ package uk.ac.hutton.ics.buntata.service;
 
 import android.app.*;
 import android.content.*;
+import android.database.sqlite.*;
 import android.widget.*;
 
 import java.io.*;
@@ -26,6 +27,8 @@ import java.util.*;
 import jhi.buntata.resource.*;
 import retrofit2.*;
 import uk.ac.hutton.ics.buntata.*;
+import uk.ac.hutton.ics.buntata.database.entity.*;
+import uk.ac.hutton.ics.buntata.database.manager.*;
 import uk.ac.hutton.ics.buntata.thread.*;
 import uk.ac.hutton.ics.buntata.util.*;
 
@@ -40,23 +43,21 @@ public class DatasourceService
 	private static final String DATASOURCE_DOWNLOAD_URL = "/%s/download?includevideos=%s";
 	private static final String DATASOURCE_ICON_URL     = "/%s/icon";
 
-	private static Retrofit           RETROFIT;
 	private static DatasourceProvider PROVIDER;
 
 	public static void init(Context context)
 	{
-		RETROFIT = new Retrofit.Builder()
+		PROVIDER = new Retrofit.Builder()
 				.baseUrl(PreferenceUtils.getPreference(context, PreferenceUtils.PREFS_KNODEL_SERVER_URL))
 				.addConverterFactory(JacksonConverterFactory.create())
-				.build();
-
-		PROVIDER = RETROFIT.create(DatasourceProvider.class);
+				.build()
+				.create(DatasourceProvider.class);
 	}
 
 	/**
-	 * Returns the base URL of the BRAPI instance. Will <b>ALEAYS</b> end with a tailing slash
+	 * Returns the base URL of the REST API instance. Will <b>ALWAYS</b> end with a tailing slash
 	 *
-	 * @return The base URL of the BRAPI instance. Will <b>ALEAYS</b> end with a tailing slash
+	 * @return The base URL of the REST API instance. Will <b>ALWAYS</b> end with a tailing slash
 	 */
 	private static String getBaseUrl(Context context)
 	{
@@ -97,27 +98,111 @@ public class DatasourceService
 	 * @param context  The current context
 	 * @param callback The {@link RemoteCallback} to call when the query returns
 	 */
-	public static void getAll(final Context context, boolean cancelable, final RemoteCallback<List<BuntataDatasource>> callback)
+	public static void getAll(final Context context, boolean cancelable, boolean showDialog, final RemoteCallback<List<BuntataDatasource>> callback)
 	{
 		final Call<List<BuntataDatasource>> result = PROVIDER.getAll();
 
-		final ProgressDialog dialog = prepareProgressBar(context, result, cancelable);
-		dialog.show();
+		final ProgressDialog dialog = showDialog ? prepareProgressBar(context, result, cancelable) : null;
+
+		if (dialog != null)
+			dialog.show();
 
 		result.enqueue(new Callback<List<BuntataDatasource>>()
 		{
 			@Override
 			public void onResponse(Response<List<BuntataDatasource>> response)
 			{
-				dialog.dismiss();
+				if (dialog != null)
+					dialog.dismiss();
 				callback.onSuccess(response.body());
 			}
 
 			@Override
 			public void onFailure(Throwable t)
 			{
-				dialog.dismiss();
+				if (dialog != null)
+					dialog.dismiss();
 				callback.onFailure(t);
+			}
+		});
+	}
+
+	public static void getAllAdvanced(final Context context, boolean cancelable, boolean showDialog, final RemoteCallback<List<BuntataDatasourceAdvanced>> callback)
+	{
+		/* Get the local data sources */
+		List<BuntataDatasource> local;
+
+		try
+		{
+			local = new DatasourceManager(context, -1).getAll();
+		}
+		catch (SQLiteException e)
+		{
+			local = new ArrayList<>();
+		}
+
+		final List<BuntataDatasource> localList = local;
+		/* Keep track of their status (installed no update, installed update, not installed) */
+		final List<BuntataDatasourceAdvanced> datasources = new ArrayList<>();
+
+		/* Then try to get the online resources */
+		getAll(context, cancelable, showDialog, new RemoteCallback<List<BuntataDatasource>>(context)
+		{
+			@Override
+			public void onFailure(Throwable caught)
+			{
+				caught.printStackTrace();
+
+				/* If the request fails, just show the local ones as having no updates */
+				for (BuntataDatasource ds : localList)
+				{
+					BuntataDatasourceAdvanced adv = BuntataDatasourceAdvanced.create(ds);
+					adv.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
+					datasources.add(adv);
+				}
+
+				callback.onSuccess(datasources);
+			}
+
+			@Override
+			public void onSuccess(List<BuntataDatasource> result)
+			{
+				/* If the request succeeds, try to figure out if it's already installed locally and then check if there's an update */
+				for (BuntataDatasource ds : result)
+				{
+					int index = localList.indexOf(ds);
+
+					BuntataDatasourceAdvanced adv = BuntataDatasourceAdvanced.create(ds);
+
+					/* Is installed */
+					if (index != -1)
+					{
+						BuntataDatasource old = localList.get(index);
+
+						if (DatasourceManager.isNewer(ds, old))
+							adv.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_HAS_UPDATE);
+						else
+							adv.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
+
+						localList.remove(index);
+					}
+					/* Is not installed */
+					else
+					{
+						adv.setState(BuntataDatasourceAdvanced.InstallState.NOT_INSTALLED);
+					}
+
+					datasources.add(adv);
+				}
+
+				for (BuntataDatasource ds : localList)
+				{
+					BuntataDatasourceAdvanced adv = BuntataDatasourceAdvanced.create(ds);
+					adv.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
+					datasources.add(adv);
+				}
+
+				callback.onSuccess(datasources);
 			}
 		});
 	}
@@ -168,6 +253,12 @@ public class DatasourceService
 
 				try
 				{
+					if (file == null)
+					{
+						callback.onFailure(new IOException("File not found"));
+						return;
+					}
+
 					FileUtils.unzip(file, file.getParentFile());
 
 					file.delete();

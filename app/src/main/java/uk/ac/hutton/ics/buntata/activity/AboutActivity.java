@@ -71,7 +71,7 @@ public class AboutActivity extends BaseActivity
 		/* Get the CollapsingToolbarLayout and listen for offset change events to show/hide the toolbar title, i.e. it'll only be shown when the toolbar is fully collapsed */
 		appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener()
 		{
-			boolean isShow = false;
+			boolean show = false;
 			int scrollRange = -1;
 
 			@Override
@@ -84,12 +84,12 @@ public class AboutActivity extends BaseActivity
 				if (scrollRange + verticalOffset == 0)
 				{
 					collapsingToolbarLayout.setTitle(getString(R.string.title_activity_about));
-					isShow = true;
+					show = true;
 				}
-				else if (isShow)
+				else if (show)
 				{
 					collapsingToolbarLayout.setTitle(" "); // careful there should a space between double quote otherwise it wont work
-					isShow = false;
+					show = false;
 				}
 			}
 		});
@@ -131,7 +131,7 @@ public class AboutActivity extends BaseActivity
 		{
 			super(fm);
 
-			this.titles = new String[]{context.getString(R.string.about_tab_information), context.getString(R.string.about_tab_developers), context.getString(R.string.about_tab_acknowledgements), context.getString(R.string.about_tab_license)};
+			this.titles = new String[]{context.getString(R.string.about_tab_information), context.getString(R.string.about_tab_acknowledgements), context.getString(R.string.about_tab_team), context.getString(R.string.about_tab_license)};
 		}
 
 		@Override
@@ -154,9 +154,9 @@ public class AboutActivity extends BaseActivity
 				case 0:
 					return new AboutInformationFragment();
 				case 1:
-					return new AboutDeveloperFragment();
-				case 2:
 					return new AboutAcknowledgementsFragment();
+				case 2:
+					return new AboutDeveloperFragment();
 				case 3:
 					return new AboutLicenseFragment();
 			}

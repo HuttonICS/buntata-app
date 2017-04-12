@@ -102,6 +102,34 @@ public class NodeDetailsActivity extends BaseActivity
 			catch (NullPointerException | NumberFormatException e)
 			{
 			}
+
+			List<BuntataDatasource> datasources = new DatasourceManager(this, -1).getAll();
+
+			BuntataDatasource datasource = null;
+			if (datasources != null)
+			{
+				for (BuntataDatasource ds : datasources)
+				{
+					if (ds.getId() == datasourceId)
+						datasource = ds;
+				}
+			}
+
+			if (datasource == null)
+			{
+				ToastUtils.createToast(this, R.string.toast_datasource_not_found, ToastUtils.LENGTH_LONG);
+				this.finish();
+			}
+			else
+			{
+				BuntataNodeAdvanced node = new NodeManager(this, datasourceId).getById(nodeId);
+
+				if (node == null)
+				{
+					ToastUtils.createToast(this, R.string.toast_node_not_found, ToastUtils.LENGTH_LONG);
+					this.finish();
+				}
+			}
 		}
 		/* Otherwise get the parameters from the calling Activity */
 		else if (args != null)

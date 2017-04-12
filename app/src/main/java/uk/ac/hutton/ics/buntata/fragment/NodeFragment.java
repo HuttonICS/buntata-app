@@ -110,7 +110,7 @@ public class NodeFragment extends Fragment
 			@Override
 			public void onNodeClicked(View animationRoot, View title, BuntataMediaAdvanced medium, BuntataNodeAdvanced node)
 			{
-				((MainActivity) getActivity()).onFragmentChange(animationRoot, title, datasourceId, node.getId(), medium.getId());
+				((MainActivity) getActivity()).onFragmentChange(animationRoot, title, datasourceId, node.getId(), medium != null ? medium.getId() : -1);
 			}
 		};
 		recyclerView.setAdapter(adapter);
@@ -132,9 +132,6 @@ public class NodeFragment extends Fragment
 	{
 		String columnsPreference = ((BaseActivity) getActivity()).getScreenOrientation() == Configuration.ORIENTATION_LANDSCAPE ? PreferenceUtils.PREFS_COLUMNS_LANDSCAPE : PreferenceUtils.PREFS_COLUMNS_PORTRAIT;
 		int columns = PreferenceUtils.getPreferenceAsInt(getContext(), columnsPreference, 2);
-
-		if (columns > originalList.size())
-			columns = originalList.size();
 
 		int valueInPixels = (int) getResources().getDimension(R.dimen.activity_vertical_margin) / 2;
 		recyclerView.setLayoutManager(new StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL));

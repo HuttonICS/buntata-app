@@ -39,6 +39,8 @@ public class AboutInformationFragment extends Fragment
 	@BindView(R.id.about_information_version)
 	TextView version;
 	@BindView(R.id.about_information_email)
+	CardView web;
+	@BindView(R.id.about_information_web)
 	CardView email;
 	@BindView(R.id.about_information_share)
 	CardView share;
@@ -74,6 +76,12 @@ public class AboutInformationFragment extends Fragment
 								 .setSubject(getString(R.string.contact_email_subject))
 								 .setChooserTitle(R.string.contact_email_dialog_title)
 								 .startChooser();
+	}
+
+	@OnClick(R.id.about_information_web)
+	public void onWebClicked()
+	{
+		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.website_url))));
 	}
 
 	@OnClick(R.id.about_information_share)

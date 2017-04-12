@@ -34,8 +34,6 @@ import uk.ac.hutton.ics.buntata.database.entity.*;
  */
 public class AttributeValueManager extends AbstractManager<BuntataAttributeValueAdvanced>
 {
-	private static final String[] ALL_FIELDS = {BuntataAttributeValue.FIELD_ID, BuntataAttributeValue.FIELD_ATTRIBUTE_ID, BuntataAttributeValue.FIELD_NODE_ID, BuntataAttributeValue.FIELD_VALUE, BuntataAttributeValue.FIELD_CREATED_ON, BuntataAttributeValue.FIELD_UPDATED_ON};
-
 	public AttributeValueManager(Context context, int datasourceId)
 	{
 		super(context, datasourceId);
@@ -51,12 +49,6 @@ public class AttributeValueManager extends AbstractManager<BuntataAttributeValue
 	protected String getTableName()
 	{
 		return BuntataAttributeValue.TABLE_NAME;
-	}
-
-	@Override
-	protected String[] getAllFields()
-	{
-		return ALL_FIELDS;
 	}
 
 	public List<BuntataAttributeValueAdvanced> getForNode(int nodeId)

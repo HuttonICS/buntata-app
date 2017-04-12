@@ -16,7 +16,6 @@
 
 package uk.ac.hutton.ics.buntata.fragment;
 
-import android.database.sqlite.*;
 import android.os.*;
 import android.support.v4.app.*;
 import android.support.v4.content.*;
@@ -34,7 +33,6 @@ import uk.ac.hutton.ics.buntata.R;
 import uk.ac.hutton.ics.buntata.activity.*;
 import uk.ac.hutton.ics.buntata.adapter.*;
 import uk.ac.hutton.ics.buntata.database.entity.*;
-import uk.ac.hutton.ics.buntata.database.manager.*;
 import uk.ac.hutton.ics.buntata.service.*;
 
 /**
@@ -114,45 +112,20 @@ public class DatasourceFragment extends Fragment
 
 	private void requestData()
 	{
-		/* Get the local data sources */
-		List<BuntataDatasource> local;
-
-		try
-		{
-			local = new DatasourceManager(getActivity(), -1).getAll();
-		}
-		catch (SQLiteException e)
-		{
-			local = new ArrayList<>();
-		}
-
-		final List<BuntataDatasource> localList = local;
-		/* Keep track of their status (installed no update, installed update, not installed) */
-		final List<BuntataDatasourceAdvanced> datasources = new ArrayList<>();
-
 		final boolean cancelable = getActivity() instanceof DatasourceActivity;
+
+		final List<BuntataDatasourceAdvanced> datasources = new ArrayList<>();
 
 		/* Set it initially */
 		adapter = new DatasourceAdapter(getActivity(), recyclerView, datasources);
 		recyclerView.setAdapter(adapter);
 
-		/* Then try to get the online resources */
-		DatasourceService.getAll(getActivity(), cancelable, new RemoteCallback<List<BuntataDatasource>>(getActivity())
+		DatasourceService.getAllAdvanced(getActivity(), cancelable, true, new RemoteCallback<List<BuntataDatasourceAdvanced>>(getActivity())
 		{
 			@Override
-			public void onFailure(Throwable caught)
+			public void onSuccess(List<BuntataDatasourceAdvanced> result)
 			{
-				caught.printStackTrace();
-
-				/* If the request fails, just show the local ones as having no updates */
-				for (BuntataDatasource ds : localList)
-				{
-					BuntataDatasourceAdvanced adv = BuntataDatasourceAdvanced.create(ds);
-					adv.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
-					datasources.add(adv);
-				}
-
-				if (datasources.size() < 1)
+				if (result.size() < 1)
 				{
 					networkWarning.setVisibility(View.VISIBLE);
 				}
@@ -160,52 +133,9 @@ public class DatasourceFragment extends Fragment
 				{
 					networkWarning.setVisibility(View.GONE);
 
-					adapter = new DatasourceAdapter(getActivity(), recyclerView, datasources);
+					adapter = new DatasourceAdapter(getActivity(), recyclerView, result);
 					recyclerView.setAdapter(adapter);
 				}
-			}
-
-			@Override
-			public void onSuccess(List<BuntataDatasource> result)
-			{
-				/* If the request succeeds, try to figure out if it's already installed locally and then check if there's an update */
-				for (BuntataDatasource ds : result)
-				{
-					int index = localList.indexOf(ds);
-
-					BuntataDatasourceAdvanced adv = BuntataDatasourceAdvanced.create(ds);
-
-					/* Is installed */
-					if (index != -1)
-					{
-						BuntataDatasource old = localList.get(index);
-
-						if (DatasourceManager.isNewer(ds, old))
-							adv.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_HAS_UPDATE);
-						else
-							adv.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
-
-						localList.remove(index);
-					}
-					/* Is not installed */
-					else
-					{
-						adv.setState(BuntataDatasourceAdvanced.InstallState.NOT_INSTALLED);
-					}
-
-					datasources.add(adv);
-				}
-
-				for (BuntataDatasource ds : localList)
-				{
-					BuntataDatasourceAdvanced adv = BuntataDatasourceAdvanced.create(ds);
-					adv.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
-					datasources.add(adv);
-				}
-
-				/* Set whatever we got now to the adapter */
-				adapter = new DatasourceAdapter(getActivity(), recyclerView, datasources);
-				recyclerView.setAdapter(adapter);
 			}
 		});
 	}

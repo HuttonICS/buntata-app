@@ -38,10 +38,11 @@ public class BuntataDatasourceAdvanced extends BuntataDatasource
 		super(id, createdOn, updatedOn);
 	}
 
-	public BuntataDatasourceAdvanced(int id, Date createdOn, Date updatedOn, String name, String description, boolean visibility, int versionNumber, String dataProvider, String contact, boolean showKeyName, String icon, long sizeTotal, long sizeNoVideo, InstallState state)
+	public BuntataDatasourceAdvanced(int id, Date createdOn, Date updatedOn, String name, String description, boolean visibility, int versionNumber, String dataProvider, String contact, boolean showKeyName, boolean showSingleChild, String icon, long sizeTotal, long sizeNoVideo, InstallState state, boolean isDownloading)
 	{
-		super(id, createdOn, updatedOn, name, description, visibility, versionNumber, dataProvider, contact, showKeyName, icon, sizeTotal, sizeNoVideo);
+		super(id, createdOn, updatedOn, name, description, visibility, versionNumber, dataProvider, contact, showKeyName, showSingleChild, icon, sizeTotal, sizeNoVideo);
 		this.state = state;
+		this.isDownloading = isDownloading;
 	}
 
 	public InstallState getState()
@@ -79,6 +80,7 @@ public class BuntataDatasourceAdvanced extends BuntataDatasource
 		result.setSizeNoVideo(ds.getSizeNoVideo());
 		result.setIcon(ds.getIcon());
 		result.setShowKeyName(ds.isShowKeyName());
+		result.setShowSingleChild(ds.isShowSingleChild());
 		result.setCreatedOn(ds.getCreatedOn());
 		result.setUpdatedOn(ds.getUpdatedOn());
 

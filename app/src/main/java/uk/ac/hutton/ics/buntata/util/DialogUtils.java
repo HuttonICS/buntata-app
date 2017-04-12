@@ -40,6 +40,22 @@ public class DialogUtils
 	 */
 	public static void showDialog(Context context, int title, int message, int positiveText, int negativeText, DialogInterface.OnClickListener positiveListener, DialogInterface.OnClickListener negagiveListener)
 	{
+		showDialog(context, context.getString(title), context.getString(message), context.getString(positiveText), context.getString(negativeText), positiveListener, negagiveListener);
+	}
+
+	/**
+	 * Ceates an {@link AlertDialog} with the given title, message and positive/negative button handling
+	 *
+	 * @param context          The current {@link Context}
+	 * @param title            The title text to use
+	 * @param message          The message text to use
+	 * @param positiveText     The positive button text to use
+	 * @param negativeText     The negative button text to use
+	 * @param positiveListener The positive button {@link android.content.DialogInterface.OnClickListener}
+	 * @param negagiveListener The negative button {@link android.content.DialogInterface.OnClickListener}
+	 */
+	public static void showDialog(Context context, String title, String message, String positiveText, String negativeText, DialogInterface.OnClickListener positiveListener, DialogInterface.OnClickListener negagiveListener)
+	{
 		new AlertDialog.Builder(context)
 				.setTitle(title)
 				.setMessage(message)

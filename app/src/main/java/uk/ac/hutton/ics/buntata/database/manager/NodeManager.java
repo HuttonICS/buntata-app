@@ -36,8 +36,6 @@ public class NodeManager extends AbstractManager<BuntataNodeAdvanced>
 {
 	private static final String TAG = NodeManager.class.getCanonicalName();
 
-	private static final String[] ALL_FIELDS = {BuntataNode.FIELD_ID, BuntataNode.FIELD_NAME, BuntataNode.FIELD_DESCRIPTION, BuntataNode.FIELD_DATASOURCE_ID, BuntataNode.FIELD_CREATED_ON, BuntataNode.FIELD_UPDATED_ON};
-
 	private static Map<String, Set<Integer>> CACHE_FILTER_POSITIVE = new LinkedHashMap<String, Set<Integer>>()
 	{
 		@Override
@@ -68,12 +66,6 @@ public class NodeManager extends AbstractManager<BuntataNodeAdvanced>
 	protected String getTableName()
 	{
 		return BuntataNode.TABLE_NAME;
-	}
-
-	@Override
-	protected String[] getAllFields()
-	{
-		return ALL_FIELDS;
 	}
 
 	public List<BuntataNodeAdvanced> getAllRoots()
@@ -241,7 +233,7 @@ public class NodeManager extends AbstractManager<BuntataNodeAdvanced>
 			/* Keep track of the new ids (as in not known before) from each query */
 			Set<Integer> newIds = new HashSet<>();
 
-			/* First, check all leaf nodes */
+			/* First, check all leaf nodes (check if their name or their attributes contain the search term) */
 			Cursor cursor = database.rawQuery("SELECT id FROM nodes WHERE NOT EXISTS (SELECT 1 FROM relationships WHERE relationships.parent = nodes.id) AND (nodes.name LIKE ? OR EXISTS (SELECT 1 FROM attributevalues WHERE attributevalues.node_id = nodes.id AND attributevalues.value LIKE ?))", new String[]{placeholder, placeholder});
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast())

@@ -22,8 +22,10 @@ import android.widget.*;
 import java.io.*;
 import java.lang.ref.*;
 import java.net.*;
+import java.util.concurrent.*;
 
 import jhi.buntata.resource.*;
+import okhttp3.*;
 
 /**
  * The {@link DownloadTask} will download a data source zip file.
@@ -68,17 +70,31 @@ public abstract class DownloadTask extends AsyncTask<String, Integer, File>
 				target.delete();
 
 			URL url = new URL(params[0]);
-			connection = (HttpURLConnection) url.openConnection();
-			connection.connect();
+
+			OkHttpClient client = new OkHttpClient.Builder()
+					.retryOnConnectionFailure(true)
+					.connectTimeout(20, TimeUnit.SECONDS)
+					.readTimeout(20, TimeUnit.SECONDS)
+					.writeTimeout(20, TimeUnit.SECONDS)
+					.build();
+			Request request = new Request.Builder().url(url)
+												   .build();
+			input = client.newCall(request)
+						  .execute()
+						  .body()
+						  .byteStream();
+
+//			connection = (HttpURLConnection) url.openConnection();
+//			connection.connect();
 
 			// expect HTTP 200 OK, so we don't mistakenly save error report
 			// instead of the file
-			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK)
-			{
-				exception = new Exception(connection.getResponseMessage());
-				exception.printStackTrace();
-				return null;
-			}
+//			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK)
+//			{
+//				exception = new Exception(connection.getResponseMessage());
+//				exception.printStackTrace();
+//				return null;
+//			}
 
 			// this will be useful to display download percentage
 			// might be -1: server did not report the length
@@ -90,7 +106,7 @@ public abstract class DownloadTask extends AsyncTask<String, Integer, File>
 				fileLength = ds.getSizeNoVideo();
 
 			// download the file
-			input = connection.getInputStream();
+//			input = connection.getInputStream();
 			output = new FileOutputStream(target);
 
 			byte data[] = new byte[4096];

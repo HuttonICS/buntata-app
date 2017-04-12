@@ -105,60 +105,54 @@
 			android:padding="10dp"
 			android:background="@color/license_background"
 			android:orientation="vertical">
-			<GridLayout
+
+			<TextView
+				android:textColor="@android:color/secondary_text_light"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:alignmentMode="alignBounds"
-				android:columnCount="2"
-				android:columnOrderPreserved="false">
-				<TextView
-					android:textColor="@android:color/secondary_text_light"
-					android:layout_gravity="end"
-					android:layout_marginEnd="8dp"
-					android:layout_marginRight="8dp"
-					android:textStyle="bold"
-					android:text="@string/datasource_details_description"/>
-				<TextView
-					android:id="@+id/datasource_description_view"
-					android:layout_gravity="start"
-					android:textColor="@android:color/secondary_text_light"/>
+				android:textStyle="bold"
+				android:text="@string/datasource_details_description"/>
+			<TextView
+				android:id="@+id/datasource_description_view"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textColor="@android:color/secondary_text_light"/>
 
-				<TextView
-					android:textColor="@android:color/secondary_text_light"
-					android:layout_gravity="end"
-					android:layout_marginEnd="8dp"
-					android:layout_marginRight="8dp"
-					android:textStyle="bold"
-					android:text="@string/datasource_details_provider"/>
-				<TextView
-					android:id="@+id/datasource_provider_view"
-					android:layout_gravity="start"
-					android:textColor="@android:color/secondary_text_light"/>
+			<TextView
+				android:textColor="@android:color/secondary_text_light"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textStyle="bold"
+				android:text="@string/datasource_details_provider"/>
+			<TextView
+				android:id="@+id/datasource_provider_view"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textColor="@android:color/secondary_text_light"/>
 
-				<TextView
-					android:textColor="@android:color/secondary_text_light"
-					android:layout_gravity="end"
-					android:layout_marginEnd="8dp"
-					android:layout_marginRight="8dp"
-					android:textStyle="bold"
-					android:text="@string/datasource_details_contact"/>
-				<TextView
-					android:id="@+id/datasource_contact_view"
-					android:layout_gravity="start"
-					android:textColor="@color/colorAccent"/>
+			<TextView
+				android:textColor="@android:color/secondary_text_light"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textStyle="bold"
+				android:text="@string/datasource_details_contact"/>
+			<TextView
+				android:id="@+id/datasource_contact_view"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textColor="@color/colorAccent"/>
 
-				<TextView
-					android:textColor="@android:color/secondary_text_light"
-					android:layout_gravity="end"
-					android:layout_marginEnd="8dp"
-					android:layout_marginRight="8dp"
-					android:textStyle="bold"
-					android:text="@string/datasource_details_version"/>
-				<TextView
-					android:id="@+id/datasource_version_view"
-					android:layout_gravity="start"
-					android:textColor="@android:color/secondary_text_light"/>
-			</GridLayout>
+			<TextView
+				android:textColor="@android:color/secondary_text_light"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textStyle="bold"
+				android:text="@string/datasource_details_version"/>
+			<TextView
+				android:id="@+id/datasource_version_view"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textColor="@android:color/secondary_text_light"/>
 
 		</LinearLayout>
 	</LinearLayout>

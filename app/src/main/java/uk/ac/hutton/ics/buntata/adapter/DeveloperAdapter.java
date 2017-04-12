@@ -17,6 +17,7 @@
 package uk.ac.hutton.ics.buntata.adapter;
 
 import android.app.*;
+import android.content.*;
 import android.support.v4.app.*;
 import android.support.v7.widget.*;
 import android.view.*;
@@ -24,6 +25,7 @@ import android.widget.*;
 
 import butterknife.*;
 import uk.ac.hutton.ics.buntata.R;
+import uk.ac.hutton.ics.buntata.util.*;
 
 /**
  * @author Sebastian Raubach
@@ -45,6 +47,10 @@ public class DeveloperAdapter extends RecyclerView.Adapter<DeveloperAdapter.View
 		TextView institute;
 		@BindView(R.id.developer_view_email)
 		CardView email;
+		@BindView(R.id.developer_view_separator_top)
+		View     separatorTop;
+		@BindView(R.id.developer_view_separator_bottom)
+		View     separatorBottom;
 
 		ViewHolder(View v)
 		{
@@ -72,7 +78,7 @@ public class DeveloperAdapter extends RecyclerView.Adapter<DeveloperAdapter.View
 	@Override
 	public void onBindViewHolder(final ViewHolder holder, int position)
 	{
-		final Developer item = Developer.values()[position];
+		final Developer item = Developer.values(context)[position];
 
 		holder.name.setText(item.name);
 		holder.title.setText(item.title);
@@ -92,18 +98,26 @@ public class DeveloperAdapter extends RecyclerView.Adapter<DeveloperAdapter.View
 										 .startChooser();
 			}
 		});
+
+		holder.name.setVisibility(StringUtils.isEmpty(item.name) ? View.GONE : View.VISIBLE);
+		holder.group.setVisibility(StringUtils.isEmpty(item.group) ? View.GONE : View.VISIBLE);
+		holder.institute.setVisibility(StringUtils.isEmpty(item.institute) ? View.GONE : View.VISIBLE);
+		holder.email.setVisibility(StringUtils.isEmpty(item.email) ? View.GONE : View.VISIBLE);
+		holder.separatorBottom.setVisibility(StringUtils.isEmpty(item.email) ? View.GONE : View.VISIBLE);
 	}
 
 	@Override
 	public int getItemCount()
 	{
-		return Developer.values().length;
+		return Developer.values(context).length;
 	}
 
 	private enum Developer
 	{
 		SEBASTIAN_RAUBACH("Sebastian Raubach", "Bioinformatics Software Developer", "Information & Computational Sciences", "The James Hutton Institute", "cropgeeksapps@hutton.ac.uk"),
-		PAUL_SHAW("Paul Shaw", "Bioinformatician", "Information & Computational Sciences", "The James Hutton Institute", "cropgeeksapps@hutton.ac.uk");
+		PAUL_SHAW("Paul Shaw", "Bioinformatician", "Information & Computational Sciences", "The James Hutton Institute", "cropgeeksapps@hutton.ac.uk"),
+		LESLEYTORRANCE("Lesley Torrance", "Director of Science Excellence", "Cell & Molecular Sciences", "The James Hutton Institute", "cropgeeksapps@hutton.ac.uk"),
+		OTHERS("Others", null, null, null, null);
 
 		String name;
 		String title;
@@ -118,6 +132,13 @@ public class DeveloperAdapter extends RecyclerView.Adapter<DeveloperAdapter.View
 			this.group = group;
 			this.institute = institute;
 			this.email = email;
+		}
+
+		public static Developer[] values(Context context)
+		{
+			OTHERS.name = context.getString(R.string.team_others_title);
+			OTHERS.title = context.getString(R.string.team_others_name);
+			return values();
 		}
 	}
 }

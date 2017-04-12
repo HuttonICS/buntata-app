@@ -24,6 +24,7 @@ import android.support.design.widget.*;
 import android.support.v4.app.*;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.*;
 import android.support.v4.util.*;
 import android.support.v4.view.*;
 import android.support.v7.widget.*;
@@ -53,8 +54,9 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 
 	private int datasourceId = -1;
 
-	public static boolean override = false;
-	private       String  query    = null;
+	public static  boolean override        = false;
+	private static long    lastUpdateCheck = 0;
+	private        String  query           = null;
 
 	@BindView(R.id.main_view_fab)
 	FloatingActionButton fab;
@@ -70,6 +72,45 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 		PreferenceUtils.setDefaults(this);
 		NodeManager.clearCaches();
 		DatasourceService.init(this);
+
+		DatasourceService.getAllAdvanced(this, false, false, new RemoteCallback<List<BuntataDatasourceAdvanced>>(this)
+		{
+			@Override
+			public void onSuccess(List<BuntataDatasourceAdvanced> result)
+			{
+				boolean updateAvailable = false;
+
+				for (BuntataDatasourceAdvanced adv : result)
+				{
+					updateAvailable = adv.getState() == BuntataDatasourceAdvanced.InstallState.INSTALLED_HAS_UPDATE;
+
+					if (updateAvailable)
+						break;
+				}
+
+				long timeSince = System.currentTimeMillis() - lastUpdateCheck;
+
+				/* Only check for updates if it has been at least 2 hours */
+				if (updateAvailable && timeSince > 1000 * 60 * 60 * 2)
+				{
+					/* Show a Snackbar with a button to open the datasource activity */
+					int textColor = ContextCompat.getColor(MainActivity.this, android.R.color.primary_text_dark);
+					SnackbarUtils.create(getSnackbarParentView(), R.string.snackbar_updates_available, textColor, ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark), 5000)
+								 .setAction(R.string.generic_show, new View.OnClickListener()
+								 {
+									 @Override
+									 public void onClick(View v)
+									 {
+										 startActivityForResult(new Intent(getApplicationContext(), DatasourceActivity.class), REQUEST_DATA_SOURCE);
+									 }
+								 })
+								 .setActionTextColor(textColor)
+								 .show();
+
+					lastUpdateCheck = System.currentTimeMillis();
+				}
+			}
+		});
 	}
 
 	@Override
@@ -171,11 +212,13 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 		List<BuntataNodeAdvanced> children = new NodeManager(this, datasourceId).getForParent(parentId);
 		boolean hasChildren = parentId == -1 || children.size() > 0;
 
+		boolean skipSingleChild = children.size() == 1 && !new DatasourceManager(this, datasourceId).getById(datasourceId).isShowSingleChild();
+
 		/* If it does */
-		if (!hasChildren || children.size() == 1)
+		if (!hasChildren || skipSingleChild)
 		{
 			/* If it's only got one child, jump straight to it */
-			if (children.size() == 1)
+			if (skipSingleChild)
 				parentId = children.get(0).getId();
 
 			/* If it's a leaf node, open the details activity */
@@ -322,10 +365,10 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 					/* Trim leading and trailing spaces that some keyboards will add */
 					query = query.trim();
 
-					searchView.clearFocus();
-
 					MainActivity.this.query = query;
 					filter(query);
+
+					searchView.clearFocus();
 
 					return false;
 				}
@@ -335,7 +378,10 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 				{
 					/* Close the search field when the search string is empty */
 					if (StringUtils.isEmpty(s))
+					{
 						searchView.setIconified(true);
+						searchView.clearFocus();
+					}
 					return false;
 				}
 			});

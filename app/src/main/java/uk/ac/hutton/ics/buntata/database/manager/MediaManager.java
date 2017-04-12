@@ -33,8 +33,6 @@ import uk.ac.hutton.ics.buntata.database.entity.*;
  */
 public class MediaManager extends AbstractManager<BuntataMediaAdvanced>
 {
-	private static final String[] ALL_FIELDS = {BuntataMedia.FIELD_ID, BuntataMedia.FIELD_NAME, BuntataMedia.FIELD_DESCRIPTION, BuntataMedia.FIELD_MEDIATYPE_ID, BuntataMedia.FIELD_INTERNAL_LINK, BuntataMedia.FIELD_EXTERNAL_LINK, BuntataMedia.FIELD_EXTERNAL_LINK_DESCRIPTION, BuntataMedia.FIELD_CREATED_ON, BuntataMedia.FIELD_UPDATED_ON, BuntataMedia.FIELD_COPYRIGHT};
-
 	public MediaManager(Context context, int datasourceId)
 	{
 		super(context, datasourceId);
@@ -50,12 +48,6 @@ public class MediaManager extends AbstractManager<BuntataMediaAdvanced>
 	protected String getTableName()
 	{
 		return BuntataMedia.TABLE_NAME;
-	}
-
-	@Override
-	protected String[] getAllFields()
-	{
-		return ALL_FIELDS;
 	}
 
 	public List<BuntataMediaAdvanced> getForNode(String type, int nodeId)

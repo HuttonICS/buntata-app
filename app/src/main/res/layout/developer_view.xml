@@ -39,6 +39,7 @@
 			android:textSize="18sp"/>
 
 		<View
+			android:id="@+id/developer_view_separator_top"
 			android:layout_width="match_parent"
 			android:layout_height="1dp"
 			android:layout_marginTop="10dp"
@@ -64,6 +65,7 @@
 			android:layout_height="wrap_content"/>
 
 		<View
+			android:id="@+id/developer_view_separator_bottom"
 			android:layout_width="match_parent"
 			android:layout_height="1dp"
 			android:layout_marginTop="10dp"

@@ -17,6 +17,11 @@
   -->
 
 <changelog bulletedList="true">
+	<changelogversion versionName="0.17.04.12" changeDate="12/04/2017">
+		<changelogimprovement>Added data source update check to notify when an update is available.</changelogimprovement>
+		<changelogtext>Updated acknowledgements and team views.</changelogtext>
+		<changelogbug>Fixed an issue with the main grid on older Android versions (pre-Lollipop).</changelogbug>
+	</changelogversion>
 	<changelogversion versionName="0.17.03.09" changeDate="09/03/2017">
 		<changelogtext>Simplified attribute view by removing expand/collapse buttons.</changelogtext>
 		<changelogtext>Made color palette detection code more robust, so that it finds a color for the image in almost all cases.</changelogtext>

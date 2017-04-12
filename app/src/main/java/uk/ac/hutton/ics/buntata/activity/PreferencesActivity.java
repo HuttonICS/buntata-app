@@ -40,9 +40,7 @@ public class PreferencesActivity extends BaseActivity
 		prefsFragment = new PrefsFragment();
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-		{
 			getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
-		}
 
 		/* Set the toolbar as the action bar */
 		if (getSupportActionBar() != null)
@@ -100,6 +98,7 @@ public class PreferencesActivity extends BaseActivity
 			if (v != null)
 			{
 				ListView lv = (ListView) v.findViewById(android.R.id.list);
+				/* Remove the padding */
 				lv.setPadding(0, 0, 0, 0);
 			}
 			return v;
@@ -113,6 +112,7 @@ public class PreferencesActivity extends BaseActivity
 			/* Load the preferences from an XML resource */
 			addPreferencesFromResource(R.xml.prefs);
 
+			/* Add listeners and set summaries */
 			findPreference(PreferenceUtils.PREFS_SHOW_CHANGELOG).setOnPreferenceClickListener(this);
 			findPreference(PreferenceUtils.PREFS_COLUMNS_PORTRAIT).setSummary(getString(R.string.preferences_columns_portrait_summary, PreferenceUtils.getPreferenceAsInt(getActivity(), PreferenceUtils.PREFS_COLUMNS_PORTRAIT, 2)));
 			findPreference(PreferenceUtils.PREFS_COLUMNS_LANDSCAPE).setSummary(getString(R.string.preferences_columns_landscape_summary, PreferenceUtils.getPreferenceAsInt(getActivity(), PreferenceUtils.PREFS_COLUMNS_LANDSCAPE, 3)));
@@ -129,6 +129,7 @@ public class PreferencesActivity extends BaseActivity
 		@Override
 		public void onPause()
 		{
+			/* Stop listening to changes to the preferences */
 			getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 			super.onPause();
 		}
@@ -144,10 +145,12 @@ public class PreferencesActivity extends BaseActivity
 					GoogleAnalytics.getInstance(getActivity().getApplicationContext()).setAppOptOut(!PreferenceUtils.getPreferenceAsBoolean(getActivity(), PreferenceUtils.PREFS_GA_OPT_OUT, true));
 					break;
 				case PreferenceUtils.PREFS_COLUMNS_PORTRAIT:
+					/* Update the summary and let the main view know that it needs to update */
 					findPreference(key).setSummary(getString(R.string.preferences_columns_portrait_summary, PreferenceUtils.getPreferenceAsInt(getActivity(), key, 2)));
 					MainActivity.override = true;
 					break;
 				case PreferenceUtils.PREFS_COLUMNS_LANDSCAPE:
+					/* Update the summary and let the main view know that it needs to update */
 					findPreference(key).setSummary(getString(R.string.preferences_columns_landscape_summary, PreferenceUtils.getPreferenceAsInt(getActivity(), key, 3)));
 					MainActivity.override = true;
 					break;
@@ -165,9 +168,8 @@ public class PreferencesActivity extends BaseActivity
 					startActivity(new Intent(getActivity(), ChangelogActivity.class));
 
 					if (getActivity() instanceof BaseActivity)
-					{
 						GoogleAnalyticsUtils.trackEvent(getActivity(), ((BaseActivity) getActivity()).getTracker(TrackerName.APP_TRACKER), getString(R.string.ga_event_category_preferences), getString(R.string.ga_event_action_show_changelog));
-					}
+
 					return true;
 			}
 

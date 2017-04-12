@@ -161,13 +161,13 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		{
 			holder.image.setTransitionName(context.getString(R.string.transition_node_view));
 		}
-		else
-		{
-			viewWidth = context.getResources().getDimensionPixelSize(R.dimen.node_image_height) / 2;
-			holder.image.setMaxHeight(viewWidth);
-			holder.image.setMaxWidth(viewWidth);
-			holder.layout.getLayoutParams().width = viewWidth;
-		}
+//		else
+//		{
+//			viewWidth = context.getResources().getDimensionPixelSize(R.dimen.node_image_height) / 2;
+//			holder.image.setMaxHeight(viewWidth);
+//			holder.image.setMaxWidth(viewWidth);
+//			holder.layout.getLayoutParams().width = viewWidth;
+//		}
 
 		holder.image.setMinimumHeight(viewWidth);
 
@@ -371,36 +371,46 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 			/* Get the new items that match the search query */
 			List<BuntataNodeAdvanced> newDataset = (ArrayList<BuntataNodeAdvanced>) results.values;
 
-			/* If the new data is smaller (items have been removed), then tell the adapter */
-			if (dataset.size() > newDataset.size())
-			{
-				/* Remove each item that is no longer in the dataset with the default transition */
-				for (int i = dataset.size() - 1; i >= 0; i--)
-				{
-					if (!newDataset.contains(dataset.get(i)))
-						adapter.notifyItemRemoved(i);
-				}
-				adapter.dataset = new ArrayList<>(newDataset);
-			}
-			/* Else, the new data is larger (items have been added) */
-			else
-			{
-				adapter.dataset = new ArrayList<>(newDataset);
-				notifyDataSetChanged();
+			if (dataset.size() == newDataset.size())
+				return;
+
+			adapter.dataset = new ArrayList<>(newDataset);
+			notifyDataSetChanged();
+
+//			/* If the new data is smaller (items have been removed), then tell the adapter */
+//			if (dataset.size() > newDataset.size())
+//			{
+//				/* Remove each item that is no longer in the dataset with the default transition */
+//				for (int i = dataset.size() - 1; i >= 0; i--)
+//				{
+//					if (!newDataset.contains(dataset.get(i)))
+//						adapter.notifyItemRemoved(i);
+//				}
+//				adapter.dataset = new ArrayList<>(newDataset);
+//			}
+//			/* Else, the new data is larger (items have been added) */
+//			else
+//			{
+////				adapter.dataset = new ArrayList<>(newDataset);
+////				notifyDataSetChanged();
 //				/* Insert each item that's new to the dataset with the default transition */
 //				for (int i = 0; i < newDataset.size(); i++)
 //				{
 //					if (!adapter.dataset.contains(newDataset.get(i)))
 //					{
-//						adapter.dataset.add(i, newDataset.get(i));
 //						adapter.notifyItemInserted(i);
 //					}
-//					else
-//					{
-//						adapter.notifyItemChanged(i);
-//					}
 //				}
-			}
+//				adapter.dataset = new ArrayList<>(newDataset);
+//			}
+
+//			/* TODO: This is a very dirty hack, to make the recyclerview updates behave. Find a nicer solution if there is time. */
+//			Handler handler = new Handler(Looper.getMainLooper());
+//			handler.postDelayed(new Runnable() {
+//				public void run() {
+//					parent.scrollToPosition(0);
+//				}
+//			}, 100);
 		}
 	}
 }

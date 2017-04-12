@@ -531,6 +531,8 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 				holder.progressBar.setVisibility(View.GONE);
 				ds.setDownloading(false);
 				downloadTask = null;
+
+				SnackbarUtils.show(holder.view, R.string.snackbar_download_unsuccessful, ContextCompat.getColor(context, android.R.color.primary_text_dark), ContextCompat.getColor(context, R.color.colorPrimaryDark), Snackbar.LENGTH_LONG);
 			}
 
 			@Override
