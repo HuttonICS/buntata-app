@@ -138,7 +138,7 @@ public class NodeManager extends AbstractManager<BuntataNodeAdvanced>
 		{
 			open();
 
-			Cursor cursor = database.rawQuery("SELECT * FROM nodes WHERE EXISTS (SELECT 1 FROM similarities WHERE (similarities.node_a_id = nodes.id AND similarities.node_b_id = ?) OR (similarities.node_b_id = nodes.id AND similarities.node_a_id = ?)) ORDER BY nodes.name", new String[]{Integer.toString(sourceId), Integer.toString(sourceId)});
+			Cursor cursor = database.rawQuery("SELECT * FROM nodes WHERE EXISTS (SELECT 1 FROM similarities WHERE (similarities.node_a_id = ? AND similarities.node_b_id = nodes.id)) ORDER BY nodes.name", new String[]{Integer.toString(sourceId)});
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast())
 			{

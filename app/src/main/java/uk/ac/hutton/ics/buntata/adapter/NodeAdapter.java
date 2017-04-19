@@ -161,13 +161,14 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		{
 			holder.image.setTransitionName(context.getString(R.string.transition_node_view));
 		}
-//		else
-//		{
-//			viewWidth = context.getResources().getDimensionPixelSize(R.dimen.node_image_height) / 2;
-//			holder.image.setMaxHeight(viewWidth);
-//			holder.image.setMaxWidth(viewWidth);
-//			holder.layout.getLayoutParams().width = viewWidth;
-//		}
+		/* If this is within the NodeDetailsActivity, then restrict the size of the items */
+		if (context instanceof NodeDetailsActivity)
+		{
+			viewWidth = context.getResources().getDimensionPixelSize(R.dimen.node_image_height) / 2;
+			holder.image.setMaxHeight(viewWidth);
+			holder.image.setMaxWidth(viewWidth);
+			holder.layout.getLayoutParams().width = viewWidth;
+		}
 
 		holder.image.setMinimumHeight(viewWidth);
 

@@ -46,7 +46,7 @@
 	<string name="generic_show">Anzeigen</string>
 	<string name="datasource_size">Mediengröße: ~%1$.1f MB (~%2$.1f MB)</string>
 	<string name="snackbar_already_downloaded">Datenquelle bereits heruntergeladen.</string>
-	<string name="snackbar_only_one_download">Nur ein Download auf einmal erlaubt.</string>
+	<string name="snackbar_only_one_download">Nur ein Download auf einmal möglich.</string>
 	<string name="snackbar_currently_downloading">Datenquelle wird gerade heruntergeladen.</string>
 	<string name="snackbar_download_successful">Datenquelle erfolgreich heruntergeladen.</string>
 	<string name="snackbar_download_unsuccessful">Fehler beim Download der Datenquelle.</string>
@@ -118,7 +118,7 @@
 	<string name="preferences_columns_portrait_summary">Anzahl Spalten im Hochformat: %1$d</string>
 	<string name="preferences_columns_landscape_title">Spalten im Querformat</string>
 	<string name="preferences_columns_landscape_summary">Anzahl Spalten im Querformat: %1$d</string>
-	<string name="preferences_ga_opt_out_title">Teilen von Statistiken</string>
+	<string name="preferences_ga_opt_out_title">Anonyme Nutzungsstatistiken senden</string>
 	<string name="preferences_ga_opt_out_message">Wir werden diese Informationen nur zur Analyse und Verbesserung der durch diese App angebotenen
 		Dienste verwenden. Mehr Informationen befinden sich in der EULA.
 	</string>
@@ -128,7 +128,8 @@
 	<string name="toast_datasource_not_found">Angeforderte Datenquellen nicht gefunden.</string>
 	<string name="toast_node_not_found">Angefordertes Element nicht gefunden.</string>
 	<string name="team_others_title">Andere</string>
-	<string name="team_others_name">Zusätzlich möchten wir uns bei John Jones, Ian Toth, Jennie Brierley, Alison Lees, Graham Cowan und Sonia Humphris
-		für ihre Hilfe beim Organizieren der Kartoffeldaten und -bilder bedanken.
+	<string name="team_others_name">Wir möchten uns bei John Jones, Ian Toth, Jennie Brierley, Alison Lees, Graham Cowan und Sonia Humphris für ihre
+		Hilfe beim Organizieren der Kartoffeldaten und -bilder bedanken. Zusätzlich würdigen wir die Bilder und Informationen die von Danny Coyne und
+		Sue Hockland bereitgestellt wurden.
 	</string>
 </resources>

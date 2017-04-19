@@ -71,7 +71,7 @@
 	<string name="datasource_size">Media size: ~%1$.1f MB (~%2$.1f MB)</string>
 
 	<string name="snackbar_already_downloaded">Data source already downloaded.</string>
-	<string name="snackbar_only_one_download">Only one download at a time allowed.</string>
+	<string name="snackbar_only_one_download">Only one download at a time possible.</string>
 	<string name="snackbar_currently_downloading">Data source download in progress.</string>
 	<string name="snackbar_download_successful">Data source downloaded successfully.</string>
 	<string name="snackbar_download_unsuccessful">Data source download failed.</string>
@@ -138,8 +138,9 @@
 	<string name="network_intro_button_refresh">Refresh</string>
 
 	<string name="team_others_title">Others</string>
-	<string name="team_others_name">In addition, we would like to thank John Jones, Ian Toth, Jennie Brierley, Alison Lees, Graham Cowan and Sonia
-		Humphris for their help in getting the underlying potato dataset and images brought together and assembled.
+	<string name="team_others_name">We would like to thank John Jones, Ian Toth, Jennie Brierley, Alison Lees, Graham Cowan and Sonia Humphris for
+		their help in getting the underlying potato dataset and images brought together and assembled. In addition, we appreciate the images and
+		information provided by Danny Coyne and Sue Hockland.
 	</string>
 
 	<string name="eula_intro_select">In order to use Buntata we need you to agree to one of our End User Licence Agreements (EULA). We have a EULA for
@@ -169,7 +170,7 @@
 
 	<string name="node_details_similar_nodes">Similar items</string>
 
-	<string name="preferences_ga_opt_out_title">Share statistics</string>
+	<string name="preferences_ga_opt_out_title">Send anonymous usage statistics</string>
 	<string name="preferences_ga_opt_out_message">We will only use this info to analyse and improve the services offered through this app. For more
 		details see our EULA.
 	</string>

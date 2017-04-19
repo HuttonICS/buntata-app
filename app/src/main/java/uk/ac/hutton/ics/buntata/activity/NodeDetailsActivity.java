@@ -184,6 +184,10 @@ public class NodeDetailsActivity extends BaseActivity
 			appBarLayout.setFitsSystemWindows(false);
 		}
 
+		float heightDp = getResources().getDisplayMetrics().heightPixels / 1.5f;
+		CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+		lp.height = (int) heightDp;
+
 		/* Get all the attributes */
 		List<BuntataAttributeValueAdvanced> attributeValues = new AttributeValueManager(this, datasourceId).getForNode(nodeId);
 
