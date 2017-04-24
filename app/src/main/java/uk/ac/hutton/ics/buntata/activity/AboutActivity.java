@@ -21,8 +21,9 @@ import android.os.*;
 import android.support.design.widget.*;
 import android.support.v4.app.*;
 import android.support.v4.view.*;
-import android.support.v7.widget.*;
+import android.support.v7.widget.Toolbar;
 import android.view.*;
+import android.widget.*;
 
 import butterknife.*;
 import uk.ac.hutton.ics.buntata.R;
@@ -38,6 +39,8 @@ public class AboutActivity extends BaseActivity
 {
 	@BindView(R.id.about_viewpager)
 	ViewPager               viewPager;
+	@BindView(R.id.about_image)
+	ImageView               aboutImage;
 	@BindView(R.id.about_tabs)
 	TabLayout               tabLayout;
 	@BindView(R.id.about_collapsingtoolbarlayout)
@@ -67,6 +70,21 @@ public class AboutActivity extends BaseActivity
 		/* Get the view pager and set the fragment adapter */
 		viewPager.setAdapter(new AboutFragmentPagerAdapter(getSupportFragmentManager(), this));
 		tabLayout.setupWithViewPager(viewPager);
+
+		final float heightDp = getResources().getDisplayMetrics().heightPixels / 2f;
+		final CollapsingToolbarLayout.LayoutParams lp = (CollapsingToolbarLayout.LayoutParams) aboutImage.getLayoutParams();
+
+		aboutImage.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+		{
+			@Override
+			public void onGlobalLayout()
+			{
+				aboutImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+				if (aboutImage.getHeight() > heightDp)
+					lp.height = (int) heightDp;
+			}
+		});
 
 		/* Get the CollapsingToolbarLayout and listen for offset change events to show/hide the toolbar title, i.e. it'll only be shown when the toolbar is fully collapsed */
 		appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener()

@@ -18,6 +18,8 @@ package uk.ac.hutton.ics.buntata.activity;
 
 import android.content.*;
 import android.content.res.*;
+import android.graphics.*;
+import android.graphics.drawable.*;
 import android.os.*;
 import android.support.annotation.*;
 import android.support.design.widget.*;
@@ -25,6 +27,7 @@ import android.support.v4.view.*;
 import android.support.v4.widget.*;
 import android.support.v7.app.*;
 import android.view.*;
+import android.widget.*;
 
 import butterknife.*;
 import uk.ac.hutton.ics.buntata.R;
@@ -108,6 +111,16 @@ public abstract class DrawerActivity extends BaseActivity
 		{
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	protected void setHeaderDrawable(Drawable drawable)
+	{
+		((ImageView) navigationView.getHeaderView(0)).setImageDrawable(drawable);
+	}
+
+	protected void setHeaderDrawable(Bitmap drawable)
+	{
+		((ImageView) navigationView.getHeaderView(0)).setImageBitmap(drawable);
 	}
 
 	private boolean onNavigation(MenuItem item)

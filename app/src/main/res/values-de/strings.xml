@@ -63,9 +63,13 @@
 	<string name="about_tab_team">Team</string>
 	<string name="about_tab_acknowledgements">Danksagungen</string>
 	<string name="about_tab_license">Lizenz</string>
-	<string name="about_information_text">Buntata ist eine App die als Unterstützung bei der Identifikation von Pflanzenkrankheiten und Pathogenen
+	<string name="about_information_text"><![CDATA[<p>Buntata ist eine App die als Unterstützung bei der Identifikation von Pflanzenkrankheiten und Pathogenen
 		dient und Farmern zeigt wo sie weitere Informationen erhalten können. Die App bietet herunterladbare Datensätze an wodurch der Benutzer keine
-		Datenverbindung benötigt während er unterwegs ist.
+		Datenverbindung benötigt während er unterwegs ist.</p><p>Diese erste Version konzentriert sich auf Kartoffelkrankheiten und Pathogene, allerdings kann Buntata einfach an andere Nurzpflanzen angepasst werden.</p><p>Wir begrüßen Anmerkungen, Feedback und Beteiligung an dieser Datenquelle. Zögern Sie nicht uns zu per einer der folgenden Methoden zu kontaktieren.</p>]]>
+	</string>
+	<string name="about_information_text_images">Die in Buntata enhaltenen Bilder sind Urheberrecht des James Hutton Institute (oder anderer
+		Organisationen wie auf Bild angegeben). Diese Bilder dürfen wiederverwendet werden sofern kein kommerzieller Gewinn erzielt wird und der
+		Urheber anerkannt wird.
 	</string>
 	<string name="contact_email_dialog_title">E-Mail senden</string>
 	<string name="share_chooser_title">Teilen</string>
@@ -94,12 +98,19 @@
 	</string>
 	<string name="label_eula_commercial">EULA für kommerzielle Nutzer</string>
 	<string name="label_eula_consumer">EULA für Verbraucher</string>
-	<string name="acknowledgements_jhi_text">Diese app wurde am James Hutton Institut entwickelt</string>
-	<string name="acknowledgements_st_andrews_text">In Zusammenarbeit mit der University of St. Andrews</string>
-	<string name="acknowledgements_bbsrc_text">Mit finanzieller Unterstützung durch die Biotechnology and Biological Sciences Research Council
+	<string name="acknowledgements_jhi_text">Buntata wurde von Mitgliedern der Information &amp; Computational Sciences und Cell and Molecular
+		Sciences Gruppen am James Hutton Institute entwickelt.
 	</string>
-	<string name="acknowledgements_ahdb_text">Einige der Bilder wurden freundlicherweise von der AHDB bereitgestellt.</string>
-	<string name="acknowledgements_scottish_government_text">Irgendwas ueber das Scottish Government hier.</string>
+	<string name="acknowledgements_st_andrews_text">Buntata wurde in Zusammenarbeit mit der University of St Andrews entwickelt.</string>
+	<string name="acknowledgements_ahdb_text">Einige der Bilder wurden freundlicherweise vom Agriculture &amp; Horticulture Development Board
+		bereitgestellt.
+	</string>
+	<string name="acknowledgements_bbsrc_text">Finanziell unterstützt wurde die Entwicklung von der Biotechnology and Biological Sciences Research
+		Council.
+	</string>
+	<string name="acknowledgements_scottish_government_text">Dieses Werk wurde unterstützt von der Rural and Environment Science and Analytical
+		Services Division der Schottischen Regierung.
+	</string>
 	<string name="acknowledgements_jhi_url">http://www.hutton.ac.uk</string>
 	<string name="acknowledgements_st_andrews_url">https://www.st-andrews.ac.uk/</string>
 	<string name="acknowledgements_bbsrc_url">http://www.bbsrc.ac.uk/</string>

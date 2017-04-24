@@ -47,12 +47,12 @@
 			android:icon="@drawable/preferences_changelog"/>
 
 		<SwitchPreference
-		android:dialogTitle="@string/preferences_ga_opt_out_title"
-		android:key="prefs.google.analytics.opt.out"
-		android:switchTextOff="@string/generic_no"
-		android:switchTextOn="@string/generic_yes"
-		android:title="@string/preferences_ga_opt_out_title"
-		android:summary="@string/preferences_ga_opt_out_message"
-		android:icon="@drawable/preferences_ga_opt_out"/>
+			android:dialogTitle="@string/preferences_ga_opt_out_title"
+			android:key="prefs.google.analytics.opt.out"
+			android:switchTextOff="@string/generic_no"
+			android:switchTextOn="@string/generic_yes"
+			android:title="@string/preferences_ga_opt_out_title"
+			android:summary="@string/preferences_ga_opt_out_message"
+			android:icon="@drawable/preferences_ga_opt_out"/>
 	</PreferenceCategory>
 </PreferenceScreen>

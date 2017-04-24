@@ -170,7 +170,7 @@ public class ImageFragment extends Fragment
 		{
 			copyright.setText(getString(R.string.datasource_details_image_copyright, medium.getCopyright()));
 			copyright.setVisibility(View.VISIBLE);
-			copyright.setAlpha(0.5f);
+			copyright.setAlpha(0.75f);
 		}
 		else
 		{

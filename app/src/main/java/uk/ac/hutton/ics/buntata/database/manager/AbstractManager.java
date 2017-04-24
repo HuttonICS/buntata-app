@@ -60,7 +60,8 @@ public abstract class AbstractManager<T extends DatabaseObject>
 	}
 
 	/**
-	 * Returns all the {@link DatabaseObject}s for this type of {@link AbstractManager}. Uses {@link #getDefaultParser()} and {@link #getTableName()} to get the data from the database into the Java classes.
+	 * Returns all the {@link DatabaseObject}s for this type of {@link AbstractManager}. Uses {@link #getDefaultParser()} and {@link #getTableName()}
+	 * to get the data from the database into the Java classes.
 	 *
 	 * @return The {@link List} of {@link DatabaseObject}s.
 	 */
@@ -100,7 +101,8 @@ public abstract class AbstractManager<T extends DatabaseObject>
 	}
 
 	/**
-	 * Returns the {@link DatabaseObject} for this type of {@link AbstractManager}. Uses {@link #getDefaultParser()} and {@link #getTableName()} to get the data from the database into the Java classes.
+	 * Returns the {@link DatabaseObject} for this type of {@link AbstractManager}. Uses {@link #getDefaultParser()} and {@link #getTableName()} to
+	 * get the data from the database into the Java classes.
 	 *
 	 * @param id The id of the {@link DatabaseObject}
 	 * @return The {@link DatabaseObject}.

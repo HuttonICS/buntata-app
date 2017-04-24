@@ -73,7 +73,9 @@
 	</FrameLayout>
 
 	<!-- THIS HAS TO GO INTO ANY LAYOUT OF ANY ACTIVITY THAT EXTENDS DrawerActivity! -->
-	<include layout="@layout/helper_drawer"/>
+	<include
+		android:id="@+id/drawer_menu"
+		layout="@layout/helper_drawer"/>
 	<!-- END -->
 
 </android.support.v4.widget.DrawerLayout>

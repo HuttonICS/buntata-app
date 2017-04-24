@@ -33,6 +33,7 @@ import android.view.*;
 import java.util.*;
 
 import butterknife.*;
+import jhi.buntata.resource.*;
 import uk.ac.hutton.ics.buntata.R;
 import uk.ac.hutton.ics.buntata.database.entity.*;
 import uk.ac.hutton.ics.buntata.database.manager.*;
@@ -158,7 +159,7 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 
 			/* Remember the new data source and disable override */
 			this.datasourceId = datasourceId;
-			this.override = false;
+			override = false;
 		}
 
 		showWhatsNew();
@@ -212,7 +213,8 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 		List<BuntataNodeAdvanced> children = new NodeManager(this, datasourceId).getForParent(parentId);
 		boolean hasChildren = parentId == -1 || children.size() > 0;
 
-		boolean skipSingleChild = children.size() == 1 && !new DatasourceManager(this, datasourceId).getById(datasourceId).isShowSingleChild();
+		BuntataDatasource datasource = new DatasourceManager(this, datasourceId).getById(datasourceId);
+		boolean skipSingleChild = children.size() == 1 && !datasource.isShowSingleChild();
 
 		/* If it does */
 		if (!hasChildren || skipSingleChild)

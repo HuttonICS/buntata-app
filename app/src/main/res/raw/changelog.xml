@@ -17,6 +17,11 @@
   -->
 
 <changelog bulletedList="true">
+	<changelogversion versionName="1.17.04.24" changeDate="24/04/2017">
+		<changelogtext>Restricted about page header height in landscape mode.</changelogtext>
+		<changelogtext>Updated acknowledgements page text.</changelogtext>
+		<changelogimprovement>Added text about default copyright of images.</changelogimprovement>
+	</changelogversion>
 	<changelogversion versionName="0.17.04.19" changeDate="19/04/2017">
 		<changelogimprovement>Changed the height of the image section on the node details view to be more prominent.</changelogimprovement>
 		<changelogbug>Fixed sizing of related items on the node details view.</changelogbug>

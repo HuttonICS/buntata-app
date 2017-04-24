@@ -27,6 +27,7 @@ import android.widget.*;
 
 import butterknife.*;
 import uk.ac.hutton.ics.buntata.R;
+import uk.ac.hutton.ics.buntata.util.*;
 
 /**
  * The {@link AboutInformationFragment} shows information about the app in general.
@@ -36,6 +37,8 @@ import uk.ac.hutton.ics.buntata.R;
 public class AboutInformationFragment extends Fragment
 {
 	private Unbinder unbinder;
+	@BindView(R.id.about_information_text)
+	TextView text;
 	@BindView(R.id.about_information_version)
 	TextView version;
 	@BindView(R.id.about_information_email)
@@ -46,6 +49,10 @@ public class AboutInformationFragment extends Fragment
 	CardView share;
 	@BindView(R.id.about_information_google_play)
 	CardView play;
+	@BindView(R.id.about_information_twitter)
+	CardView twitter;
+	@BindView(R.id.about_information_facebook)
+	CardView facebook;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -63,6 +70,8 @@ public class AboutInformationFragment extends Fragment
 			version.setVisibility(View.GONE);
 			e.printStackTrace();
 		}
+
+		text.setText(StringUtils.fromHtml(getActivity().getString(R.string.about_information_text)));
 
 		return view;
 	}
@@ -82,6 +91,18 @@ public class AboutInformationFragment extends Fragment
 	public void onWebClicked()
 	{
 		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.website_url))));
+	}
+
+	@OnClick(R.id.about_information_facebook)
+	public void onFacebookClicked()
+	{
+		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.facebook_url))));
+	}
+
+	@OnClick(R.id.about_information_twitter)
+	public void onTwitterClicked()
+	{
+		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.twitter_url))));
 	}
 
 	@OnClick(R.id.about_information_share)

@@ -22,7 +22,8 @@
 	<string name="title_activity_settings">Settings</string>
 
 	<string name="introduction_welcome_title">Welcome to Buntata</string>
-	<string name="introduction_welcome_text">We named our app after the Scottish Gaelic word for potato. Scotland’s a great place, but sometimes a bit
+	<string name="introduction_welcome_text">We named our app after the Scottish Gaelic word for potato. Scotland\'s a great place, but sometimes a
+		bit
 		rainy...
 	</string>
 
@@ -99,14 +100,19 @@
 	<string name="about_tab_acknowledgements">Acknowledgements</string>
 	<string name="about_tab_license">License</string>
 
-	<string name="about_information_text">Buntata is an app which aids in the identification of plant disease and pathogens and offers information to
+	<string name="about_information_text"><![CDATA[<p>Buntata is an app which aids in the identification of plant disease and pathogens and offers information to
 		farmers where they can go to get more details about any pests. It provides downloadable datasets allowing users to use the application in the
-		field without the need of a mobile signal.
+		field without the need of a mobile signal.</p><p>This first release focusses on potato pests and diseases, but Buntata can easily be adapted for any crop system.</p><p>We would welcome comments, feedback and contributions to this data resource. Feel free to contact us using any of the methods below.</p>]]>
+	</string>
+	<string name="about_information_text_images">The images contained in Buntata are copyright of the James Hutton Institute (or other organisation
+		indicated on the image). These images can be re-used providing there is no commercial gain and the copyright holder is acknowledged.
 	</string>
 
 	<string name="google_play_url" translatable="false">https://play.google.com/store/apps/details?id=uk.ac.hutton.ics.buntata</string>
 
 	<string name="website_url" translatable="false">https://ics.hutton.ac.uk/get-buntata/</string>
+	<string name="twitter_url" translatable="false">https://twitter.com/BuntataApp</string>
+	<string name="facebook_url" translatable="false">https://www.facebook.com/buntataapp/</string>
 
 	<string name="contact_email_subject" translatable="false">Buntata</string>
 	<string name="contact_email_address" translatable="false">cropgeeksapps@hutton.ac.uk</string>
@@ -138,7 +144,8 @@
 	<string name="network_intro_button_refresh">Refresh</string>
 
 	<string name="team_others_title">Others</string>
-	<string name="team_others_name">We would like to thank John Jones, Ian Toth, Jennie Brierley, Alison Lees, Graham Cowan and Sonia Humphris for
+	<string name="team_others_name">We would like to thank John Jones, Ian Toth, Jennie Brierley, Alison Lees, Graham Cowan, Sonia Humphris and Roy
+		Neilson for
 		their help in getting the underlying potato dataset and images brought together and assembled. In addition, we appreciate the images and
 		information provided by Danny Coyne and Sue Hockland.
 	</string>
@@ -150,11 +157,19 @@
 	<string name="label_eula_commercial">EULA for commercial users</string>
 	<string name="label_eula_consumer">EULA for consumers</string>
 
-	<string name="acknowledgements_jhi_text">This app has been developed at the James Hutton Institute</string>
-	<string name="acknowledgements_st_andrews_text">In collaboration with the University of St. Andrews</string>
-	<string name="acknowledgements_ahdb_text">Some of the images have kindly been provided by the AHDB.</string>
-	<string name="acknowledgements_bbsrc_text">With funding by the Biotechnology and Biological Sciences Research Council</string>
-	<string name="acknowledgements_scottish_government_text">Something about the Scottish Government here.</string>
+	<string name="acknowledgements_jhi_text">Buntata has been developed by members of the Information &amp; Computational Sciences and Cell and
+		Molecular Sciences Groups at The James Hutton Institute.
+	</string>
+	<string name="acknowledgements_st_andrews_text">Buntata was developed in collaboration with the University of St Andrews.</string>
+	<string name="acknowledgements_ahdb_text">Some of the images that Buntata uses have been kindly provided by the Agriculture &amp; Horticulture
+		Development Board.
+	</string>
+	<string name="acknowledgements_bbsrc_text">Funding for the development of Buntata was provided by the Biotechnology and Biological Sciences
+		Research Council.
+	</string>
+	<string name="acknowledgements_scottish_government_text">This work has been supported by the Rural and Environment Science and Analytical Services
+		Division of the Scottish Government.
+	</string>
 	<string name="acknowledgements_jhi_url">http://www.hutton.ac.uk</string>
 	<string name="acknowledgements_st_andrews_url">https://www.st-andrews.ac.uk/</string>
 	<string name="acknowledgements_bbsrc_url">http://www.bbsrc.ac.uk/</string>

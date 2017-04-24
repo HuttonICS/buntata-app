@@ -49,16 +49,23 @@
 		<activity
 			android:name=".activity.NodeDetailsActivity"
 			android:parentActivityName=".activity.MainActivity">
+			can
 			<intent-filter android:label="@string/app_name">
 				<action android:name="android.intent.action.VIEW"/>
 
 				<category android:name="android.intent.category.DEFAULT"/>
 				<category android:name="android.intent.category.BROWSABLE"/>
-				<!-- note that the leading "/" is required for pathPrefix -->
-				<!-- Accepts URIs that begin with "http://bunta.ta” -->
+				<!-- Accepts URIs that begin with "http://bunta.ta" -->
 				<data
 					android:host="bunta.ta"
 					android:scheme="http"/>
+			</intent-filter>
+			<intent-filter android:label="@string/app_name">
+				<action android:name="android.intent.action.VIEW"/>
+
+				<category android:name="android.intent.category.DEFAULT"/>
+				<category android:name="android.intent.category.BROWSABLE"/>
+				<!-- Accepts URIs that begin with "https://ics.hutton.ac.uk/resources/roadshow-staff/" -->
 				<data
 					android:host="ics.hutton.ac.uk"
 					android:scheme="https"
@@ -71,5 +78,4 @@
 		<activity android:name=".activity.PreferencesActivity"/>
 		<activity android:name=".activity.ChangelogActivity"/>
 	</application>
-
 </manifest>

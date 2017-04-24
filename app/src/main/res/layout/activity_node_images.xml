@@ -37,6 +37,8 @@
 		android:layout_marginTop="@dimen/activity_vertical_margin"
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"
+		app:ci_height="8dp"
+		app:ci_width="8dp"
 		app:ci_drawable="@drawable/viewpager_indicator_dot"/>
 </RelativeLayout>
 

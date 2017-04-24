@@ -54,9 +54,9 @@ public class AttributeValueVideoAdapter extends RecyclerView.Adapter<RecyclerVie
 	{
 		View view;
 		@BindView(R.id.attribute_view_title)
-		TextView  title;
+		TextView title;
 		@BindView(R.id.attribute_view_content)
-		TextView  content;
+		TextView content;
 
 		AttributeViewHolder(View v)
 		{
