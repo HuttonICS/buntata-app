@@ -21,6 +21,7 @@
 		<changelogtext>Restricted about page header height in landscape mode.</changelogtext>
 		<changelogtext>Updated acknowledgements page text.</changelogtext>
 		<changelogimprovement>Added text about default copyright of images.</changelogimprovement>
+		<changelogtext>Updated about page text.</changelogtext>
 	</changelogversion>
 	<changelogversion versionName="0.17.04.19" changeDate="19/04/2017">
 		<changelogimprovement>Changed the height of the image section on the node details view to be more prominent.</changelogimprovement>
