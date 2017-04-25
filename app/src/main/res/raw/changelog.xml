@@ -17,6 +17,9 @@
   -->
 
 <changelog bulletedList="true">
+	<changelogversion versionName="1.17.04.25" changeDate="25/04/2017">
+		<changelogtext>Updated EULA text.</changelogtext>
+	</changelogversion>
 	<changelogversion versionName="1.17.04.24" changeDate="24/04/2017">
 		<changelogtext>Restricted about page header height in landscape mode.</changelogtext>
 		<changelogtext>Updated acknowledgements page text.</changelogtext>
