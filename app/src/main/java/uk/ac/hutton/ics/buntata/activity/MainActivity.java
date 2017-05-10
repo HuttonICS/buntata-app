@@ -115,6 +115,34 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 	}
 
 	@Override
+	protected void onPostCreate(Bundle savedInstanceState)
+	{
+		super.onPostCreate(savedInstanceState);
+
+//		if (PreferenceUtils.getPreferenceAsBoolean(this, PreferenceUtils.PREFS_SHOW_DATASOURCE_SELECTION_HELP, true))
+//		{
+//			drawerLayout.openDrawer(Gravity.START);
+//
+//			navigationView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+//			{
+//				@Override
+//				public void onGlobalLayout()
+//				{
+//					navigationView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+//
+//					/* Show a Snackbar with a button to open the datasource activity */
+//					int textColor = ContextCompat.getColor(MainActivity.this, android.R.color.primary_text_dark);
+//					SnackbarUtils.create(getSnackbarParentView(), R.string.snackbar_updates_available, textColor, ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark), 5000)
+//								 .setActionTextColor(textColor)
+//								 .show();
+//
+//					PreferenceUtils.setPreferenceAsBoolean(MainActivity.this, PreferenceUtils.PREFS_SHOW_DATASOURCE_SELECTION_HELP, false);
+//				}
+//			});
+//		}
+	}
+
+	@Override
 	protected void onResume()
 	{
 		super.onResume();

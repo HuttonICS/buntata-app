@@ -22,27 +22,24 @@
 									android:layout_width="match_parent"
 									android:layout_height="wrap_content">
 
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical">
-		<RelativeLayout android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:layout_marginStart="8dp"
-						android:layout_marginLeft="8dp"
-						android:layout_marginEnd="8dp"
-						android:layout_marginRight="8dp"
-						android:layout_marginTop="8dp"
-						android:layout_marginBottom="8dp">
+	<LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
-			<android.support.v7.widget.CardView
-				android:layout_width="50dp"
-				android:layout_height="50dp"
-				android:innerRadius="0dp"
-				android:elevation="12dp"
-				android:layout_alignParentStart="true"
-				android:layout_alignParentLeft="true"
-				android:layout_centerVertical="true">
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_marginStart="8dp"
+			android:layout_marginLeft="8dp"
+			android:layout_marginEnd="8dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginTop="8dp"
+			android:layout_marginBottom="8dp">
+
+			<FrameLayout
+				android:id="@+id/datasource_image_view_wrapper"
+				android:layout_marginEnd="8dp"
+				android:layout_marginRight="8dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
 
 				<ImageView
 					android:id="@+id/datasource_image_view"
@@ -50,40 +47,41 @@
 					android:layout_height="50dp"
 					android:scaleType="centerCrop"/>
 
-			</android.support.v7.widget.CardView>
-
+			</FrameLayout>
 
 			<LinearLayout
-				android:orientation="vertical"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginStart="60dp"
-				android:layout_marginLeft="60dp"
-				android:layout_marginEnd="50dp"
-				android:layout_marginRight="50dp">
+				android:layout_toEndOf="@id/datasource_image_view_wrapper"
+				android:layout_toRightOf="@id/datasource_image_view_wrapper"
+				android:layout_toStartOf="@+id/datasource_download_indicator"
+				android:layout_toLeftOf="@id/datasource_download_indicator"
+				android:layout_centerVertical="true"
+				android:orientation="vertical">
+
 				<TextView
 					android:id="@+id/datasource_name_view"
-					android:textStyle="bold"
-					android:textColor="@android:color/primary_text_light"
 					android:layout_width="match_parent"
-					android:layout_height="wrap_content"/>
+					android:layout_height="wrap_content"
+					android:textColor="@android:color/primary_text_light"
+					android:ellipsize="marquee"/>
 
 				<TextView
 					android:id="@+id/datasource_size_view"
-					android:textColor="@android:color/secondary_text_light"
 					android:layout_width="match_parent"
-					android:layout_height="wrap_content"/>
+					android:layout_height="wrap_content"
+					android:maxLines="1"
+					android:textColor="@android:color/secondary_text_light"
+					android:ellipsize="marquee"/>
 
 			</LinearLayout>
 
-			<ImageView
-				android:id="@+id/datasource_download_indicator"
-				android:layout_width="40dp"
+			<Button
+				android:id="@id/datasource_download_indicator"
+				android:layout_width="wrap_content"
 				android:layout_height="40dp"
-				android:scaleType="fitCenter"
-				android:foreground="?android:attr/selectableItemBackground"
-				android:src="@drawable/action_download"
-				android:tint="@color/colorAccent"
+				android:textAllCaps="true"
+				style="@style/Widget.AppCompat.Button.Colored"
 				android:layout_alignParentEnd="true"
 				android:layout_alignParentRight="true"
 				android:layout_centerVertical="true"/>
@@ -155,5 +153,7 @@
 				android:textColor="@android:color/secondary_text_light"/>
 
 		</LinearLayout>
+
 	</LinearLayout>
+
 </android.support.v7.widget.CardView>

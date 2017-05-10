@@ -16,10 +16,8 @@
 
 package uk.ac.hutton.ics.buntata.adapter;
 
-import android.animation.*;
 import android.app.*;
 import android.content.*;
-import android.graphics.*;
 import android.support.design.widget.*;
 import android.support.v4.app.*;
 import android.support.v4.content.*;
@@ -103,7 +101,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		@BindView(R.id.datasource_download_progress)
 		ProgressBar  progressBar;
 		@BindView(R.id.datasource_download_indicator)
-		ImageView    downloadStatus;
+		Button       downloadStatus;
 		@BindView(R.id.datasource_details_view)
 		LinearLayout detailsView;
 		@BindView(R.id.datasource_provider_view)
@@ -167,36 +165,36 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 
 	private void animate(final ItemViewHolder itemViewHolder)
 	{
-		final int color = ContextCompat.getColor(context, R.color.colorAccent);
-
-		final ValueAnimator colorAnim = ObjectAnimator.ofFloat(0f, 1f);
-		colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
-		{
-			@Override
-			public void onAnimationUpdate(ValueAnimator animation)
-			{
-				float mul = (Float) animation.getAnimatedValue();
-				int alphaOrange = adjustAlpha(color, mul);
-				itemViewHolder.downloadStatus.setColorFilter(alphaOrange, PorterDuff.Mode.SRC_ATOP);
-				if (mul == 0.0)
-				{
-					itemViewHolder.downloadStatus.setColorFilter(null);
-				}
-			}
-		});
-
-		colorAnim.setDuration(500);
-		colorAnim.start();
+//		final int color = ContextCompat.getColor(context, R.color.colorAccent);
+//
+//		final ValueAnimator colorAnim = ObjectAnimator.ofFloat(0f, 1f);
+//		colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
+//		{
+//			@Override
+//			public void onAnimationUpdate(ValueAnimator animation)
+//			{
+//				float mul = (Float) animation.getAnimatedValue();
+//				int alphaOrange = adjustAlpha(color, mul);
+//				itemViewHolder.downloadStatus.setColorFilter(alphaOrange, PorterDuff.Mode.SRC_ATOP);
+//				if (mul == 0.0)
+//				{
+//					itemViewHolder.downloadStatus.setColorFilter(null);
+//				}
+//			}
+//		});
+//
+//		colorAnim.setDuration(500);
+//		colorAnim.start();
 	}
-
-	private int adjustAlpha(int color, float factor)
-	{
-		int alpha = Math.round(Color.alpha(color) * factor);
-		int red = Color.red(color);
-		int green = Color.green(color);
-		int blue = Color.blue(color);
-		return Color.argb(alpha, red, green, blue);
-	}
+//
+//	private int adjustAlpha(int color, float factor)
+//	{
+//		int alpha = Math.round(Color.alpha(color) * factor);
+//		int red = Color.red(color);
+//		int green = Color.green(color);
+//		int blue = Color.blue(color);
+//		return Color.argb(alpha, red, green, blue);
+//	}
 
 	@Override
 	public int getSectionCount()
@@ -317,25 +315,8 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		final BuntataDatasourceAdvanced ds = get(section, relativePosition);
 		holder.progressBar.setVisibility(ds.isDownloading() ? View.VISIBLE : View.GONE);
 
-		/* Set the state icon */
-		int resource;
-		switch (ds.getState())
-		{
-			case INSTALLED_NO_UPDATE:
-				resource = R.drawable.action_ok;
-				break;
-
-			case INSTALLED_HAS_UPDATE:
-				resource = R.drawable.action_update;
-				break;
-
-			case NOT_INSTALLED:
-			default:
-				resource = R.drawable.action_download;
-				break;
-		}
-
-		holder.downloadStatus.setImageResource(resource);
+		setState(ds, holder);
+//		holder.downloadStatus.setImageResource(resource);
 //		holder.downloadStatus.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimaryDark));
 
 		/* If there is an icon, set it */
@@ -453,6 +434,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 								holder.progressBar.setVisibility(View.GONE);
 								ds.setDownloading(false);
 								downloadTask = null;
+								setState(ds, holder);
 							}
 						}
 					}, null);
@@ -473,22 +455,11 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 				switch (ds.getState())
 				{
 					case INSTALLED_NO_UPDATE:
-						if (context instanceof DatasourceActivity)
-						{
-							/* If we're coming from the DatasourceActivity and the user clicked on a data source that has already been downloaded
-						 	 * then we just remember the selected id and close the activity to return to wherever we came from */
-							PreferenceUtils.setPreferenceAsInt(context, PreferenceUtils.PREFS_SELECTED_DATASOURCE_ID, ds.getId());
-							context.setResult(Activity.RESULT_OK);
-							context.finish();
-							return;
-						}
-						/* Else, we're coming from the introduction activity and we don't want to return anywhere */
-						else
-						{
-							SnackbarUtils.show(v, R.string.snackbar_already_downloaded, ContextCompat.getColor(context, android.R.color.primary_text_dark), ContextCompat.getColor(context, R.color.colorPrimaryDark), Snackbar.LENGTH_LONG);
-							PreferenceUtils.setPreferenceAsInt(context, PreferenceUtils.PREFS_SELECTED_DATASOURCE_ID, ds.getId());
-							return;
-						}
+						/* Just remember the selected id and close the activity to return to wherever we came from */
+						PreferenceUtils.setPreferenceAsInt(context, PreferenceUtils.PREFS_SELECTED_DATASOURCE_ID, ds.getId());
+						context.setResult(Activity.RESULT_OK);
+						context.finish();
+						return;
 
 					case INSTALLED_HAS_UPDATE:
 					case NOT_INSTALLED:
@@ -514,10 +485,37 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 		});
 	}
 
+	private void setState(BuntataDatasourceAdvanced ds, ItemViewHolder holder)
+	{
+		/* Set the state icon */
+		int resource;
+		switch (ds.getState())
+		{
+			case INSTALLED_NO_UPDATE:
+				resource = R.string.datasource_status_select;
+				break;
+
+			case INSTALLED_HAS_UPDATE:
+				resource = R.string.datasource_status_update;
+				break;
+
+			case NOT_INSTALLED:
+			default:
+				resource = R.string.datasource_status_download;
+				break;
+		}
+
+		if (ds.isDownloading())
+			resource = R.string.datasource_status_cancel;
+
+		holder.downloadStatus.setText(resource);
+	}
+
 	private void initDownload(boolean includeVideos, final ItemViewHolder holder, final BuntataDatasourceAdvanced ds)
 	{
 		holder.progressBar.setVisibility(View.VISIBLE);
 		holder.progressBar.setIndeterminate(true);
+		holder.downloadStatus.setText(R.string.datasource_status_cancel);
 		ds.setDownloading(true);
 
 		/* Start the download */
@@ -528,9 +526,12 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 			{
 				super.onFailure(caught);
 
+				GoogleAnalyticsUtils.trackException(context, BaseActivity.getTracker(context, BaseActivity.TrackerName.APP_TRACKER), caught);
+
 				holder.progressBar.setVisibility(View.GONE);
 				ds.setDownloading(false);
 				downloadTask = null;
+				setState(ds, holder);
 
 				SnackbarUtils.show(holder.view, R.string.snackbar_download_unsuccessful, ContextCompat.getColor(context, android.R.color.primary_text_dark), ContextCompat.getColor(context, R.color.colorPrimaryDark), Snackbar.LENGTH_LONG);
 			}
@@ -543,6 +544,7 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 				holder.progressBar.setVisibility(View.GONE);
 				ds.setState(BuntataDatasourceAdvanced.InstallState.INSTALLED_NO_UPDATE);
 				ds.setDownloading(false);
+				setState(ds, holder);
 
 				PreferenceUtils.setPreferenceAsInt(context, PreferenceUtils.PREFS_SELECTED_DATASOURCE_ID, ds.getId());
 				SnackbarUtils.show(holder.view, R.string.snackbar_download_successful, ContextCompat.getColor(context, android.R.color.primary_text_dark), ContextCompat.getColor(context, R.color.colorPrimaryDark), Snackbar.LENGTH_LONG);

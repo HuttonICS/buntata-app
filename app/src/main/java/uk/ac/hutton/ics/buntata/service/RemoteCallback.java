@@ -17,7 +17,6 @@
 package uk.ac.hutton.ics.buntata.service;
 
 import android.content.*;
-import android.widget.*;
 
 /**
  * The {@link RemoteCallback} is a very basic callback with an {@link #onSuccess(T)} and a {@link #onFailure(Throwable)} method.
@@ -48,9 +47,7 @@ public abstract class RemoteCallback<T>
 	 */
 	public void onFailure(Throwable caught)
 	{
-		caught.printStackTrace();
-
-		// TODO: error handling
-		Toast.makeText(context, "ERROR: " + caught.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+		if (caught != null)
+			caught.printStackTrace();
 	}
 }

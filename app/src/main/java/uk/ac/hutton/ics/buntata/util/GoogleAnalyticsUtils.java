@@ -67,9 +67,7 @@ public class GoogleAnalyticsUtils
 	public static void trackEvent(Context context, Tracker tracker, String category, String action, String label, Long value)
 	{
 		if (tracker == null)
-		{
 			return;
-		}
 
         /* If we're using the debug version, don't track to Google Analytics */
 		String packageName = context.getPackageName();
@@ -93,5 +91,25 @@ public class GoogleAnalyticsUtils
 
         /* Build and send an Event */
 		tracker.send(builder.build());
+	}
+
+	public static void trackException(Context context, Tracker tracker, Throwable e)
+	{
+		if (tracker == null)
+			return;
+
+		/* If we're using the debug version, don't track to Google Analytics */
+		String packageName = context.getPackageName();
+		/* Also, if the user disabled tracking, we don't track to Google Analytics */
+		if (packageName != null && packageName.endsWith(".debug") || !PreferenceUtils.getPreferenceAsBoolean(context, PreferenceUtils.PREFS_GA_OPT_OUT, true))
+		{
+			return;
+		}
+
+        /* Build and send an Event */
+		tracker.send(new HitBuilders.ExceptionBuilder()
+				.setDescription(new StandardExceptionParser(context, null).getDescription(Thread.currentThread().getName(), e))
+				.setFatal(false)
+				.build());
 	}
 }

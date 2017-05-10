@@ -44,12 +44,12 @@
 	<string name="generic_cancel">Abbrechen</string>
 	<string name="generic_accept">Akzeptieren</string>
 	<string name="generic_show">Anzeigen</string>
-	<string name="datasource_size">Mediengröße: ~%1$.1f MB (~%2$.1f MB)</string>
+	<string name="datasource_size">Größe: ~%1$.1f MB (~%2$.1f MB)</string>
 	<string name="snackbar_already_downloaded">Datenquelle bereits heruntergeladen.</string>
 	<string name="snackbar_only_one_download">Nur ein Download auf einmal möglich.</string>
 	<string name="snackbar_currently_downloading">Datenquelle wird gerade heruntergeladen.</string>
 	<string name="snackbar_download_successful">Datenquelle erfolgreich heruntergeladen.</string>
-	<string name="snackbar_download_unsuccessful">Fehler beim Download der Datenquelle.</string>
+	<string name="snackbar_download_unsuccessful">Fehler beim Download der Datenquelle. Bitte erneut versuchen.</string>
 	<string name="snackbar_select_datasource">Bitte wählen Sie eine Datenquelle.</string>
 	<string name="dialog_delete_datasource_title">Datenquelle löschen</string>
 	<string name="dialog_delete_datasource_text">Diese Datenquelle entfernen?</string>
@@ -82,7 +82,8 @@
 	<string name="license_view_option_view_license">Lizenz ansehen</string>
 	<string name="license_view_option_view_github">Auf GitHub ansehen</string>
 	<string name="search_query_hint">Suche nach Symptom oder Namen</string>
-	<string name="notification_enable_internet">Das Gerät benötigt eine Netzwerkverbindung um Datenquellen herunterzuladen. Bitte aktivieren Sie es.
+	<string name="notification_enable_internet">Server konnte nicht erreicht werden. Bitte stellen Sie sicher das eine aktive Netzwerkverbindung
+		vorhanden ist.
 	</string>
 	<string name="network_intro_title">Überprüfe die Netzwerkverbindung</string>
 	<string name="network_intro_text">Um Datensätze herunterzuladen ist eine Datenverbindung erforderlich. Wir überprüfen dies nun.</string>
@@ -143,4 +144,9 @@
 		Hilfe beim Organizieren der Kartoffeldaten und -bilder bedanken. Zusätzlich würdigen wir die Bilder und Informationen die von Danny Coyne und
 		Sue Hockland bereitgestellt wurden.
 	</string>
+
+	<string name="datasource_status_select">Wählen</string>
+	<string name="datasource_status_update">Updaten</string>
+	<string name="datasource_status_download">Downloaden</string>
+	<string name="datasource_status_cancel">Abbrechen</string>
 </resources>

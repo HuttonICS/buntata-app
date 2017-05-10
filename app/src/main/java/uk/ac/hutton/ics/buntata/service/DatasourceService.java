@@ -255,7 +255,7 @@ public class DatasourceService
 				{
 					if (file == null)
 					{
-						callback.onFailure(new IOException("File not found"));
+						callback.onFailure(null);
 						return;
 					}
 

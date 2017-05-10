@@ -27,16 +27,17 @@ import com.google.android.gms.analytics.*;
 
 public class PreferenceUtils
 {
-	public static final String PREFS_KNODEL_SERVER_URL       = "prefs.general.restlet.api.url";
-	public static final String PREFS_AT_LEAST_ONE_DATASOURCE = "prefs.at.least.one.datasource";
-	public static final String PREFS_EULA_ACCEPTED           = "prefs.eula.accepted";
-	public static final String PREFS_EULA_TYPE               = "prefs.eula.type";
-	public static final String PREFS_SELECTED_DATASOURCE_ID  = "prefs.selected.datasource.id";
-	public static final String PREFS_GA_OPT_OUT              = "prefs.google.analytics.opt.out";
-	public static final String PREFS_LAST_VERSION            = "prefs.last.version.code";
-	public static final String PREFS_SHOW_CHANGELOG          = "prefs.show.changelog";
-	public static final String PREFS_COLUMNS_PORTRAIT        = "prefs.columns.portrait";
-	public static final String PREFS_COLUMNS_LANDSCAPE       = "prefs.columns.landscape";
+	public static final String PREFS_KNODEL_SERVER_URL              = "prefs.general.restlet.api.url";
+	public static final String PREFS_AT_LEAST_ONE_DATASOURCE        = "prefs.at.least.one.datasource";
+	public static final String PREFS_SHOW_DATASOURCE_SELECTION_HELP = "prefs.show.datasource.selection.help";
+	public static final String PREFS_EULA_ACCEPTED                  = "prefs.eula.accepted";
+	public static final String PREFS_EULA_TYPE                      = "prefs.eula.type";
+	public static final String PREFS_SELECTED_DATASOURCE_ID         = "prefs.selected.datasource.id";
+	public static final String PREFS_GA_OPT_OUT                     = "prefs.google.analytics.opt.out";
+	public static final String PREFS_LAST_VERSION                   = "prefs.last.version.code";
+	public static final String PREFS_SHOW_CHANGELOG                 = "prefs.show.changelog";
+	public static final String PREFS_COLUMNS_PORTRAIT               = "prefs.columns.portrait";
+	public static final String PREFS_COLUMNS_LANDSCAPE              = "prefs.columns.landscape";
 
 	private static final String DEFAULT_PREF_SERVER_URL = "https://ics.hutton.ac.uk/buntata/v1.1/";
 
@@ -60,11 +61,10 @@ public class PreferenceUtils
 			editor.putInt(PREFS_COLUMNS_PORTRAIT, 2);
 		if (!preferences.contains(PREFS_COLUMNS_LANDSCAPE))
 			editor.putInt(PREFS_COLUMNS_LANDSCAPE, 3);
+		if (!preferences.contains(PREFS_SHOW_DATASOURCE_SELECTION_HELP))
+			editor.putBoolean(PREFS_SHOW_DATASOURCE_SELECTION_HELP, true);
 
-//		if (!preferences.contains(PREFS_KNODEL_SERVER_URL))
-//		{
 		editor.putString(PREFS_KNODEL_SERVER_URL, DEFAULT_PREF_SERVER_URL);
-//		}
 
 		editor.apply();
 	}

@@ -43,12 +43,17 @@ import uk.ac.hutton.ics.buntata.service.*;
  */
 public class DatasourceFragment extends Fragment
 {
+	@BindView(R.id.datasource_network_layout)
+	LinearLayout layout;
 	@BindView(R.id.datasource_text)
 	TextView     text;
 	@BindView(R.id.datasource_recycler_view)
 	RecyclerView recyclerView;
 	@BindView(R.id.datasource_network_warning)
 	TextView     networkWarning;
+	@BindView(R.id.datasource_network_refresh)
+	Button       networkButton;
+
 	private DatasourceAdapter adapter;
 
 	private Unbinder unbinder;
@@ -105,9 +110,15 @@ public class DatasourceFragment extends Fragment
 //		}
 //		else
 //		{
-		networkWarning.setVisibility(View.GONE);
+		layout.setVisibility(View.GONE);
 		requestData();
 //		}
+	}
+
+	@OnClick(R.id.datasource_network_refresh)
+	public void onNetworkRefresh()
+	{
+		requestData();
 	}
 
 	private void requestData()
@@ -127,11 +138,11 @@ public class DatasourceFragment extends Fragment
 			{
 				if (result.size() < 1)
 				{
-					networkWarning.setVisibility(View.VISIBLE);
+					layout.setVisibility(View.VISIBLE);
 				}
 				else
 				{
-					networkWarning.setVisibility(View.GONE);
+					layout.setVisibility(View.GONE);
 
 					adapter = new DatasourceAdapter(getActivity(), recyclerView, result);
 					recyclerView.setAdapter(adapter);

@@ -17,6 +17,13 @@
   -->
 
 <changelog bulletedList="true">
+	<changelogversion versionName="1.17.05.10" changeDate="10/05/2017">
+		<changelogtext>Changed from icons to buttons on data source view.</changelogtext>
+		<changelogimprovement>Added an "refresh" button to data source view.</changelogimprovement>
+		<changelogtext>Removed old Toast notification.</changelogtext>
+		<changelogtext>Updated data source view layout to work better on all screen sizes.</changelogtext>
+		<changelogimprovement>Added landscape layout for EULA view.</changelogimprovement>
+	</changelogversion>
 	<changelogversion versionName="1.17.04.25" changeDate="25/04/2017">
 		<changelogtext>Updated EULA text.</changelogtext>
 	</changelogversion>

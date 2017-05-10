@@ -23,8 +23,7 @@
 
 	<string name="introduction_welcome_title">Welcome to Buntata</string>
 	<string name="introduction_welcome_text">We named our app after the Scottish Gaelic word for potato. Scotland\'s a great place, but sometimes a
-		bit
-		rainy...
+		bit rainy...
 	</string>
 
 	<string name="introduction_eula_title">EULA Page</string>
@@ -50,6 +49,7 @@
 	<string name="ga_tracking_id" translatable="false">UA-73714833-2</string>
 	<string name="ga_event_category_exception" translatable="false">Exception</string>
 	<string name="ga_event_category_datasource_download" translatable="false">Datasource downloaded</string>
+	<string name="ga_event_category_datasource_download_failed" translatable="false">Datasource download failed</string>
 	<string name="ga_event_category_datasource_deleted" translatable="false">Datasource deleted</string>
 	<string name="ga_event_category_node_search" translatable="false">Search</string>
 	<string name="ga_event_category_eula" translatable="false">EULA</string>
@@ -69,13 +69,13 @@
 	<string name="generic_accept">Accept</string>
 	<string name="generic_show">Show</string>
 
-	<string name="datasource_size">Media size: ~%1$.1f MB (~%2$.1f MB)</string>
+	<string name="datasource_size">Size: ~%1$.1f MB (~%2$.1f MB)</string>
 
 	<string name="snackbar_already_downloaded">Data source already downloaded.</string>
 	<string name="snackbar_only_one_download">Only one download at a time possible.</string>
 	<string name="snackbar_currently_downloading">Data source download in progress.</string>
 	<string name="snackbar_download_successful">Data source downloaded successfully.</string>
-	<string name="snackbar_download_unsuccessful">Data source download failed.</string>
+	<string name="snackbar_download_unsuccessful">Data source download failed. Please try again.</string>
 	<string name="snackbar_select_datasource">Please select a data source.</string>
 	<string name="snackbar_updates_available">New updates available</string>
 
@@ -133,7 +133,8 @@
 
 	<string name="search_query_hint">Search symptom or name</string>
 
-	<string name="notification_enable_internet">The device needs to have a network connection to download data sources. Please enable it.</string>
+	<string name="notification_enable_internet">Could not establish connection to the server. Please make sure you have an active data connection.
+	</string>
 
 	<string name="network_intro_title">Checking network connection</string>
 	<string name="network_intro_text">To download datasets you need to have a network connection. We are checking for that now.</string>
@@ -203,4 +204,9 @@
 
 	<string name="toast_datasource_not_found">Requested data source not found.</string>
 	<string name="toast_node_not_found">Requested node not found.</string>
+
+	<string name="datasource_status_select">Select</string>
+	<string name="datasource_status_update">Update</string>
+	<string name="datasource_status_download">Download</string>
+	<string name="datasource_status_cancel">Cancel</string>
 </resources>
