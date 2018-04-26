@@ -126,10 +126,10 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		/* Try to find an image */
 		File imagePath = null;
 		BuntataMediaAdvanced medium = null;
-		if (item.getMedia().size() > 0)
+		if (item.getMediaAdvanced().size() > 0)
 		{
 			/* First, check if we've got the same image as our parent. If so, show this one preferably */
-			for (BuntataMediaAdvanced m : item.getMedia())
+			for (BuntataMediaAdvanced m : item.getMediaAdvanced())
 			{
 				if (m.getId() == parentMediaId)
 				{
@@ -175,7 +175,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 		/* If no image is found */
 		if (!foundImage)
 		{
-			Picasso.with(context)
+			Picasso.get()
 				   .load(R.drawable.missing_image)
 				   .error(R.drawable.missing_image)
 				   .resize(viewWidth, viewWidth) // Resize to fit
@@ -188,7 +188,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 			/* Load the image */
 			PaletteTransformation paletteTransformation;
 
-			RequestCreator c = Picasso.with(context)
+			RequestCreator c = Picasso.get()
 									  .load(imagePath); /* Load from file */
 
 			final boolean showKeys = datasource.isShowKeyName();
@@ -205,7 +205,7 @@ public abstract class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewH
 			 .into(holder.image, new Callback.EmptyCallback() /* When done, use the palette */
 			 {
 				 @Override
-				 public void onError()
+				 public void onError(Exception e)
 				 {
 					 /* Set the placeholder */
 					 holder.image.setImageResource(R.drawable.missing_image);

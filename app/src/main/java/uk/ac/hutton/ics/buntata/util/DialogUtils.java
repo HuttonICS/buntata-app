@@ -16,9 +16,8 @@
 
 package uk.ac.hutton.ics.buntata.util;
 
-import android.app.*;
 import android.content.*;
-import android.support.v7.app.AlertDialog;
+import android.support.v7.app.*;
 
 /**
  * {@link uk.ac.hutton.ics.buntata.util.DialogUtils} contains methods to easily create {@link AlertDialog}s.
@@ -62,58 +61,5 @@ public class DialogUtils
 				.setPositiveButton(positiveText, positiveListener)
 				.setNegativeButton(negativeText, negagiveListener)
 				.show();
-	}
-
-	/**
-	 * Creates an {@link AlertDialog} with the given title and message.
-	 *
-	 * @param context The current {@link Context}
-	 * @param title   The title resource to use
-	 * @param error   The error resource to use
-	 * @param finish  Finish the {@link Context} after showing the {@link AlertDialog}?
-	 */
-	public static void showDialog(Activity context, int title, int error, boolean finish)
-	{
-		showDialog(context, title, context.getString(error), finish);
-	}
-
-	/**
-	 * Creates an {@link AlertDialog} with the given title and message.
-	 *
-	 * @param context  The current {@link Activity}
-	 * @param title    The title resource to use
-	 * @param error    The error resource to use (prepared for formatting via String.format())
-	 * @param finish   Finish the {@link Activity} after showing the {@link AlertDialog}?
-	 * @param addition The Strings to use within String.format() on the dialog message
-	 */
-	public static void showDialog(Activity context, int title, int error, boolean finish, String... addition)
-	{
-		String resource = context.getString(error);
-		resource = String.format(resource, (Object[]) addition);
-
-		showDialog(context, title, resource, finish);
-	}
-
-	/**
-	 * Creates an {@link AlertDialog} with the given title and message.
-	 *
-	 * @param context The current {@link Activity}
-	 * @param title   The title resource to use
-	 * @param message The message String to use
-	 * @param finish  Finish the {@link Activity} after showing the {@link AlertDialog}?
-	 */
-	public static void showDialog(final Activity context, int title, String message, final boolean finish)
-	{
-		new AlertDialog.Builder(context).setTitle(title).setMessage(message).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				if (finish)
-				{
-					context.finish();
-				}
-			}
-		}).setCancelable(!finish).show();
 	}
 }

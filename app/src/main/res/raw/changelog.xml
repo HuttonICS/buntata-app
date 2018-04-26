@@ -17,6 +17,18 @@
   -->
 
 <changelog bulletedList="true">
+	<changelogversion versionName="1.18.04.26" changeDate="26/04/2018">
+		<changelogimprovement>We have added a new log feature that allows you to keep a history of diseases you found. They will be tagged with GPS
+			data if available and you can add photos and notes to them as well. Share them with your colleagues and friends via social media!
+		</changelogimprovement>
+		<changelogimprovement>A new catalogue has been added to the side menu that shows all the diseases in a list for quicker access.
+		</changelogimprovement>
+		<changelogbug>Eliminated some bugs... And what a mess they made. (No actual bugs were harmed in the making of this app).</changelogbug>
+		<changelogimprovement>Buntata is now (partly) written in Kotlin! This won't make any difference to you as a user whatsoever, but hopefully you
+			can appreciate that the Buntata developers are much happier people now.
+		</changelogimprovement>
+	</changelogversion>
+
 	<changelogversion versionName="1.17.05.10" changeDate="10/05/2017">
 		<changelogtext>Changed from icons to buttons on data source view.</changelogtext>
 		<changelogimprovement>Added an "refresh" button to data source view.</changelogimprovement>

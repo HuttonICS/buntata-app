@@ -25,15 +25,16 @@ import android.provider.*;
 import android.support.annotation.*;
 import android.support.design.widget.*;
 import android.support.v7.app.*;
-import android.support.v7.widget.*;
+import android.support.v7.widget.Toolbar;
 import android.view.*;
+import android.widget.*;
 
 import com.google.android.gms.analytics.*;
 
 import java.util.*;
 import java.util.concurrent.*;
 
-import uk.ac.hutton.ics.buntata.R;
+import uk.ac.hutton.ics.buntata.*;
 import uk.ac.hutton.ics.buntata.util.*;
 
 /**
@@ -136,7 +137,7 @@ public abstract class BaseActivity extends AppCompatActivity
 					ex.printStackTrace();
 
 					GoogleAnalyticsUtils.trackEvent(BaseActivity.this, getTracker(TrackerName.APP_TRACKER), getString(R.string.ga_event_category_exception), ex.getLocalizedMessage());
-					ToastUtils.createToast(BaseActivity.this, getString(R.string.toast_exception, ex.getLocalizedMessage()), ToastUtils.LENGTH_LONG);
+					ToastUtils.INSTANCE.createToast(BaseActivity.this, getString(R.string.toast_exception, ex.getLocalizedMessage()), Toast.LENGTH_LONG);
 
 					System.exit(1);
 				}
@@ -213,7 +214,7 @@ public abstract class BaseActivity extends AppCompatActivity
 	 */
 	protected abstract Integer getToolbarId();
 
-	protected View getSnackbarParentView()
+	public View getSnackbarParentView()
 	{
 		return findViewById(android.R.id.content);
 	}

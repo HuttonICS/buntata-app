@@ -18,9 +18,11 @@
 	<string name="title_activity_about">Über</string>
 	<string name="title_activity_datasource">Datenquellen</string>
 	<string name="title_activity_settings">Einstellungen</string>
+	<string name="title_activity_log_entries">Meine Daten</string>
+	<string name="title_activity_catalog">Katalog</string>
 	<string name="introduction_welcome_title">Willkommen zu Buntata</string>
 	<string name="introduction_welcome_text">Wir haben die App nach dem Schottisch-Gälischen Wort für Kartoffel benannt. Schottland ist ein
-		großartiger Ort, aber manchmal etwas regnerisch...
+		großartiger Ort, aber manchmal etwas regnerisch…
 	</string>
 	<string name="introduction_eula_title">EULA-Seite</string>
 	<string name="introduction_eula_text_1">Um Buntata verwenden zu können müssen Sie einer unserer Endbenutzer Lizenz Vereinbarungen (EULA)
@@ -30,12 +32,19 @@
 	<string name="introduction_eula_text_2">Wir teilen keine Informationen, die Sie uns gegeben haben mit einer anderen Partei.</string>
 	<string name="toast_exception">Ein Fehler ist aufgetreten: %1$s</string>
 	<string name="menu_data_source">Datenquelle</string>
+	<string name="menu_log">Meine Daten</string>
 	<string name="menu_visit_homepage">Homepage besuchen</string>
 	<string name="menu_online_help">Online-Hilfe</string>
 	<string name="menu_settings">Einstellungen</string>
+	<string name="menu_catalog">Katalog</string>
 	<string name="menu_about">Über</string>
 	<string name="menu_action_search">Suchen</string>
+	<string name="menu_action_scan_barcode">Barcode scannen</string>
 	<string name="menu_action_zoom">Zoom</string>
+	<string name="menu_action_add_log_entry">Tagebucheintrag hinzufügen</string>
+	<string name="menu_action_add_image">Bild hinzufügen</string>
+	<string name="menu_action_share">Teilen</string>
+	<string name="menu_action_export">Exportieren</string>
 	<string name="drawer_open">Navigationsschublade öffnen</string>
 	<string name="drawer_close">Navigationsschublade schließen</string>
 	<string name="generic_settings">Einstellungen</string>
@@ -51,13 +60,25 @@
 	<string name="snackbar_download_successful">Datenquelle erfolgreich heruntergeladen.</string>
 	<string name="snackbar_download_unsuccessful">Fehler beim Download der Datenquelle. Bitte erneut versuchen.</string>
 	<string name="snackbar_select_datasource">Bitte wählen Sie eine Datenquelle.</string>
+	<string name="snackbar_permission_missing_camera">Zugriff auf die Kamera wurde verweigert.</string>
+	<string name="snackbar_permission_missing_external_storage">Zugriff auf die den externen Speicher wurde verweigert.</string>
+	<string name="snackbar_permission_missing_gps">Wir benutzen Ihren Standort um Einträge zu taggen.</string>
+	<string name="snackbar_no_app_found">Keine App gefunden die Anfrage bearbeiten kann.</string>
+	<string name="snackbar_export_failed">Export fehlgeschlagen.</string>
 	<string name="dialog_delete_datasource_title">Datenquelle löschen</string>
 	<string name="dialog_delete_datasource_text">Diese Datenquelle entfernen?</string>
 	<string name="dialog_restlet_please_wait">Bitte warten</string>
 	<string name="dialog_download_title">Herunterladen</string>
 	<string name="dialog_download_message">Videos herunterladen?</string>
+	<string name="dialog_export_message">Exportiere Daten</string>
 	<string name="dialog_download_cancel_title">Download abbrechen?</string>
 	<string name="dialog_download_cancel_text">Download im Gange. Möchten Sie abbrechen?</string>
+	<string name="dialog_save_title">Speichern</string>
+	<string name="dialog_save_message">Änderungen speichern?</string>
+	<string name="dialog_delete_image_title">Löschen</string>
+	<string name="dialog_delete_image_message">Bild löschen?</string>
+	<string name="dialog_delete_log_entry_title">Löschen</string>
+	<string name="dialog_delete_log_entry_message">Eintrag löschen?</string>
 	<string name="snackbar_updates_available">Neue Updates verfügbar</string>
 	<string name="about_tab_information">Über</string>
 	<string name="about_tab_team">Team</string>
@@ -82,6 +103,7 @@
 	<string name="license_view_option_view_license">Lizenz ansehen</string>
 	<string name="license_view_option_view_github">Auf GitHub ansehen</string>
 	<string name="search_query_hint">Suche nach Symptom oder Namen</string>
+	<string name="search_node_name_hint">Suche nach Namen</string>
 	<string name="notification_enable_internet">Server konnte nicht erreicht werden. Bitte stellen Sie sicher das eine aktive Netzwerkverbindung
 		vorhanden ist.
 	</string>
@@ -149,4 +171,15 @@
 	<string name="datasource_status_update">Updaten</string>
 	<string name="datasource_status_download">Downloaden</string>
 	<string name="datasource_status_cancel">Abbrechen</string>
+
+	<string name="log_add_title">Eintrag hinzufügen</string>
+	<string name="log_empty">Bisher gibt es keine Einträge. Neue Einträge können auf der Elementinformationsseite durch Klicken auf das folgende
+		Symbol hinzugefügt werden.
+	</string>
+	<string name="node_details_note_hint">Notizen</string>
+
+	<string name="title_datasource">Datenquelle</string>
+	<string name="title_node_name">Name</string>
+	<string name="title_latitude">Breitengrad</string>
+	<string name="title_longitude">Längengrad</string>
 </resources>

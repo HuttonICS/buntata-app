@@ -116,7 +116,7 @@ public class DeveloperAdapter extends RecyclerView.Adapter<DeveloperAdapter.View
 	{
 		SEBASTIAN_RAUBACH("Sebastian Raubach", "Bioinformatics Software Developer", "Information & Computational Sciences", "The James Hutton Institute", "cropgeeksapps@hutton.ac.uk"),
 		PAUL_SHAW("Paul Shaw", "Bioinformatician", "Information & Computational Sciences", "The James Hutton Institute", "cropgeeksapps@hutton.ac.uk"),
-		LESLEYTORRANCE("Lesley Torrance", "Director of Science Excellence", "Cell & Molecular Sciences", "The James Hutton Institute", "cropgeeksapps@hutton.ac.uk"),
+		LESLEYTORRANCE("Lesley Torrance", "Director of Science", "Cell & Molecular Sciences", "The James Hutton Institute", "cropgeeksapps@hutton.ac.uk"),
 		OTHERS("Others", null, null, null, null);
 
 		String name;

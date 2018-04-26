@@ -21,6 +21,9 @@ import android.database.*;
 import android.database.sqlite.*;
 
 import java.io.*;
+import java.util.*;
+
+import static android.content.Context.*;
 
 /**
  * {@link DatabaseInternal} extends {@link SQLiteOpenHelper} and contains convenience methods for handling local sqlite files.
@@ -29,6 +32,8 @@ import java.io.*;
  */
 public class DatabaseInternal extends SQLiteOpenHelper
 {
+	public static final int DATABASE_INTERNAL = -7;
+
 	private static final String DATABASE_NAME    = "buntata";
 	private static final int    DATABASE_VERSION = 1;
 
@@ -52,9 +57,12 @@ public class DatabaseInternal extends SQLiteOpenHelper
 	{
 	}
 
-	public SQLiteDatabase openFromFile()
+	public SQLiteDatabase openFromFile() throws SQLException
 	{
-		return SQLiteDatabase.openOrCreateDatabase(new File(new File(new File(context.getFilesDir(), "data"), Integer.toString(datasourceId)), datasourceId + ".sqlite"), null);
+		if (datasourceId == DATABASE_INTERNAL)
+			return context.openOrCreateDatabase("LogEntries", MODE_PRIVATE, null);
+		else
+			return SQLiteDatabase.openOrCreateDatabase(new File(new File(new File(context.getFilesDir(), "data"), Integer.toString(datasourceId)), datasourceId + ".sqlite"), null);
 	}
 
 	/**
@@ -71,12 +79,28 @@ public class DatabaseInternal extends SQLiteOpenHelper
 			this.cursor = cursor;
 		}
 
-		public String getString(String columnName)
+		public Double getDouble(String columnName)
 		{
-			if (cursor.getColumnIndex(columnName) == -1)
+			int index = cursor.getColumnIndex(columnName);
+
+			if (index == -1)
+				return null;
+			else if (cursor.isNull(index))
 				return null;
 			else
-				return cursor.getString(cursor.getColumnIndex(columnName));
+				return cursor.getDouble(index);
+		}
+
+		public String getString(String columnName)
+		{
+			int index = cursor.getColumnIndex(columnName);
+
+			if (index == -1)
+				return null;
+			else if (cursor.isNull(index))
+				return null;
+			else
+				return cursor.getString(index);
 		}
 
 		public int getInt(String columnName)
@@ -93,6 +117,21 @@ public class DatabaseInternal extends SQLiteOpenHelper
 				return -1;
 			else
 				return cursor.getLong(cursor.getColumnIndex(columnName));
+		}
+
+		public Date getDate(String columnName)
+		{
+			if (cursor.getColumnIndex(columnName) == -1)
+				return null;
+			else
+			{
+				Long date = getLong(columnName);
+
+				if (date != -1)
+					return new Date(date);
+				else
+					return null;
+			}
 		}
 
 		public boolean getBoolean(String columnName)

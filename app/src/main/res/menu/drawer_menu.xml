@@ -29,6 +29,14 @@
 		android:icon="@drawable/drawer_data_source"
 		android:title="@string/menu_data_source"/>
 	<item
+		android:id="@+id/drawer_menu_node_catalog"
+		android:icon="@drawable/drawer_catalog"
+		android:title="@string/menu_catalog"/>
+	<item
+		android:id="@+id/drawer_menu_log"
+		android:icon="@drawable/drawer_log"
+		android:title="@string/menu_log"/>
+	<item
 		android:id="@+id/drawer_menu_settings"
 		android:icon="@drawable/drawer_settings"
 		android:title="@string/menu_settings"/>

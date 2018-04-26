@@ -94,6 +94,10 @@ public abstract class AbstractManager<T extends DatabaseObject>
 
 			return result;
 		}
+		catch (SQLiteCantOpenDatabaseException e)
+		{
+			return new ArrayList<>();
+		}
 		finally
 		{
 			close();
@@ -132,6 +136,10 @@ public abstract class AbstractManager<T extends DatabaseObject>
 			cursor.close();
 
 			return result;
+		}
+		catch (SQLiteCantOpenDatabaseException e)
+		{
+			return null;
 		}
 		finally
 		{

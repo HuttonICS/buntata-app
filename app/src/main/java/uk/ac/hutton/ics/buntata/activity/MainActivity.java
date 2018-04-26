@@ -16,19 +16,24 @@
 
 package uk.ac.hutton.ics.buntata.activity;
 
+import android.*;
 import android.app.*;
 import android.content.*;
 import android.content.pm.*;
 import android.os.*;
+import android.support.annotation.*;
 import android.support.design.widget.*;
 import android.support.v4.app.*;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.*;
-import android.support.v4.util.*;
+import android.support.v4.util.Pair;
 import android.support.v4.view.*;
 import android.support.v7.widget.*;
+import android.util.*;
 import android.view.*;
+
+import com.google.zxing.integration.android.*;
 
 import java.util.*;
 
@@ -49,9 +54,10 @@ import uk.ac.hutton.ics.buntata.util.*;
  */
 public class MainActivity extends DrawerActivity implements OnFragmentChangeListener
 {
-	private static final int REQUEST_CODE_INTRO             = 1;
-	private static final int REQUEST_CODE_SELECT_DATASOURCE = 2;
-	private static final int REQUEST_CODE_DETAILS           = 3;
+	private static final int REQUEST_CODE_INTRO                   = 1;
+	private static final int REQUEST_CODE_SELECT_DATASOURCE       = 2;
+	private static final int REQUEST_CODE_DETAILS                 = 3;
+	private static final int REQUEST_CODE_CAMERA_SCAN_PERMISSIONS = 4;
 
 	private int datasourceId = -1;
 
@@ -61,6 +67,7 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 
 	@BindView(R.id.main_view_fab)
 	FloatingActionButton fab;
+	private SearchView searchView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -73,6 +80,9 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 		PreferenceUtils.setDefaults(this);
 		NodeManager.clearCaches();
 		DatasourceService.init(this);
+
+		/* Initialize the internal database for track history keeping */
+		new LogEntryManager(this).initializeDatabase();
 
 		DatasourceService.getAllAdvanced(this, false, false, new RemoteCallback<List<BuntataDatasourceAdvanced>>(this)
 		{
@@ -244,7 +254,7 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 		BuntataDatasource datasource = new DatasourceManager(this, datasourceId).getById(datasourceId);
 		boolean skipSingleChild = children.size() == 1 && !datasource.isShowSingleChild();
 
-		/* If it does */
+		/* If it doesn't */
 		if (!hasChildren || skipSingleChild)
 		{
 			/* If it's only got one child, jump straight to it */
@@ -331,38 +341,83 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 	}
 
 	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+	{
+		switch (requestCode)
+		{
+			case REQUEST_CODE_CAMERA_SCAN_PERMISSIONS:
+			{
+				if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+				{
+					/* Permission granted */
+					scanBarcode();
+				}
+				else
+				{
+					int foreground = ContextCompat.getColor(this, android.R.color.white);
+					int background = ContextCompat.getColor(this, R.color.snackbar_red);
+					SnackbarUtils.show(getSnackbarParentView(), getString(R.string.snackbar_permission_missing_camera), foreground, background, Snackbar.LENGTH_LONG);
+				}
+
+				break;
+			}
+
+			default:
+				super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		}
+	}
+
+	private void scanBarcode()
+	{
+		/* Add the third-party barcode scanner */
+		IntentIntegrator integrator = new IntentIntegrator(this);
+		integrator.initiateScan();
+		GoogleAnalyticsUtils.trackEvent(this, getTracker(TrackerName.APP_TRACKER), getString(R.string.ga_event_category_scan), getString(R.string.ga_event_action_scan_camera));
+	}
+
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		super.onActivityResult(requestCode, resultCode, data);
 
-		switch (requestCode)
+		IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+		/* See if it's the camera barcode scanner */
+		if (scanResult != null && resultCode == Activity.RESULT_OK)
 		{
-			case REQUEST_CODE_INTRO:
-				if (resultCode == RESULT_OK)
-				{
+			if (searchView != null)
+				searchView.setQuery(scanResult.getContents(), true);
+		}
+		else
+		{
+			switch (requestCode)
+			{
+				case REQUEST_CODE_INTRO:
+					if (resultCode == RESULT_OK)
+					{
 //					PreferenceUtils.setPreferenceAsBoolean(this, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, true);
-				}
-				else
-				{
-					PreferenceUtils.setPreferenceAsBoolean(this, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, false);
-					/* User cancelled the intro so we'll finish this activity too. */
-					finish();
-				}
-				break;
-			case REQUEST_CODE_SELECT_DATASOURCE:
-			case REQUEST_DATA_SOURCE:
-				if (resultCode != RESULT_OK)
-				{
-					startActivityForResult(new Intent(getApplicationContext(), DatasourceActivity.class), REQUEST_CODE_SELECT_DATASOURCE);
-				}
-				else
-				{
-					override = true;
-				}
-				break;
-			case REQUEST_CODE_DETAILS:
-				/* We're coming back from the details view, so don't add anything */
-				break;
+					}
+					else
+					{
+						PreferenceUtils.setPreferenceAsBoolean(this, PreferenceUtils.PREFS_AT_LEAST_ONE_DATASOURCE, false);
+						/* User cancelled the intro so we'll finish this activity too. */
+						finish();
+					}
+					break;
+				case REQUEST_CODE_SELECT_DATASOURCE:
+				case REQUEST_DATA_SOURCE:
+					if (resultCode != RESULT_OK)
+					{
+						startActivityForResult(new Intent(getApplicationContext(), DatasourceActivity.class), REQUEST_CODE_SELECT_DATASOURCE);
+					}
+					else
+					{
+						override = true;
+					}
+					break;
+				case REQUEST_CODE_DETAILS:
+					/* We're coming back from the details view, so don't add anything */
+					break;
+			}
 		}
 	}
 
@@ -380,10 +435,16 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 		SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
 
 		/* Get the actual search view */
-		final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+		searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 
 		if (searchView != null)
 		{
+			DisplayMetrics displayMetrics = new DisplayMetrics();
+			getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+			final MenuItem barcodeItem = menu.findItem(R.id.action_scan_barcode);
+
+			searchView.setMaxWidth(displayMetrics.widthPixels / 2);
 			searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
 			searchView.setQueryHint(getString(R.string.search_query_hint));
 			/* Listen to submit events */
@@ -422,13 +483,51 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 				{
 					MainActivity.this.query = null;
 					filter("");
+					barcodeItem.setVisible(false);
 
 					return false;
+				}
+			});
+
+			searchView.setOnSearchClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View view)
+				{
+					barcodeItem.setVisible(true);
 				}
 			});
 		}
 
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case R.id.action_scan_barcode:
+				scanBarcodePrePermission();
+
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	private void scanBarcodePrePermission()
+	{
+		if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+		{
+					/* Request the permission */
+			if (!deniedPermissions.contains(Manifest.permission.CAMERA))
+				ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA_SCAN_PERMISSIONS);
+
+			return;
+		}
+
+		scanBarcode();
 	}
 
 	public String getFilter()

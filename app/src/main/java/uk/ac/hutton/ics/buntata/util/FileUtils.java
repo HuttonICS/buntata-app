@@ -17,9 +17,14 @@
 package uk.ac.hutton.ics.buntata.util;
 
 import android.content.*;
+import android.os.*;
 
 import java.io.*;
+import java.text.*;
+import java.util.*;
 import java.util.zip.*;
+
+import uk.ac.hutton.ics.buntata.*;
 
 /**
  * @author Sebastian Raubach
@@ -27,6 +32,23 @@ import java.util.zip.*;
 
 public class FileUtils
 {
+	private static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy.MM.dd_HH.mm.ss", Locale.getDefault());
+
+	public static synchronized File getExportFile(Context context, String extension)
+	{
+		File file;
+
+		File root = new File(Environment.getExternalStorageDirectory(), context.getString(R.string.app_name));
+		root.mkdirs();
+
+		do
+		{
+			file = new File(root, SDF.format(new Date()) + "." + extension);
+		} while (file.exists());
+
+		return file;
+	}
+
 	public static void deleteDirectoryRecursively(File folder)
 	{
 		if (!folder.exists() || !folder.isDirectory())
@@ -55,6 +77,24 @@ public class FileUtils
 	public static File getFileForDatasource(Context context, int datasourceId, String filename)
 	{
 		return new File(new File(new File(context.getFilesDir(), "data"), Integer.toString(datasourceId)), filename);
+	}
+
+	public static void zip(File zipFile, File... sourceFiles) throws IOException
+	{
+		ZipOutputStream zos = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)));
+		for (File source : sourceFiles)
+		{
+			ZipEntry entry = new ZipEntry(source.getName());
+			zos.putNextEntry(entry);
+
+			FileInputStream fis = new FileInputStream(source);
+
+			byte[] readBuffer = new byte[2048];
+			int amountRead;
+
+			while ((amountRead = fis.read(readBuffer)) > 0)
+				zos.write(readBuffer, 0, amountRead);
+		}
 	}
 
 	public static void unzip(File zipFile, File targetDirectory) throws IOException

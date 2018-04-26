@@ -18,8 +18,6 @@ package uk.ac.hutton.ics.buntata.activity;
 
 import android.content.*;
 import android.content.res.*;
-import android.graphics.*;
-import android.graphics.drawable.*;
 import android.os.*;
 import android.support.annotation.*;
 import android.support.design.widget.*;
@@ -27,7 +25,6 @@ import android.support.v4.view.*;
 import android.support.v4.widget.*;
 import android.support.v7.app.*;
 import android.view.*;
-import android.widget.*;
 
 import butterknife.*;
 import uk.ac.hutton.ics.buntata.R;
@@ -113,16 +110,6 @@ public abstract class DrawerActivity extends BaseActivity
 		}
 	}
 
-	protected void setHeaderDrawable(Drawable drawable)
-	{
-		((ImageView) navigationView.getHeaderView(0)).setImageDrawable(drawable);
-	}
-
-	protected void setHeaderDrawable(Bitmap drawable)
-	{
-		((ImageView) navigationView.getHeaderView(0)).setImageBitmap(drawable);
-	}
-
 	private boolean onNavigation(MenuItem item)
 	{
 		/* Depending on the Android version, handle things differently */
@@ -131,17 +118,17 @@ public abstract class DrawerActivity extends BaseActivity
 			case R.id.drawer_menu_data_source:
 				startActivityForResult(new Intent(getApplicationContext(), DatasourceActivity.class), REQUEST_DATA_SOURCE);
 				break;
-//			case R.id.drawer_menu_visit_homepage:
-//				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_homepage))));
-//				break;
-//			case R.id.drawer_menu_online_help:
-//				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_online_help))));
-//				break;
+			case R.id.drawer_menu_log:
+				startActivity(new Intent(getApplicationContext(), LogEntryActivity.class));
+				break;
 			case R.id.drawer_menu_settings:
 				startActivityForResult(new Intent(getApplicationContext(), PreferencesActivity.class), REQUEST_PREFS);
 				break;
 			case R.id.drawer_menu_about:
 				startActivity(new Intent(getApplicationContext(), AboutActivity.class));
+				break;
+			case R.id.drawer_menu_node_catalog:
+				startActivity(new Intent(getApplicationContext(), NodeCatalogActivity.class));
 				break;
 			default:
 		}

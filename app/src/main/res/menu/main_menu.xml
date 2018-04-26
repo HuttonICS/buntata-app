@@ -23,4 +23,10 @@
 		app:showAsAction="always"
 		app:actionViewClass="android.support.v7.widget.SearchView"
 		android:title="@string/menu_action_search"/>
+	<item
+		android:id="@+id/action_scan_barcode"
+		android:icon="@drawable/action_menu_barcode"
+		app:showAsAction="always"
+		android:visible="false"
+		android:title="@string/menu_action_scan_barcode"/>
 </menu>

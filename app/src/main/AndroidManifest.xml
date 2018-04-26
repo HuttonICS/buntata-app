@@ -18,7 +18,10 @@
 		  xmlns:tools="http://schemas.android.com/tools"
 		  package="uk.ac.hutton.ics.buntata">
 
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
 	<application
 		android:allowBackup="true"
@@ -49,7 +52,6 @@
 		<activity
 			android:name=".activity.NodeDetailsActivity"
 			android:parentActivityName=".activity.MainActivity">
-			can
 			<intent-filter android:label="@string/app_name">
 				<action android:name="android.intent.action.VIEW"/>
 
@@ -77,5 +79,23 @@
 		<activity android:name=".activity.VideoActivity"/>
 		<activity android:name=".activity.PreferencesActivity"/>
 		<activity android:name=".activity.ChangelogActivity"/>
+		<activity android:name=".activity.LogEntryActivity"/>
+		<activity android:name=".activity.NodeCatalogActivity"/>
+		<activity android:name=".activity.LogDetailsActivity"
+				  android:configChanges="orientation|screenSize"/>
+
+		<provider
+			android:name=".util.ShareImageFileProvider"
+			android:authorities="${applicationId}.fileprovider"
+			android:exported="false"
+			android:grantUriPermissions="true">
+			<meta-data
+				android:name="android.support.FILE_PROVIDER_PATHS"
+				android:resource="@xml/filepaths"/>
+		</provider>
+
+		<meta-data
+			android:name="com.google.android.geo.API_KEY"
+			android:value="${GOOGLE_MAPS_KEY}"/>
 	</application>
 </manifest>

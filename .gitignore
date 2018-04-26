@@ -7,6 +7,7 @@
 /build
 /captures
 .externalNativeBuild
+*.apk
 
 */release.properties
 buntata.jks

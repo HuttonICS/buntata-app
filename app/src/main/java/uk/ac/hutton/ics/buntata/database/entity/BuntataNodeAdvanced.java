@@ -40,13 +40,7 @@ public class BuntataNodeAdvanced extends BuntataNode
 		super(id, createdOn, updatedOn);
 	}
 
-	public BuntataNodeAdvanced(int id, Date createdOn, Date updatedOn, Integer datasourceId, String name, String description, List<BuntataMediaAdvanced> media)
-	{
-		super(id, createdOn, updatedOn, datasourceId, name, description);
-		this.media = media;
-	}
-
-	public List<BuntataMediaAdvanced> getMedia()
+	public List<BuntataMediaAdvanced> getMediaAdvanced()
 	{
 		return media;
 	}
@@ -65,7 +59,7 @@ public class BuntataNodeAdvanced extends BuntataNode
 
 	public BuntataMediaAdvanced getFirstImage()
 	{
-		for (BuntataMediaAdvanced m : getMedia())
+		for (BuntataMediaAdvanced m : getMediaAdvanced())
 		{
 			if (m.getMediaType() != null && "Image".equals(m.getMediaType().getName()) && m.getInternalLink() != null)
 			{

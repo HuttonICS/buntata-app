@@ -39,12 +39,6 @@ public class BuntataMediaAdvanced extends BuntataMedia
 		super(id, createdOn, updatedOn);
 	}
 
-	public BuntataMediaAdvanced(int id, Date createdOn, Date updatedOn, Integer mediaTypeId, String name, String description, String internalLink, String externalLink, String externalLinkDescription, String copyright, BuntataMediaType mediaType)
-	{
-		super(id, createdOn, updatedOn, mediaTypeId, name, description, internalLink, externalLink, externalLinkDescription, copyright);
-		this.mediaType = mediaType;
-	}
-
 	public BuntataMediaType getMediaType()
 	{
 		return mediaType;

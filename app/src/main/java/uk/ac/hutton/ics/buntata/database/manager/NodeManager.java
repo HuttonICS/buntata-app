@@ -68,6 +68,42 @@ public class NodeManager extends AbstractManager<BuntataNodeAdvanced>
 		return BuntataNode.TABLE_NAME;
 	}
 
+	public List<BuntataNodeAdvanced> getAllLeaves()
+	{
+		List<BuntataNodeAdvanced> result = new ArrayList<>();
+
+		try
+		{
+			open();
+
+			Cursor cursor = database.rawQuery("SELECT * FROM nodes WHERE NOT EXISTS (SELECT 1 FROM relationships WHERE relationships.parent = nodes.id) ORDER BY nodes.name", null);
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast())
+			{
+				try
+				{
+					BuntataNodeAdvanced node = getDefaultParser().parse(context, datasourceId, new DatabaseInternal.AdvancedCursor(cursor));
+					node.setHasChildren(hasChildren(node.getId()));
+					result.add(node);
+				}
+				catch (ParseException e)
+				{
+					e.printStackTrace();
+				}
+
+				cursor.moveToNext();
+			}
+
+			cursor.close();
+		}
+		finally
+		{
+			close();
+		}
+
+		return result;
+	}
+
 	public List<BuntataNodeAdvanced> getAllRoots()
 	{
 		List<BuntataNodeAdvanced> result = new ArrayList<>();

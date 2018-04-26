@@ -106,9 +106,20 @@ public class GoogleAnalyticsUtils
 			return;
 		}
 
+		String description;
+
+		try
+		{
+			description = new StandardExceptionParser(context, null).getDescription(Thread.currentThread().getName(), e);
+		}
+		catch (Exception ex)
+		{
+			description = "UNKNOWN";
+		}
+
         /* Build and send an Event */
 		tracker.send(new HitBuilders.ExceptionBuilder()
-				.setDescription(new StandardExceptionParser(context, null).getDescription(Thread.currentThread().getName(), e))
+				.setDescription(description)
 				.setFatal(false)
 				.build());
 	}

@@ -39,12 +39,6 @@ public class BuntataAttributeValueAdvanced extends BuntataAttributeValue
 		super(id, createdOn, updatedOn);
 	}
 
-	public BuntataAttributeValueAdvanced(int id, Date createdOn, Date updatedOn, Integer nodeId, Integer attributeId, String value, BuntataAttribute attribute)
-	{
-		super(id, createdOn, updatedOn, nodeId, attributeId, value);
-		this.attribute = attribute;
-	}
-
 	public BuntataAttribute getAttribute()
 	{
 		return attribute;

@@ -329,9 +329,9 @@ public class DatasourceAdapter extends SectionedRecyclerViewAdapter<DatasourceAd
 
 			File f = new File(iconPath);
 			if (f.exists())
-				r = Picasso.with(context).load(f);
+				r = Picasso.get().load(f);
 			else
-				r = Picasso.with(context).load(iconPath);
+				r = Picasso.get().load(iconPath);
 
 			r.noPlaceholder()
 			 .into(holder.imageView);

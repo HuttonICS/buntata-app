@@ -117,7 +117,7 @@ public class NodeDetailsActivity extends BaseActivity
 
 			if (datasource == null)
 			{
-				ToastUtils.createToast(this, R.string.toast_datasource_not_found, ToastUtils.LENGTH_LONG);
+				ToastUtils.INSTANCE.createToast(this, R.string.toast_datasource_not_found, Toast.LENGTH_LONG);
 				this.finish();
 			}
 			else
@@ -126,7 +126,7 @@ public class NodeDetailsActivity extends BaseActivity
 
 				if (node == null)
 				{
-					ToastUtils.createToast(this, R.string.toast_node_not_found, ToastUtils.LENGTH_LONG);
+					ToastUtils.INSTANCE.createToast(this, R.string.toast_node_not_found, Toast.LENGTH_LONG);
 					this.finish();
 				}
 			}
@@ -171,6 +171,10 @@ public class NodeDetailsActivity extends BaseActivity
 			pager.setAdapter(adapter);
 			circleIndicator.setViewPager(pager);
 			circleIndicator.setVisibility(imageCount > 1 ? View.VISIBLE : View.GONE);
+
+			float heightDp = getResources().getDisplayMetrics().heightPixels / 1.5f;
+			CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+			lp.height = (int) heightDp;
 		}
 		else
 		{
@@ -183,10 +187,6 @@ public class NodeDetailsActivity extends BaseActivity
 			lp.height = CoordinatorLayout.LayoutParams.WRAP_CONTENT;
 			appBarLayout.setFitsSystemWindows(false);
 		}
-
-		float heightDp = getResources().getDisplayMetrics().heightPixels / 1.5f;
-		CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-		lp.height = (int) heightDp;
 
 		/* Get all the attributes */
 		List<BuntataAttributeValueAdvanced> attributeValues = new AttributeValueManager(this, datasourceId).getForNode(nodeId);
@@ -268,9 +268,31 @@ public class NodeDetailsActivity extends BaseActivity
 			case android.R.id.home:
 				onBackPressed();
 				return true;
+			case R.id.action_add_log_entry:
+				Intent intent = new Intent(getApplicationContext(), LogDetailsActivity.class);
+
+				/* Pass parameters */
+				Bundle args = new Bundle();
+				args.putInt(LogDetailsActivity.PARAM_DATASOURCE_ID, datasourceId);
+				args.putInt(LogDetailsActivity.PARAM_NODE_ID, nodeId);
+				args.putInt(LogDetailsActivity.PARAM_LOG_ID, -1);
+				intent.putExtras(args);
+
+				startActivity(intent);
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		/* Inflate the menu */
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.node_details_menu, menu);
+
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override

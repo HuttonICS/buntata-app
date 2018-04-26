@@ -17,6 +17,7 @@
 package uk.ac.hutton.ics.buntata.activity;
 
 import android.content.*;
+import android.graphics.*;
 import android.os.*;
 import android.support.design.widget.*;
 import android.support.v4.app.*;
@@ -67,6 +68,10 @@ public class AboutActivity extends BaseActivity
 			getSupportActionBar().setHomeButtonEnabled(true);
 		}
 
+		getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+			getWindow().setStatusBarColor(Color.TRANSPARENT);
+
 		/* Get the view pager and set the fragment adapter */
 		viewPager.setAdapter(new AboutFragmentPagerAdapter(getSupportFragmentManager(), this));
 		tabLayout.setupWithViewPager(viewPager);
@@ -106,7 +111,7 @@ public class AboutActivity extends BaseActivity
 				}
 				else if (show)
 				{
-					collapsingToolbarLayout.setTitle(" "); // careful there should a space between double quote otherwise it wont work
+					collapsingToolbarLayout.setTitle(" "); // careful there should a space between double quote otherwise it won't work
 					show = false;
 				}
 			}

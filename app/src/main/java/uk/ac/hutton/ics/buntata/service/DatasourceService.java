@@ -26,6 +26,7 @@ import java.util.*;
 
 import jhi.buntata.resource.*;
 import retrofit2.*;
+import retrofit2.converter.jackson.*;
 import uk.ac.hutton.ics.buntata.*;
 import uk.ac.hutton.ics.buntata.database.entity.*;
 import uk.ac.hutton.ics.buntata.database.manager.*;
@@ -110,7 +111,7 @@ public class DatasourceService
 		result.enqueue(new Callback<List<BuntataDatasource>>()
 		{
 			@Override
-			public void onResponse(Response<List<BuntataDatasource>> response)
+			public void onResponse(Call<List<BuntataDatasource>> call, Response<List<BuntataDatasource>> response)
 			{
 				if (dialog != null)
 					dialog.dismiss();
@@ -118,7 +119,7 @@ public class DatasourceService
 			}
 
 			@Override
-			public void onFailure(Throwable t)
+			public void onFailure(Call<List<BuntataDatasource>> call, Throwable t)
 			{
 				if (dialog != null)
 					dialog.dismiss();
@@ -255,7 +256,7 @@ public class DatasourceService
 				{
 					if (file == null)
 					{
-						callback.onFailure(null);
+						callback.onFailure(new IOException("File not found."));
 						return;
 					}
 

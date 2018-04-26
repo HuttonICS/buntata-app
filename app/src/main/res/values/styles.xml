@@ -24,6 +24,12 @@
 		<item name="colorAccent">@color/colorAccent</item>
 	</style>
 
+	<style name="ImagePickerTheme" parent="ef_BaseTheme">
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="colorAccent">@color/colorAccent</item>
+	</style>
+
 	<style name="TextAppearance.Design.CollapsingToolbar.Expanded.Shadow">
 		<item name="android:shadowDy">0</item>
 		<item name="android:shadowDx">0</item>

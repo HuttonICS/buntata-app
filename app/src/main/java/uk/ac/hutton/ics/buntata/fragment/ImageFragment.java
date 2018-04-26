@@ -178,7 +178,7 @@ public class ImageFragment extends Fragment
 		}
 
 		/* Load the image */
-		RequestCreator p = Picasso.with(getActivity())
+		RequestCreator p = Picasso.get()
 								  .load(FileUtils.getFileForDatasource(getActivity(), datasourceId, medium.getInternalLink()))
 								  .fit();
 
@@ -197,7 +197,7 @@ public class ImageFragment extends Fragment
 			}
 
 			@Override
-			public void onError()
+			public void onError(Exception e)
 			{
 			}
 		});

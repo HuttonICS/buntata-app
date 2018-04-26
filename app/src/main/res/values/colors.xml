@@ -24,6 +24,8 @@
 	<color name="textAccent">#186c98</color>
 	<color name="cardview_divider">#acacac</color>
 
+	<color name="snackbar_red">#e74c3c</color>
+
 	<color name="drawerHeader">#444</color>
 
 	<color name="license_background">#ddd</color>

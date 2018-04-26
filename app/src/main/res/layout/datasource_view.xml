@@ -70,9 +70,9 @@
 					android:id="@+id/datasource_size_view"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:maxLines="1"
 					android:textColor="@android:color/secondary_text_light"
-					android:ellipsize="marquee"/>
+					android:ellipsize="marquee"
+					android:singleLine="true"/>
 
 			</LinearLayout>
 
