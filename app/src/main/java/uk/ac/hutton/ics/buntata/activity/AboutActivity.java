@@ -56,7 +56,7 @@ public class AboutActivity extends BaseActivity
 
 		ButterKnife.bind(this);
 
-		final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		final Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
 		/* Set the toolbar as the action bar */

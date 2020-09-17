@@ -25,7 +25,7 @@ import android.widget.*;
 
 import com.google.android.gms.analytics.*;
 
-import uk.ac.hutton.ics.buntata.R;
+import uk.ac.hutton.ics.buntata.*;
 import uk.ac.hutton.ics.buntata.util.*;
 
 public class PreferencesActivity extends BaseActivity
@@ -97,7 +97,7 @@ public class PreferencesActivity extends BaseActivity
 			View v = super.onCreateView(inflater, container, savedInstanceState);
 			if (v != null)
 			{
-				ListView lv = (ListView) v.findViewById(android.R.id.list);
+				ListView lv = v.findViewById(android.R.id.list);
 				/* Remove the padding */
 				lv.setPadding(0, 0, 0, 0);
 			}
@@ -114,6 +114,7 @@ public class PreferencesActivity extends BaseActivity
 
 			/* Add listeners and set summaries */
 			findPreference(PreferenceUtils.PREFS_SHOW_CHANGELOG).setOnPreferenceClickListener(this);
+			findPreference(PreferenceUtils.PREFS_SHOW_EULA).setOnPreferenceClickListener(this);
 			findPreference(PreferenceUtils.PREFS_COLUMNS_PORTRAIT).setSummary(getString(R.string.preferences_columns_portrait_summary, PreferenceUtils.getPreferenceAsInt(getActivity(), PreferenceUtils.PREFS_COLUMNS_PORTRAIT, 2)));
 			findPreference(PreferenceUtils.PREFS_COLUMNS_LANDSCAPE).setSummary(getString(R.string.preferences_columns_landscape_summary, PreferenceUtils.getPreferenceAsInt(getActivity(), PreferenceUtils.PREFS_COLUMNS_LANDSCAPE, 3)));
 		}
@@ -170,6 +171,13 @@ public class PreferencesActivity extends BaseActivity
 					if (getActivity() instanceof BaseActivity)
 						GoogleAnalyticsUtils.trackEvent(getActivity(), ((BaseActivity) getActivity()).getTracker(TrackerName.APP_TRACKER), getString(R.string.ga_event_category_preferences), getString(R.string.ga_event_action_show_changelog));
 
+					return true;
+
+				case PreferenceUtils.PREFS_SHOW_EULA:
+
+					startActivity(new Intent(getActivity(), EulaActivity.class));
+
+					GoogleAnalyticsUtils.trackEvent(getActivity(), ((BaseActivity) getActivity()).getTracker(TrackerName.APP_TRACKER),  getString(R.string.ga_event_category_preferences), getString(R.string.ga_event_action_show_eula));
 					return true;
 			}
 

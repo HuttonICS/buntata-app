@@ -28,7 +28,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.*;
 import android.support.v4.util.Pair;
-import android.support.v4.view.*;
 import android.support.v7.widget.*;
 import android.util.*;
 import android.view.*;
@@ -335,7 +334,7 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 		/* If there's only one item left on the stack, finish as there's nothing to go back to */
 		if (getSupportFragmentManager().getBackStackEntryCount() == 1)
 			finish();
-		/* Else, just let the parent handle things */
+			/* Else, just let the parent handle things */
 		else
 			super.onBackPressed();
 	}
@@ -435,7 +434,7 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 		SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
 
 		/* Get the actual search view */
-		searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+		searchView = (SearchView) searchItem.getActionView();
 
 		if (searchView != null)
 		{
@@ -520,7 +519,7 @@ public class MainActivity extends DrawerActivity implements OnFragmentChangeList
 	{
 		if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
 		{
-					/* Request the permission */
+			/* Request the permission */
 			if (!deniedPermissions.contains(Manifest.permission.CAMERA))
 				ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA_SCAN_PERMISSIONS);
 

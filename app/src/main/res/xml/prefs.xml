@@ -46,6 +46,12 @@
 			android:summary="@string/preferences_changelog_summary"
 			android:icon="@drawable/preferences_changelog"/>
 
+		<Preference
+			android:key="Prefs.Show.Eula"
+			android:title="@string/preferences_eula_title"
+			android:summary="@string/preferences_eula_summary"
+			android:icon="@drawable/preferences_eula"/>
+
 		<SwitchPreference
 			android:dialogTitle="@string/preferences_ga_opt_out_title"
 			android:key="prefs.google.analytics.opt.out"

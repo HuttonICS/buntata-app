@@ -71,12 +71,18 @@ public class ImageViewPagerActivity extends BaseActivity
 		List<BuntataMediaAdvanced> media = mediaManager.getForNode(null, nodeId);
 		Map<String, List<BuntataMediaAdvanced>> splitByType = mediaManager.splitByType(media);
 
-		int imageCount = splitByType.get(BuntataMediaType.TYPE_IMAGE).size();
-			/* Set to the pager */
-		adapter = new ImagePagerAdapter(getSupportFragmentManager(), datasourceId, nodeId, true, splitByType.get(BuntataMediaType.TYPE_IMAGE), preferedMediumId);
+		List<BuntataMediaAdvanced> images = splitByType.get(BuntataMediaType.TYPE_IMAGE);
+		/* Set to the pager */
+		adapter = new ImagePagerAdapter(getSupportFragmentManager(), datasourceId, nodeId, true, images);
 		pager.setAdapter(adapter);
 		circleIndicator.setViewPager(pager);
-		circleIndicator.setVisibility(imageCount > 1 ? View.VISIBLE : View.GONE);
+		circleIndicator.setVisibility(images.size() > 1 ? View.VISIBLE : View.GONE);
+
+		for (int i = 0; i < images.size(); i++)
+		{
+			if (images.get(i).getId() == preferedMediumId)
+				pager.setCurrentItem(i);
+		}
 
 		/* Hide the status bar */
 		getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);

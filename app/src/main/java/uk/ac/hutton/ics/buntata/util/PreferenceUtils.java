@@ -35,6 +35,7 @@ public class PreferenceUtils
 	public static final String PREFS_SELECTED_DATASOURCE_ID         = "prefs.selected.datasource.id";
 	public static final String PREFS_GA_OPT_OUT                     = "prefs.google.analytics.opt.out";
 	public static final String PREFS_LAST_VERSION                   = "prefs.last.version.code";
+	public static final String PREFS_SHOW_EULA                    = "Prefs.Show.Eula";
 	public static final String PREFS_SHOW_CHANGELOG                 = "prefs.show.changelog";
 	public static final String PREFS_COLUMNS_PORTRAIT               = "prefs.columns.portrait";
 	public static final String PREFS_COLUMNS_LANDSCAPE              = "prefs.columns.landscape";

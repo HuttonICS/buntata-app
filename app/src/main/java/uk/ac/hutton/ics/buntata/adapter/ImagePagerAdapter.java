@@ -35,20 +35,13 @@ public class ImagePagerAdapter extends FragmentStatePagerAdapter
 
 	private WeakHashMap<Integer, ImageFragment> fragments = new WeakHashMap<>();
 
-	public ImagePagerAdapter(FragmentManager fm, int datasourceId, int nodeId, boolean isFullscreen, List<BuntataMediaAdvanced> dataset, int preferedMediumId)
+	public ImagePagerAdapter(FragmentManager fm, int datasourceId, int nodeId, boolean isFullscreen, List<BuntataMediaAdvanced> dataset)
 	{
 		super(fm);
 		this.datasourceId = datasourceId;
 		this.nodeId = nodeId;
 		this.isFullscreen = isFullscreen;
-
-		for (BuntataMediaAdvanced medium : dataset)
-		{
-			if (medium.getId() == preferedMediumId)
-				this.dataset.add(0, medium);
-			else
-				this.dataset.add(medium);
-		}
+		this.dataset.addAll(dataset);
 	}
 
 	@Override

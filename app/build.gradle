@@ -33,14 +33,14 @@ android {
         enabled = true
     }
 
-    compileSdkVersion 27
+    compileSdkVersion 28
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "uk.ac.hutton.ics.buntata"
         minSdkVersion 16
-        targetSdkVersion 27
-        versionCode 17
-        versionName "1.18.04.26"
+        targetSdkVersion 28
+        versionCode 18
+        versionName "1.19.10.11"
         multiDexEnabled true
     }
 

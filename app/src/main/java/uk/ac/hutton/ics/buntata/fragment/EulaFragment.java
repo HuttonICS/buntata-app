@@ -40,6 +40,8 @@ import uk.ac.hutton.ics.buntata.util.*;
  */
 public class EulaFragment extends Fragment
 {
+	@BindView(R.id.eula_description)
+	TextView          text;
 	@BindView(R.id.eula_list)
 	ListView          list;
 	@BindView(R.id.eula_webview)
@@ -66,6 +68,17 @@ public class EulaFragment extends Fragment
 		ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.helper_list_view_text_color, licenseTypes);
 
 		list.setAdapter(adapter);
+
+		if (getActivity() instanceof IntroductionActivity)
+		{
+			buttonBar.setVisibility(View.VISIBLE);
+			text.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			buttonBar.setVisibility(View.GONE);
+			text.setVisibility(View.GONE);
+		}
 
 		return view;
 	}
@@ -149,7 +162,8 @@ public class EulaFragment extends Fragment
 		{
 			public void onPageFinished(WebView view, String url)
 			{
-				buttonBar.setVisibility(View.VISIBLE);
+				if(getActivity() instanceof IntroductionActivity)
+					buttonBar.setVisibility(View.VISIBLE);
 			}
 
 			@SuppressWarnings("deprecation")

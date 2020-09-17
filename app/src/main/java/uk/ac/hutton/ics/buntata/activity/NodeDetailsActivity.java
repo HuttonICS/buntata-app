@@ -49,8 +49,9 @@ public class NodeDetailsActivity extends BaseActivity
 	public static final String PARAM_PREFERED_FIRST_MEDIUM = "preferedMediumId";
 	public static final String PARAM_NODE_ID               = "nodeId";
 
-	private int datasourceId = -1;
-	private int nodeId       = -1;
+	private int datasourceId        = -1;
+	private int nodeId              = -1;
+	private int preferedMediumIndex = -1;
 
 	@BindView(R.id.node_details_image_pager)
 	ViewPager       pager;
@@ -166,11 +167,22 @@ public class NodeDetailsActivity extends BaseActivity
 		int imageCount = splitByType.get(BuntataMediaType.TYPE_IMAGE).size();
 		if (imageCount > 0)
 		{
+			List<BuntataMediaAdvanced> images = splitByType.get(BuntataMediaType.TYPE_IMAGE);
+
 			/* Set to the pager */
-			final ImagePagerAdapter adapter = new ImagePagerAdapter(getSupportFragmentManager(), datasourceId, nodeId, false, splitByType.get(BuntataMediaType.TYPE_IMAGE), preferedMediumId);
+			final ImagePagerAdapter adapter = new ImagePagerAdapter(getSupportFragmentManager(), datasourceId, nodeId, false, images);
 			pager.setAdapter(adapter);
 			circleIndicator.setViewPager(pager);
 			circleIndicator.setVisibility(imageCount > 1 ? View.VISIBLE : View.GONE);
+
+			for (int i = 0; i < images.size(); i++)
+			{
+				if (images.get(i).getId() == preferedMediumId)
+				{
+					preferedMediumIndex = i;
+					pager.setCurrentItem(i);
+				}
+			}
 
 			float heightDp = getResources().getDisplayMetrics().heightPixels / 1.5f;
 			CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
@@ -190,6 +202,13 @@ public class NodeDetailsActivity extends BaseActivity
 
 		/* Get all the attributes */
 		List<BuntataAttributeValueAdvanced> attributeValues = new AttributeValueManager(this, datasourceId).getForNode(nodeId);
+
+		/* Add the name as an additional attribute and put it first */
+		BuntataAttributeValueAdvanced name = new BuntataAttributeValueAdvanced();
+		name.setValue(node.getName());
+		name.setAttribute(new BuntataAttribute()
+				.setName(getString(R.string.node_details_name)));
+		attributeValues.add(0, name);
 
 		/* Set them to the recycler view */
 		attributeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -307,10 +326,10 @@ public class NodeDetailsActivity extends BaseActivity
 //		}
 //		else
 //		{
-		if (pager.getVisibility() == View.VISIBLE)
+		if (pager.getVisibility() == View.VISIBLE && preferedMediumIndex != -1)
 		{
-			if (pager.getCurrentItem() < 2)
-				pager.setCurrentItem(0, true);
+			if (Math.abs(pager.getCurrentItem() - preferedMediumIndex) < 2)
+				pager.setCurrentItem(preferedMediumIndex, true);
 		}
 
 		super.onBackPressed();
